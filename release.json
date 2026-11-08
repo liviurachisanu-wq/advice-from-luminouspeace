@@ -1,0 +1,17 @@
+{
+  "name": "Advice from LuminousPeace",
+  "slug": "advice-from-luminouspeace",
+  "version": "0.6",
+  "release_date": "2026-11-08",
+  "status": "privacy-hardened-preview",
+  "content_review": {
+    "status": "approved",
+    "date": "2026-11-08",
+    "scope": "v0.5 baseline, intention and judgment; v0.6 changes privacy tooling, packaging and version attribution only",
+    "version": "0.5"
+  },
+  "license": "MIT",
+  "platform_docs_checked": "2026-11-08",
+  "next_review": "2026-12-08",
+  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.6 · released 8 November 2026."
+}

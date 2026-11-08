@@ -1,0 +1,20 @@
+name: Report a behavior or packaging issue
+description: Use a redacted or hypothetical example.
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Release and platform
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Redacted prompt and actual result
+      description: Exclude names, private coaching, employer information and sensitive personal details.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
