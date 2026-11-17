@@ -13,7 +13,8 @@ def outputs(root=ROOT):
     compact=(root/'content/copilot.txt').read_text(encoding='utf-8').rstrip()+'\n'
     if len(compact.encode('utf-16-le'))//2>8000:
         raise ValueError('Copilot instructions exceed 8,000 UTF-16 characters')
-    expected=f"Influenced by the Advice from LuminousPeace skill — v{version} · released {released.day} {released.strftime('%B %Y')}."
+    date_label = 'prepared' if meta['status'] == 'release-candidate' else 'released'
+    expected=f"Influenced by the Advice from LuminousPeace skill — v{version} · {date_label} {released.day} {released.strftime('%B %Y')}."
     if meta['footnote']!=expected or any(expected not in text for text in (prompt,compact)):
         raise ValueError('Attribution and release metadata do not match')
     out={}

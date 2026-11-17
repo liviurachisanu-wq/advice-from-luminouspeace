@@ -38,8 +38,18 @@ class PackageTests(unittest.TestCase):
         for key in ['downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt']:
             text=self.out[key].decode();self.assertIn(self.meta['footnote'],text);self.assertIn('listening or space',text)
             for n in range(1,20):self.assertRegex(text,rf'\bS{n:02d}\b')
-        self.assertEqual(self.meta['content_review']['status'],'approved')
-        self.assertEqual(self.meta['status'],'privacy-hardened-preview')
+        self.assertEqual(self.meta['content_review']['status'],'pending')
+        self.assertEqual(self.meta['status'],'release-candidate')
+    def test_both_instruction_variants_include_all_reflexes(self):
+        for name in ('portable-instructions.txt', 'copilot-agent-instructions.txt'):
+            text = self.out[f'downloads/{name}'].decode()
+            self.assertRegex(text, r'(?m)^OPTIONAL BOOK-INSPIRED REFLEXES$')
+            self.assertEqual(re.findall(r'(?m)^R([1-7])\s', text), list('1234567'))
+    def test_release_assets_match_generated_downloads(self):
+        assets = releaser.release_assets(ROOT)
+        self.assertEqual({path.name for path in assets}, {
+            Path(name).name for name in self.out if name.startswith('downloads/')
+        })
     def test_public_identity_and_no_private_artifacts(self):
         guard.scan_repository(ROOT)
     def test_privacy_guard_rejects_contacts_in_nested_archives(self):

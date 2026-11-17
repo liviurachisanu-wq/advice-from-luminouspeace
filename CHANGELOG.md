@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.7 — release candidate, 17 November 2026
+
+- Add seven conditional book-inspired reflexes to the full and compact instructions.
+- Rebuild the portable, ChatGPT, Gemini, Claude, and Copilot packages.
+- Record source limits and acceptance checks. Human approval and live platform testing are pending.
+
 ## v0.6 — 8 November 2026
 
 - Remove protected identity and assessment fixtures from public tests.
