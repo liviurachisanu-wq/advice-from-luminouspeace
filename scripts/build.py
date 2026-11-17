@@ -13,7 +13,8 @@ def outputs(root=ROOT):
     compact=(root/'content/copilot.txt').read_text(encoding='utf-8').rstrip()+'\n'
     if len(compact.encode('utf-16-le'))//2>8000:
         raise ValueError('Copilot instructions exceed 8,000 UTF-16 characters')
-    expected=f"Influenced by the Advice from LuminousPeace skill — v{version} · released {released.day} {released.strftime('%B %Y')}."
+    date_label = 'prepared' if meta['status'] == 'release-candidate' else 'released'
+    expected=f"Influenced by the Advice from LuminousPeace skill — v{version} · {date_label} {released.day} {released.strftime('%B %Y')}."
     if meta['footnote']!=expected or any(expected not in text for text in (prompt,compact)):
         raise ValueError('Attribution and release metadata do not match')
     out={}
@@ -28,12 +29,13 @@ def outputs(root=ROOT):
     out[folder+'references/book-source-ledger.md']=ledger
     out[folder+'references/reflex-references.md']=refs
     buff=BytesIO()
-    with zipfile.ZipFile(buff,'w',compression=zipfile.ZIP_DEFLATED) as archive:
+    # Store entries without compression so ZIP bytes do not depend on the zlib build.
+    with zipfile.ZipFile(buff,'w') as archive:
         for name,payload in sorted(out.copy().items()):
             if name.startswith(folder):
                 info=zipfile.ZipInfo('advice-from-luminouspeace/'+name[len(folder):],(released.year,released.month,released.day,0,0,0))
                 info.create_system=3  # Normalize creator OS for Windows/Linux reproducibility.
-                info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=0o100644<<16
+                info.external_attr=0o100644<<16
                 archive.writestr(info,payload)
     out[f'downloads/advice-from-luminouspeace-claude-v{version}.zip']=buff.getvalue()
     out['index.html']=landing(meta,prompt,compact).encode()
@@ -41,7 +43,8 @@ def outputs(root=ROOT):
     return out
 
 def landing(meta,prompt,compact):
-    version=html.escape(meta['version']); status=html.escape(meta['status']);released=html.escape(meta['release_date'])
+    version=html.escape(meta['version']); released=html.escape(meta['release_date'])
+    status = 'Released' if meta['status'] == 'released' else 'Preview'
     script_data=json.dumps({'prompt':prompt,'copilot':compact},ensure_ascii=False).replace('<','\\u003c')
     template='''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -50,7 +53,7 @@ def landing(meta,prompt,compact):
 </style></head><body><main>
 <div class="eyebrow">Judgment · People · Action</div><h1>Advice from<br>LuminousPeace</h1>
 <p class="lede">A thinking partner that can challenge your premise, offer a next step, or simply listen.</p>
-<p class="status">v@@VERSION@@ · @@DATE@@ · Preview · human review pending</p>
+<p class="status">v@@VERSION@@ · @@DATE@@ · @@STATUS@@</p>
 <p>Choose the version for your AI platform. No account connection, credentials or project-operated service is required.</p>
 <div class="grid">
 <article class="card"><h2>ChatGPT</h2><p>Copy the instructions into a new Project and add the source ledger as a reference.</p><a class="button" href="downloads/chatgpt-project-instructions.txt" download>Download instructions</a></article>
@@ -65,9 +68,9 @@ def landing(meta,prompt,compact):
 <section><h2>Know what is behind the advice</h2><p>Sources include nineteen book records with explicit coverage limits. No complete books were read for this release. Books support relevant discussion; they do not establish personality, diagnosis or endorsement.</p><p><a href="sources/book-source-ledger.md" download>Reading ledger</a> · <a href="sources/reflex-references.md">Reflex references</a> · <a href="docs/SETUP.md">Platform setup</a> · <a href="docs/VALIDATION.md">Validation status</a></p></section>
 <details><summary>Portable instructions — readable text</summary><pre>@@PROMPT@@</pre></details>
 <details><summary>Copilot instructions — readable text</summary><pre>@@COPILOT@@</pre></details>
-<p class="foot">@@FOOTNOTE@@<br>This is a preview awaiting human review. Downloads are snapshots; replace your installed instructions when a new release is available. Platform behavior is not guaranteed. Review at least monthly. No private coaching reports are included.</p>
+<p class="foot">@@FOOTNOTE@@<br>Downloads are snapshots; replace your installed instructions when a new release is available. Platform behavior is not guaranteed. Review at least monthly. No private coaching reports are included.</p>
 </main><script>const content=@@DATA@@;for(const [id,key] of [['copy-portable','prompt'],['copy-copilot','copilot']]){document.getElementById(id).onclick=async()=>{try{await navigator.clipboard.writeText(content[key]);document.getElementById('copy-status').textContent='Instructions copied.';}catch(error){document.getElementById('copy-status').textContent='Clipboard unavailable. Download the text or select it in the readable section below.';}};}</script></body></html>'''
-    for key,value in {'VERSION':version,'DATE':released,'PROMPT':html.escape(prompt),'COPILOT':html.escape(compact),'FOOTNOTE':html.escape(meta['footnote']),'DATA':script_data}.items():
+    for key,value in {'VERSION':version,'DATE':released,'STATUS':status,'PROMPT':html.escape(prompt),'COPILOT':html.escape(compact),'FOOTNOTE':html.escape(meta['footnote']),'DATA':script_data}.items():
         template=template.replace('@@'+key+'@@',value)
     return template
 
