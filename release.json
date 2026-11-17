@@ -3,15 +3,15 @@
   "slug": "advice-from-luminouspeace",
   "version": "0.7",
   "release_date": "2026-11-17",
-  "status": "release-candidate",
+  "status": "released",
   "content_review": {
-    "status": "pending",
-    "date": null,
+    "status": "approved",
+    "date": "2026-11-17",
     "scope": "Seven conditional book-inspired reflexes and platform adaptations",
     "version": "0.7"
   },
   "license": "MIT",
   "platform_docs_checked": "2026-11-08",
   "next_review": "2026-12-17",
-  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7 · prepared 17 November 2026."
+  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7 · released 17 November 2026."
 }
