@@ -29,6 +29,7 @@ class PackageTests(unittest.TestCase):
         with zipfile.ZipFile(BytesIO(self.out[name])) as z:
             self.assertEqual(len(z.namelist()),3)
             self.assertTrue(all(info.create_system == 3 for info in z.infolist()))
+            self.assertTrue(all(info.compress_type == zipfile.ZIP_STORED for info in z.infolist()))
             for n in z.namelist():self.assertTrue(n.startswith('advice-from-luminouspeace/'));self.assertNotIn('..',n)
             skill=z.read('advice-from-luminouspeace/SKILL.md').decode()
             self.assertTrue(skill.startswith('---\nname: advice-from-luminouspeace\n'))
@@ -38,8 +39,14 @@ class PackageTests(unittest.TestCase):
         for key in ['downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt']:
             text=self.out[key].decode();self.assertIn(self.meta['footnote'],text);self.assertIn('listening or space',text)
             for n in range(1,20):self.assertRegex(text,rf'\bS{n:02d}\b')
-        self.assertEqual(self.meta['content_review']['status'],'pending')
-        self.assertEqual(self.meta['status'],'release-candidate')
+        review = self.meta['content_review']
+        self.assertEqual(review['version'], self.meta['version'])
+        if self.meta['status'] == 'release-candidate':
+            self.assertEqual(review['status'], 'pending')
+            self.assertIsNone(review['date'])
+        else:
+            self.assertEqual(review['status'], 'approved')
+            self.assertTrue(review['date'])
     def test_both_instruction_variants_include_all_reflexes(self):
         for name in ('portable-instructions.txt', 'copilot-agent-instructions.txt'):
             text = self.out[f'downloads/{name}'].decode()

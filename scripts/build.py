@@ -29,12 +29,13 @@ def outputs(root=ROOT):
     out[folder+'references/book-source-ledger.md']=ledger
     out[folder+'references/reflex-references.md']=refs
     buff=BytesIO()
-    with zipfile.ZipFile(buff,'w',compression=zipfile.ZIP_DEFLATED) as archive:
+    # Store entries without compression so ZIP bytes do not depend on the zlib build.
+    with zipfile.ZipFile(buff,'w') as archive:
         for name,payload in sorted(out.copy().items()):
             if name.startswith(folder):
                 info=zipfile.ZipInfo('advice-from-luminouspeace/'+name[len(folder):],(released.year,released.month,released.day,0,0,0))
                 info.create_system=3  # Normalize creator OS for Windows/Linux reproducibility.
-                info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=0o100644<<16
+                info.external_attr=0o100644<<16
                 archive.writestr(info,payload)
     out[f'downloads/advice-from-luminouspeace-claude-v{version}.zip']=buff.getvalue()
     out['index.html']=landing(meta,prompt,compact).encode()
