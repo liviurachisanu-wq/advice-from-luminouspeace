@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.7.1 — 18 November 2026
+
+- Prioritize immediate safety, use location-specific emergency numbers only when location is established, and omit attribution in crisis and listening-only replies.
+- Localize introductory disclosures while preserving the exact plain-text version footer.
+- Correct Claude setup and require the release checkout to match its tag.
+- Reject stale generated files and publish version-specific notes.
+
 ## v0.7 — 17 November 2026
 
 - Add seven conditional book-inspired reflexes to the full and compact instructions.
