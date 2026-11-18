@@ -69,6 +69,6 @@ python -m unittest discover -s tests -v
 python scripts/build.py --check
 ```
 
-Edit `content/instructions.txt` and `content/copilot.txt`, update `release.json`, then rebuild. These are the two instruction variants; the other platform files are generated. The native skill and Claude ZIP contain source references alongside instructions. No executable tools are bundled inside the skill.
+Edit `content/instructions.txt` and `content/copilot.txt`, update `release.json`, then rebuild. These are the two instruction variants; the other platform files are generated. The download page `index.html` is generated too, by `scripts/landing.py`, from the release metadata, the downloads, the reading ledger and the instructions. The native skill and Claude ZIP contain source references alongside instructions. No executable tools are bundled inside the skill.
 
 Code and original instruction text use the [MIT license](LICENSE). Referenced works retain their own rights. Review the license choice before the first public release. Contributions follow [CONTRIBUTING.md](CONTRIBUTING.md).
