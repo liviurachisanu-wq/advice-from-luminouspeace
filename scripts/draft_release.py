@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 import re
 import subprocess
+import tempfile
 
 from build import check_generated, outputs
 from privacy_guard import scan_repository
@@ -25,8 +26,20 @@ def require_tag_checkout(root, tag):
             raise ValueError(f'Cannot resolve release commit: {ref}')
         return result.stdout.strip()
 
-    if resolve('HEAD') != resolve(f'refs/tags/{tag}'):
+    commit = resolve(f'refs/tags/{tag}')
+    if resolve('HEAD') != commit:
         raise ValueError(f'HEAD must match the commit tagged {tag}')
+    status = subprocess.check_output(
+        ['git', 'status', '--porcelain=v1', '-z', '--untracked-files=no'],
+        cwd=root,
+    )
+    if status:
+        raise ValueError('Release requires a clean index and tracked working tree')
+    return commit
+
+
+def tagged_blob(root, commit, path):
+    return subprocess.check_output(['git', 'cat-file', 'blob', f'{commit}:{path}'], cwd=root)
 
 
 def release_notes(changelog, tag):
@@ -45,18 +58,28 @@ def release_notes(changelog, tag):
     return notes + '\n'
 
 
-def main():
-    root = Path(__file__).resolve().parents[1]
+def main(root=Path(__file__).resolve().parents[1]):
     meta = json.loads((root / 'release.json').read_text(encoding='utf-8'))
     tag = 'v' + meta['version']
-    require_tag_checkout(root, tag)
-    notes = release_notes((root / 'CHANGELOG.md').read_text(encoding='utf-8'), tag)
+    commit = require_tag_checkout(root, tag)
+    meta = json.loads(tagged_blob(root, commit, 'release.json'))
+    notes = release_notes(tagged_blob(root, commit, 'CHANGELOG.md').decode('utf-8'), tag)
     assets = release_assets(root)
-    subprocess.run(
-        ['gh', 'release', 'create', tag, '--verify-tag', '--draft',
-         '--title', meta['name'] + ' ' + tag, '--notes-file', '-', *map(str, assets)],
-        input=notes.encode('utf-8'), cwd=root, check=True,
-    )
+    with tempfile.TemporaryDirectory() as tmp:
+        snapshots = []
+        for asset in assets:
+            name = asset.relative_to(root).as_posix()
+            content = tagged_blob(root, commit, name)
+            if asset.read_bytes() != content:
+                raise ValueError(f'Release asset differs from the tagged file: {name}')
+            snapshot = Path(tmp) / asset.name
+            snapshot.write_bytes(content)
+            snapshots.append(str(snapshot))
+        subprocess.run(
+            ['gh', 'release', 'create', tag, '--verify-tag', '--draft',
+             '--title', meta['name'] + ' ' + tag, '--notes-file', '-', *snapshots],
+            input=notes.encode('utf-8'), cwd=root, check=True,
+        )
 
 
 if __name__ == '__main__':
