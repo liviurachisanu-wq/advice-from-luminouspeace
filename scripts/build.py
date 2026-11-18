@@ -2,7 +2,8 @@
 from pathlib import Path
 from io import BytesIO
 from datetime import date
-import argparse, hashlib, html, json, zipfile
+import argparse, hashlib, json, zipfile
+from landing import landing
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -38,41 +39,9 @@ def outputs(root=ROOT):
                 info.external_attr=0o100644<<16
                 archive.writestr(info,payload)
     out[f'downloads/advice-from-luminouspeace-claude-v{version}.zip']=buff.getvalue()
-    out['index.html']=landing(meta,prompt,compact).encode()
+    out['index.html']=landing(meta,prompt,compact,out,ledger.decode('utf-8')).encode()
     out['downloads/SHA256SUMS.txt']=''.join(hashlib.sha256(payload).hexdigest()+'  '+name.split('/',1)[1]+'\n' for name,payload in sorted(out.items()) if name.startswith('downloads/')).encode()
     return out
-
-def landing(meta,prompt,compact):
-    version=html.escape(meta['version']); released=html.escape(meta['release_date'])
-    status = 'Released' if meta['status'] == 'released' else 'Preview'
-    script_data=json.dumps({'prompt':prompt,'copilot':compact},ensure_ascii=False).replace('<','\\u003c')
-    template='''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Advice from LuminousPeace</title><style>
-:root{color-scheme:light;--ink:#163b37;--muted:#496660;--line:#ccd9cf;--paper:#f5f4ee}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:48px 24px 72px}.eyebrow{letter-spacing:.16em;font-size:12px;font-weight:750;text-transform:uppercase}h1{font-size:clamp(40px,7vw,72px);line-height:1.05;letter-spacing:-.05em;max-width:800px;margin:28px 0}h2{font-size:25px;letter-spacing:-.02em}.lede{max-width:680px;font-size:21px}.status{display:inline-block;border:1px solid var(--line);border-radius:30px;padding:7px 14px;font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:30px 0}.card{background:white;border:1px solid var(--line);padding:24px;border-radius:18px}.card h2{margin-top:0}.card p{color:var(--muted)}a{color:#16645a}a.button,button{display:inline-block;padding:10px 17px;border:0;border-radius:8px;background:var(--ink);color:white;text-decoration:none;font:inherit;cursor:pointer}button.secondary{background:#e7eee8;color:var(--ink)}.actions{display:flex;flex-wrap:wrap;gap:10px}small{color:var(--muted)}section{margin-top:40px}details{border-top:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:650}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;border:1px solid var(--line);padding:20px;border-radius:12px;font:13px/1.6 ui-monospace,monospace}.foot{border-top:1px solid var(--line);padding-top:20px;margin-top:40px;font-size:14px}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #b57b24;outline-offset:4px}@media(max-width:650px){.grid{grid-template-columns:1fr}main{padding:28px 18px 50px}.lede{font-size:18px}}
-</style></head><body><main>
-<div class="eyebrow">Judgment · People · Action</div><h1>Advice from<br>LuminousPeace</h1>
-<p class="lede">A thinking partner that can challenge your premise, offer a next step, or simply listen.</p>
-<p class="status">v@@VERSION@@ · @@DATE@@ · @@STATUS@@</p>
-<p>Choose the version for your AI platform. No account connection, credentials or project-operated service is required.</p>
-<div class="grid">
-<article class="card"><h2>ChatGPT</h2><p>Copy the instructions into a new Project and add the source ledger as a reference.</p><a class="button" href="downloads/chatgpt-project-instructions.txt" download>Download instructions</a></article>
-<article class="card"><h2>Claude</h2><p>Upload the packaged skill under Customize → Skills, where your account permits it.</p><a class="button" href="downloads/advice-from-luminouspeace-claude-v@@VERSION@@.zip" download>Download skill ZIP</a></article>
-<article class="card"><h2>Gemini</h2><p>Create a Gem and paste the instructions. Add the reading ledger as optional knowledge.</p><a class="button" href="downloads/gemini-gem-instructions.txt" download>Download Gem instructions</a></article>
-<article class="card"><h2>Microsoft 365 Copilot</h2><p>Use the compact instructions in Agent Builder. Your organization's features and permissions apply.</p><a class="button" href="downloads/copilot-agent-instructions.txt" download>Download agent instructions</a></article>
-</div>
-<div class="actions"><button id="copy-portable">Copy portable instructions</button><button class="secondary" id="copy-copilot">Copy Copilot instructions</button><a href="downloads/portable-instructions.txt" download>Portable text</a></div>
-<p id="copy-status" role="status" aria-live="polite"><small>If copying is unavailable, use the downloads or select the text below.</small></p>
-<section><h2>Choose the support you need</h2><p><strong>Opinion · Recommendation · Action · Listening or space</strong></p><p>Ask for a perspective, a concrete recommendation, agreed practical help, or room to talk without advice. If you have already asked clearly, the skill responds directly.</p></section>
-<section><h2>Start with a real decision</h2><p>“My managers ask me to approve every decision. What should I change this week?”</p><p>“Something painful happened today. Please listen without giving advice.”</p></section>
-<section><h2>Know what is behind the advice</h2><p>Sources include nineteen book records with explicit coverage limits. No complete books were read for this release. Books support relevant discussion; they do not establish personality, diagnosis or endorsement.</p><p><a href="sources/book-source-ledger.md" download>Reading ledger</a> · <a href="sources/reflex-references.md">Reflex references</a> · <a href="docs/SETUP.md">Platform setup</a> · <a href="docs/VALIDATION.md">Validation status</a></p></section>
-<details><summary>Portable instructions — readable text</summary><pre>@@PROMPT@@</pre></details>
-<details><summary>Copilot instructions — readable text</summary><pre>@@COPILOT@@</pre></details>
-<p class="foot">@@FOOTNOTE@@<br>Downloads are snapshots; replace your installed instructions when a new release is available. Platform behavior is not guaranteed. Review at least monthly. No private coaching reports are included.</p>
-</main><script>const content=@@DATA@@;for(const [id,key] of [['copy-portable','prompt'],['copy-copilot','copilot']]){document.getElementById(id).onclick=async()=>{try{await navigator.clipboard.writeText(content[key]);document.getElementById('copy-status').textContent='Instructions copied.';}catch(error){document.getElementById('copy-status').textContent='Clipboard unavailable. Download the text or select it in the readable section below.';}};}</script></body></html>'''
-    for key,value in {'VERSION':version,'DATE':released,'STATUS':status,'PROMPT':html.escape(prompt),'COPILOT':html.escape(compact),'FOOTNOTE':html.escape(meta['footnote']),'DATA':script_data}.items():
-        template=template.replace('@@'+key+'@@',value)
-    return template
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
