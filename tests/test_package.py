@@ -15,6 +15,11 @@ class Links(HTMLParser):
     def __init__(self):super().__init__();self.links=[]
     def handle_starttag(self,tag,attrs):
         if tag=='a':self.links.extend(v for k,v in attrs if k=='href')
+class Hidden(HTMLParser):
+    def __init__(self):super().__init__();self.found=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if 'hidden' in attrs:self.found.append(attrs.get('id') or attrs.get('data-mode'))
 
 class PackageTests(unittest.TestCase):
     @classmethod
@@ -156,6 +161,18 @@ class PackageTests(unittest.TestCase):
         for link in parser.links:
             if not link.startswith(('https:','#')):self.assertTrue((ROOT/link).exists(),link)
         self.assertNotRegex(page,r'<script[^>]+src=|fetch\(|XMLHttpRequest')
+    def test_landing_works_offline_and_without_script(self):
+        page=self.out['index.html'].decode()
+        self.assertNotRegex(page,r'(?i)<link[^>]+href="https?:|@import|url\(\s*["\']?https?:|<(?:img|iframe|source)[^>]+src="https?:')
+        static=re.sub(r'(?s)<script>.*?</script>','',page);parser=Links();parser.feed(static)
+        for name in self.out:
+            if name.startswith('downloads/'):self.assertIn(name,parser.links)
+        ledger=(ROOT/'sources/book-source-ledger.md').read_text(encoding='utf-8')
+        for n in re.findall(r'^## (S\d\d) ',ledger,re.M):self.assertIn(f'id="book-{n}"',static)
+        partial,desc,unres=re.search(r'(\d+) partial primary texts; (\d+) descriptions only; (\d+) unresolved',ledger).groups()
+        for text in (f'Partial text read · {partial}',f'Description only · {desc}',f'Unresolved · {unres}',self.meta['footnote'],'written replies, not live output'):self.assertIn(text,static)
+        hidden=Hidden();hidden.feed(static)
+        self.assertEqual(sorted(hidden.found),['ask','wizard'])  # only script-driven controls start hidden
     def test_checksums_and_reproducibility(self):
         for line in self.out['downloads/SHA256SUMS.txt'].decode().splitlines():
             digest,name=line.split('  ',1);self.assertEqual(digest,hashlib.sha256(self.out['downloads/'+name]).hexdigest())
