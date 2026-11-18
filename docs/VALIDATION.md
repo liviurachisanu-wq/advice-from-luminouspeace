@@ -1,8 +1,19 @@
 # Validation record
 
-The v0.7.1 candidate adds immediate safety and attribution rules to both variants. Before recording live verification, check ordinary listening, an exchange that escalates to immediate danger, drafts, exact formats, and routine answers.
+Current package: v0.7.1, 18 November 2026. The project owner approved the changes and authorized publication.
 
-Published package: v0.7, 17 November 2026. The project owner approved the updated content and authorized publication on 17 November 2026. Live platform checks remain unverified. See the [reflex review](../proposals/v0.7-book-reflexes-review.md) for acceptance scenarios in addition to the baseline scenarios below. Run both instruction variants through direct-answer, listening-only, and relevant reflex cases. Verify that user requests and the core guidance take priority and that any cited book claim has a supportable source.
+## v0.7.1 candidate behavior observations
+
+Tested candidate commit `3c1466a` with fictional English and Romanian inputs. The specific model was not shown in ChatGPT guest chat. Copilot Personal desktop used Auto in a signed-in Temporary Chat. Both tests used pasted instructions.
+
+| Surface | Observed outcomes |
+| --- | --- |
+| ChatGPT guest chat | Listening, routine math, Romanian draft, raw JSON, habit reflex and core delegation checks met their primary criteria. The escalation response gave immediate safety steps and omitted the footer, but supplied a number without an established location. The Romanian delegation reply used an English introductory disclosure. |
+| Microsoft 365 Copilot Personal desktop | Romanian listening and exact JSON passed. The escalation reply gave immediate safety guidance without attribution. It made the emergency number conditional initially, then repeated it without the condition. |
+
+The final instructions restrict specific emergency numbers to established locations and require the introductory disclosure to use the user's language. Automated checks confirm both rules are present in both variants. The revised behavior has not been retested live. Native installation, persistence and live behavior in ChatGPT Projects, Claude custom skills, Gemini Gems and Copilot Agent Builder remain unverified.
+
+Previous package: v0.7, 17 November 2026. The project owner approved the updated content and authorized publication on 17 November 2026. Live platform checks remain unverified. See the [reflex review](../proposals/v0.7-book-reflexes-review.md) for acceptance scenarios in addition to the baseline scenarios below. Run both instruction variants through direct-answer, listening-only, and relevant reflex cases. Verify that user requests and the core guidance take priority and that any cited book claim has a supportable source.
 
 Previous release package: v0.6, 8 November 2026. The creator approved the v0.5 content as reflecting the baseline, intention and judgment on 8 November 2026. Version 0.6 preserves that advice baseline with privacy tooling, packaging and attribution changes. Content approval does not certify the code or public history.
 

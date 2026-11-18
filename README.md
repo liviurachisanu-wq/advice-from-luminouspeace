@@ -4,7 +4,7 @@
 
 An AI thinking-partner skill for leadership, careers, delivery, change and AI adoption. It helps you examine a decision, challenge a weak premise and take a useful next step. It also knows when to listen, make room, or help you find a qualified human.
 
-**v0.7.1 release candidate · 18 November 2026**
+**v0.7.1 · 18 November 2026**
 
 This is an instruction package you bring to your AI platform. It runs no service, requests no credentials and does not connect to the creator's private information. No installation in your account happens when you download it.
 
@@ -39,7 +39,7 @@ On GitHub, open a text file and select **Raw** or **Download raw file**. For the
 
 Substantive advice materially influenced by the skill uses this plain-text attribution line. It is omitted for crisis responses, listening-only replies, and routine answers.
 
-Influenced by the Advice from LuminousPeace skill — v0.7.1 · prepared 18 November 2026.
+Influenced by the Advice from LuminousPeace skill — v0.7.1 · released 18 November 2026.
 
 For exact machine-readable formats, attribution uses an allowed field or surrounding message when available. Required formats take precedence. Attribution depends on the host following the instructions; it is not a tracking system or technical guarantee.
 
@@ -55,7 +55,7 @@ Private coaching records, assessments, relationship details and correspondence a
 
 ## Status and maintenance
 
-The project owner approved the v0.7 content for release. Review of the v0.7.1 changes is pending. Packaging checks and five earlier portable-instruction behavior samples exist; real-account tests in ChatGPT, Claude, Gemini and Copilot remain unverified. [Validation](docs/VALIDATION.md) separates checks from claims.
+The project owner approved the v0.7.1 changes for release. Candidate instructions were exercised in ChatGPT guest chats and a signed-in Copilot Personal Temporary Chat. Native installation remains unverified on all four supported platforms. [Validation](docs/VALIDATION.md) separates checks from claims.
 
 Review at least monthly, and sooner when errors or platform changes justify it. Installed copies do not update automatically: download a new release and replace your instructions/skill. The footnote identifies the version actually loaded. See [release process](docs/RELEASING.md) and [changes](CHANGELOG.md).
 

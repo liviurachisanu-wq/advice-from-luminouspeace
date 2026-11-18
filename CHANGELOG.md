@@ -1,8 +1,9 @@
 # Changelog
 
-## v0.7.1 — release candidate
+## v0.7.1 — 18 November 2026
 
-- Add immediate safety guidance and clarify when to omit attribution.
+- Prioritize immediate safety, use location-specific emergency numbers only when location is established, and omit attribution in crisis and listening-only replies.
+- Localize introductory disclosures while preserving the exact plain-text version footer.
 - Correct Claude setup and require the release checkout to match its tag.
 - Reject stale generated files and publish version-specific notes.
 

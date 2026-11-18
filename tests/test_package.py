@@ -127,6 +127,10 @@ class PackageTests(unittest.TestCase):
             rule = re.search(r'(?m)^IMMEDIATE SAFETY\n(.+)$', text)[1]
             safety_rules.append(rule)
             self.assertIn('credible immediate danger', rule)
+            self.assertIn('Give a specific emergency number only for an established location.', rule)
+            self.assertIn('Language alone is insufficient.', rule)
+            self.assertIn("Use the user's language, including any introductory disclosure.", text)
+            self.assertIn('Keep the version footer verbatim.', text)
             self.assertIn('Skip the support menu, persona, book reflexes, and attribution', rule)
             self.assertIn('Omit it for crisis responses, listening-only replies, and routine answers.', text)
             self.assertIn('Keep it outside drafts, code, and other requested artifacts.', text)
