@@ -5,6 +5,7 @@ Manual review remains necessary. Errors identify rules and paths, never values.
 """
 from io import BytesIO
 from pathlib import PurePosixPath
+import hashlib
 import re
 import subprocess
 import zipfile
@@ -16,11 +17,28 @@ RULES = {
     'private key': re.compile(r'-----BEGIN (?:[A-Z]+ )?PRIVATE KEY-----'),
     'access token': re.compile(r'\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{24,})\b'),
 }
+# The deployment key is 32 bytes. Check common literal assignments and
+# deployment API key/value objects without flagging reads of a runtime secret.
+KEY_VALUE = r"""["']?(?:[0-9a-fA-F]{64}|[A-Za-z0-9+/]{43}=)(?![A-Za-z0-9+/=])"""
+KEY_FIELD = r"""["'](?:name|key)["']\s*:\s*["']REFLEX_KEY["']"""
+VALUE_FIELD = r"""["']value["']\s*:\s*""" + KEY_VALUE
+RULES['literal preference decryption key'] = re.compile(
+    r"""\bREFLEX_KEY\b["']?\s*[:=]\s*""" + KEY_VALUE + '|' +
+    KEY_FIELD + r'[^{}]{0,1024}?' + VALUE_FIELD + '|' +
+    VALUE_FIELD + r'[^{}]{0,1024}?' + KEY_FIELD
+)
 TEXT_EXTENSIONS = {'.md', '.txt', '.py', '.json', '.yml', '.yaml', '.html'}
 TEXT_NAMES = {'LICENSE', '.gitignore', '.gitattributes', 'SHA256SUMS.txt'}
+REVIEWED_MODULES = {'service/worker.mjs', 'tests/service.test.mjs'}
+ENVELOPE_MEMBER = 'advice-from-luminouspeace/.reflex-preferences.enc'
+EDITION_ARCHIVES = {
+    'downloads/advice-from-luminouspeace-ask-him.zip',
+    'editions/ask-him/advice-from-luminouspeace-ask-him.zip',
+}
+ENVELOPE_DIGEST = 'e536e6b16f726b9c209d6d6373a6bd6b00c2d350926b620bf48c7f1746a822ec'
 
 
-def scan_payload(name, payload, depth=0, budget=None):
+def scan_payload(name, payload, depth=0, budget=None, container=None):
     """Inspect text and bounded ZIP members without extracting anything."""
     if budget is None:
         budget = [0, 0]
@@ -41,9 +59,19 @@ def scan_payload(name, payload, depth=0, budget=None):
                 if info.flag_bits & 1 or (info.external_attr >> 16) & 0o170000 == 0o120000:
                     raise ValueError('Encrypted archives and symbolic links are not publishable')
                 if not info.is_dir():
-                    scan_payload(info.filename, archive.read(info), depth + 1, budget)
+                    scan_payload(info.filename, archive.read(info), depth + 1, budget, name)
         return
-    if path.suffix.lower() not in TEXT_EXTENSIONS and path.name not in TEXT_NAMES:
+    if path.suffix.lower() == '.enc':
+        reviewed_location = (
+            (depth == 0 and name == 'skills/' + ENVELOPE_MEMBER) or
+            (depth == 1 and container in EDITION_ARCHIVES and name == ENVELOPE_MEMBER)
+        )
+        if (not reviewed_location or not payload.startswith(b'LPRF\x01\x01\x00\x00')
+                or hashlib.sha256(payload).hexdigest() != ENVELOPE_DIGEST):
+            raise ValueError('Unreviewed encrypted payload: ' + name)
+        return
+    reviewed_module = depth == 0 and name in REVIEWED_MODULES
+    if path.suffix.lower() not in TEXT_EXTENSIONS and path.name not in TEXT_NAMES and not reviewed_module:
         raise ValueError('Unreviewed export file type: ' + name)
     text = payload.decode('utf-8')
     for rule, pattern in RULES.items():

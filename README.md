@@ -4,22 +4,28 @@
 
 An AI thinking-partner skill for leadership, careers, delivery, change and AI adoption. It helps you examine a decision, challenge a weak premise and take a useful next step. It also knows when to listen, make room, or help you find a qualified human.
 
-**v0.7.2 · 18 November 2026**
+## Ask Him edition · 19 November 2026
 
-This is an instruction package you bring to your AI platform. It runs no service, requests no credentials and does not connect to the creator's private information. No installation in your account happens when you download it.
+**[Download the Ask Him skill ZIP](downloads/advice-from-luminouspeace-ask-him.zip)** · [GitHub release v0.7.2-ask-him.1](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/tag/v0.7.2-ask-him.1)
 
-## Choose your download
+Install the ZIP in a skill-capable host that permits outbound HTTPS. After you have used the skill substantively in the same chat, you can say **“ask him”** to request a pick inspired by LuminousPeace. For example, “What would LuminousPeace choose for this occasion? Ask him.” If “him” could mean someone else, the assistant asks you to clarify. The assistant draws on experience first, relevant books second, and the optional preference lookup last.
+
+The lookup sends a fixed command, the assistant’s judgment that the conversation qualifies, and short choice labels. Your transcript stays in the chat. The service trusts the assistant’s judgment and returns one choice. If the host cannot make the request, the skill continues with the available evidence.
+
+## Offline core downloads · v0.7.2
+
+The original text packages and core ZIP work without the preference service. For the online lookup, install the Ask Him ZIP above.
 
 | Platform | Download | Setup |
 | --- | --- | --- |
 | ChatGPT | [Project instructions](downloads/chatgpt-project-instructions.txt) | Paste into a new Project's instructions; add the source ledger as a reference file. |
-| Claude | [Skill ZIP](downloads/advice-from-luminouspeace-claude-v0.7.2.zip) | Upload under Customize → Skills, if your account permits it. |
+| Claude | [Offline core skill ZIP](downloads/advice-from-luminouspeace-claude-v0.7.2.zip) | Upload under Customize → Skills, if your account permits it. |
 | Gemini | [Gem instructions](downloads/gemini-gem-instructions.txt) | Create a Gem, paste the instructions, and add the ledger as optional knowledge. |
 | Microsoft 365 Copilot | [Agent instructions](downloads/copilot-agent-instructions.txt) | Paste into Agent Builder's Instructions field; permissions and availability depend on your organization. |
 | Any supported chat | [Portable instructions](downloads/portable-instructions.txt) | Paste into a fresh conversation, then explain your situation. |
 | Offline browser | [Download page](index.html) | Download the repository and open index.html locally for copy and download buttons. |
 
-On GitHub, open a text file and select **Raw** or **Download raw file**. For the Claude ZIP, select **Download raw file**. The full [source ledger](sources/book-source-ledger.md) is also downloadable. See [platform setup](docs/SETUP.md) for details and current official references.
+On GitHub, open a file and select **Download raw file**, or use the ZIP under **Assets** on the release page. The full source ledger is also downloadable. [Reading ledger](sources/book-source-ledger.md) · [Platform setup](docs/SETUP.md)
 
 ## Try it
 
@@ -55,20 +61,21 @@ Private coaching records, assessments, relationship details and correspondence a
 
 ## Status and maintenance
 
-Version 0.7.2 hardens the download page and release pipeline. It carries forward the advice approved for v0.7.1. Candidate instructions were exercised in ChatGPT guest chats and a signed-in Copilot Personal Temporary Chat. Native installation remains unverified on all four supported platforms. [Validation](docs/VALIDATION.md) separates checks from claims.
+The Ask Him edition adds an optional online lookup to the v0.7.2 advice and retains the core attribution line above. The release tag identifies this edition. The live service and the installed helper were tested together. Native installation across the four platform products in the table remains unverified. [Validation record](docs/VALIDATION.md)
 
-Review at least monthly, and sooner when errors or platform changes justify it. Installed copies do not update automatically: download a new release and replace your instructions/skill. The footnote identifies the version actually loaded. See [release process](docs/RELEASING.md) and [changes](CHANGELOG.md).
+Installed copies are snapshots. To use the new command in an older installation, replace its skill with the Ask Him ZIP and start a fresh chat. [Release process](docs/RELEASING.md) · [Changelog](CHANGELOG.md)
 
 ## For maintainers
 
-Python 3.11+ is sufficient; no third-party packages or API keys are needed:
+The package build uses Python 3.11+. The resolver tests use Node.js.
 
 ```sh
 python scripts/build.py
 python -m unittest discover -s tests -v
 python scripts/build.py --check
+node --test tests/service.test.mjs
 ```
 
-Edit `content/instructions.txt` and `content/copilot.txt`, update `release.json`, then rebuild. These are the two instruction variants; the other platform files are generated. The native skill and Claude ZIP contain source references alongside instructions. No executable tools are bundled inside the skill.
+The offline packages are built from `content/instructions.txt` and `content/copilot.txt`. The Ask Him release input lives under `editions/ask-him/`. The build materializes its six files under `skills/advice-from-luminouspeace/` and publishes its ZIP alongside the core downloads. The edition includes an optional Python HTTPS helper and an encrypted preference file. The decryption key stays outside the repository. The hosted lookup runs the resolver in `service/worker.mjs`.
 
 Code and original instruction text use the [MIT license](LICENSE). Referenced works retain their own rights. Review the license choice before the first public release. Contributions follow [CONTRIBUTING.md](CONTRIBUTING.md).

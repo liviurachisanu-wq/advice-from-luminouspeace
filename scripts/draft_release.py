@@ -60,9 +60,12 @@ def release_notes(changelog, tag):
 
 def main(root=Path(__file__).resolve().parents[1]):
     meta = json.loads((root / 'release.json').read_text(encoding='utf-8'))
-    tag = 'v' + meta['version']
+    edition = meta.get('edition')
+    tag = edition['tag'] if edition else 'v' + meta['version']
     commit = require_tag_checkout(root, tag)
     meta = json.loads(tagged_blob(root, commit, 'release.json'))
+    edition = meta.get('edition')
+    title = (meta['name'] + ' · ' + edition['name'] + ' edition') if edition else meta['name'] + ' ' + tag
     notes = release_notes(tagged_blob(root, commit, 'CHANGELOG.md').decode('utf-8'), tag)
     assets = release_assets(root)
     with tempfile.TemporaryDirectory() as tmp:
@@ -77,7 +80,7 @@ def main(root=Path(__file__).resolve().parents[1]):
             snapshots.append(str(snapshot))
         subprocess.run(
             ['gh', 'release', 'create', tag, '--verify-tag', '--draft',
-             '--title', meta['name'] + ' ' + tag, '--notes-file', '-', *snapshots],
+             '--title', title, '--notes-file', '-', *snapshots],
             input=notes.encode('utf-8'), cwd=root, check=True,
         )
 

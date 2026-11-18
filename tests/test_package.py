@@ -18,14 +18,14 @@ class Links(HTMLParser):
 
 class PackageTests(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):cls.out=builder.outputs();cls.meta=json.loads((ROOT/'release.json').read_text())
+    def setUpClass(cls):cls.out=builder.outputs();cls.meta=json.loads((ROOT/'release.json').read_text(encoding='utf-8'))
     def test_generated_files_are_current(self):
         builder.check_generated(ROOT, self.out)
     def test_platform_parity_and_limit(self):
         self.assertEqual(self.out['downloads/portable-instructions.txt'],self.out['downloads/chatgpt-project-instructions.txt'])
         self.assertEqual(self.out['downloads/portable-instructions.txt'],self.out['downloads/gemini-gem-instructions.txt'])
         self.assertLessEqual(len(self.out['downloads/copilot-agent-instructions.txt'].decode().encode('utf-16-le'))//2,8000)
-    def test_native_zip_layout_and_references(self):
+    def test_offline_native_zip_layout_and_references(self):
         name=f"downloads/advice-from-luminouspeace-claude-v{self.meta['version']}.zip"
         with zipfile.ZipFile(BytesIO(self.out[name])) as z:
             self.assertEqual(len(z.namelist()),3)
@@ -36,6 +36,27 @@ class PackageTests(unittest.TestCase):
             self.assertTrue(skill.startswith('---\nname: advice-from-luminouspeace\n'))
             self.assertIn(self.out['downloads/portable-instructions.txt'].decode().strip(),skill)
             for ref in re.findall(r'references/[a-z-]+\.md',skill):self.assertIn('advice-from-luminouspeace/'+ref,z.namelist())
+    def test_ask_him_download_matches_deployed_snapshot_and_installable_tree(self):
+        filename = 'advice-from-luminouspeace-ask-him.zip'
+        download = self.out['downloads/' + filename]
+        self.assertEqual(download, (ROOT / 'editions' / 'ask-him' / filename).read_bytes())
+        with zipfile.ZipFile(BytesIO(download)) as archive:
+            members = archive.namelist()
+            self.assertEqual(len(members), 6)
+            self.assertIn('advice-from-luminouspeace/scripts/ask_him.py', members)
+            self.assertIn('advice-from-luminouspeace/.reflex-preferences.enc', members)
+            self.assertEqual({'skills/' + name for name in members},
+                             {name for name in self.out if name.startswith('skills/')})
+            for member in members:
+                self.assertEqual(self.out['skills/' + member], archive.read(member))
+    def test_ask_him_build_rejects_unverified_archive(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            edition = root / 'editions' / 'ask-him'
+            edition.mkdir(parents=True)
+            (edition / builder.ASK_HIM_ZIP).write_bytes(b'unverified')
+            with self.assertRaisesRegex(ValueError, 'verified hosted edition'):
+                builder.ask_him_outputs(root)
     def test_release_metadata_and_attribution(self):
         for key in ['downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt']:
             text=self.out[key].decode();self.assertIn(self.meta['footnote'],text.splitlines());self.assertIn('listening or space',text)
@@ -153,6 +174,7 @@ class PackageTests(unittest.TestCase):
         self.assertIn('0 complete books',ledger)
     def test_landing_links(self):
         page=self.out['index.html'].decode();parser=Links();parser.feed(page)
+        self.assertEqual(parser.links[0], 'downloads/advice-from-luminouspeace-ask-him.zip')
         for link in parser.links:
             if not link.startswith(('https:','#')):self.assertTrue((ROOT/link).exists(),link)
         self.assertNotRegex(page,r'<script[^>]+src=|fetch\(|XMLHttpRequest')

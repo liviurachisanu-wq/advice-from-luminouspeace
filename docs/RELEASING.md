@@ -11,6 +11,8 @@ Review the project at least monthly. A review may conclude that no substantive c
 7. Create a reviewed version tag such as `v0.6`. The optional **Draft release** workflow requires an existing matching tag and creates a draft with downloadable assets; review it before publishing.
 8. Publish the release when authorized. Users must replace their installed copies; this repository does not silently update them.
 
-The repository is prepared for GitHub but no repository account, remote URL, tag or public deployment is created by the preparation process. The original instruction text and build scripts are prepared with MIT licensing for human review; third-party works keep their rights.
+The named Ask Him edition of the v0.7.2 core uses the release tag `v0.7.2-ask-him.1`. The `edition` entry in `release.json` records the edition name, tag and release date. The core version, approval scope and attribution retain their original meaning.
 
-The landing page works offline. GitHub renders `index.html` as source by default; a live website requires a separate GitHub Pages configuration. No hosted-site availability is claimed.
+For this edition, run `node --test tests/service.test.mjs` and build the Worker with `python scripts/build_service.py OUTPUT.mjs`. Packaging and validation need no secret. Check that the GitHub ZIP matches the separately deployed download, the repository’s native skill files match the ZIP members, and the hosted lookup accepts the current command after both activation conditions are met. Keep the key and the owner’s private maintenance files outside GitHub.
+
+The repository landing page works offline. The optional preference lookup runs on the separately hosted Ask Him site. A GitHub push and a service deployment update different destinations. Verify both when changing the public edition. [Hosted Ask Him site](https://ask-liviu.liviurachisanu800587.chatgpt.site)

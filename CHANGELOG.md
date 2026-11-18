@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.7.2-ask-him.1 — 19 November 2026
+
+- Publish the Ask Him edition of the v0.7.2 skill, including the six-file native package and a matching ZIP.
+- Add the optional “ask him” lookup after substantive use in the same chat, when “him” refers to LuminousPeace. The service returns one selection and receives no transcript.
+- Include the HTTPS helper, the public resolver source and its tests. The decryption key is held separately by the hosted service.
+- Keep the v0.7.2 core downloads available for offline use.
+
 ## v0.7.2 — 18 November 2026
 
 - Restrict the download page to its bundled script and stylesheet using SHA-256 content policy hashes.

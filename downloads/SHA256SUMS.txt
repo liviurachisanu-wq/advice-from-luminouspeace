@@ -1,3 +1,4 @@
+87d4e1f61e9c0f48b0dd3c6530a53b84dcf1320e6403809f60bcd1d8dcf34266  advice-from-luminouspeace-ask-him.zip
 b8c822532ab69d789ce04e46d28891e9915b26206851115cd4a60c33d6a26c38  advice-from-luminouspeace-claude-v0.7.2.zip
 f98e2924a03e46410cc4ed76f91c577875e85f074df85e701767f98271ee3a49  chatgpt-project-instructions.txt
 9ee3c0b20a09ae9da7dc06edda89f123e6d98fd51f4edee915e0431cbecb0873  copilot-agent-instructions.txt

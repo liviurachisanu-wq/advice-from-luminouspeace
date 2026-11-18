@@ -1,6 +1,14 @@
 # Validation record
 
-Current package: v0.7.2, 18 November 2026.
+## Ask Him edition · 19 November 2026
+
+The release tag is `v0.7.2-ask-him.1`. The native ZIP contains the v0.7.2 Ask Him skill, two references, a license, the HTTPS helper and the encrypted preference file.
+
+Live requests verified that the service returned one choice for “ask him” with the qualifying flag. It declined both the former command and an “ask him” request with the flag unset. The installed helper completed a live lookup. The hosted download was checked against the packaged ZIP. The service accepts the caller’s declaration of familiarity. It does not receive the conversation needed to verify that declaration.
+
+Offline dialogue checks covered a clear reference to LuminousPeace, a reference to a friend, two plausible referents, a first-turn command and a quoted command. The ambiguous case called for local clarification. Live native installation in the four platform products listed below remains unverified.
+
+## Core package · v0.7.2, 18 November 2026
 
 The hardening checks cover the page’s hash-based content policy, reproducible downloads, a clean tagged checkout, and release assets read from the tagged commit. The preceding v0.7.1 hardening build also passed browser smoke checks for clipboard behavior and downloads over localhost and from disk. Those checks used an isolated Edge profile. The model observations below belong to v0.7.1.
 

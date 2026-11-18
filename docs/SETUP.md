@@ -2,6 +2,14 @@
 
 Documentation checked 8 November 2026. Product menus, limits and account permissions can change. These are documented setup routes, not claims that the package was installed or tested in your account.
 
+## Ask Him edition
+
+Download the **Ask Him skill ZIP** from the GitHub release assets and import it into a skill-capable host. Replace an older copy and start a fresh chat. The online lookup needs outbound HTTPS and a host that can use the bundled Python helper or make the documented request itself. A ZIP download alone does not install a skill. [Latest published release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest)
+
+Work through a real topic together. When you want a supported pick, say **“ask him”** with LuminousPeace as the clear referent. The assistant judges familiarity from that same chat and asks for clarification if the person is unclear. Without a usable online client, it answers from the available experience and reading.
+
+The text-only platform instructions below and the separate core ZIP provide the offline v0.7.2 advice.
+
 ## ChatGPT
 
 1. Download `downloads/chatgpt-project-instructions.txt` and `sources/book-source-ledger.md`.
@@ -15,12 +23,12 @@ Official reference: [Projects in ChatGPT](https://help.openai.com/en/articles/10
 
 ## Claude
 
-1. Download the Claude skill ZIP from the [latest published release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest) as a file; do not upload the full repository ZIP as a skill.
+1. Choose the Ask Him ZIP for a host that permits HTTPS lookups, or the core Claude ZIP for offline advice. Use the individual skill asset from the [latest published release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest).
 2. In Customize → Skills, choose the create/upload option and upload the skill ZIP.
 3. Enable it and explicitly ask to use Advice from LuminousPeace in a fresh chat.
 4. Confirm the response matches the requested mode and carries the correct version footnote.
 
-The ZIP has one root folder, `advice-from-luminouspeace/`, containing `SKILL.md` and `references/`. Skill availability can depend on account and organization settings. If unavailable, paste the portable instructions into a fresh chat instead.
+Both ZIPs have one root folder, `advice-from-luminouspeace/`, containing `SKILL.md` and `references/`. The Ask Him ZIP also contains the helper, encrypted preference file and license. Skill availability and outbound network access depend on account and organization settings. If skill import is unavailable, the portable text can be used in a fresh conversation.
 
 Official references: [Use skills](https://support.claude.com/en/articles/12512180-use-skills-in-claude), [Create custom skills](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills).
 
