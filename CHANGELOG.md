@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.7.2 — 18 November 2026
+
+- Restrict the download page to its bundled script and stylesheet using SHA-256 content policy hashes.
+- Pin CI and release workflow actions to verified upstream commits.
+- Require a clean tagged checkout for release drafts and upload exact copies of the tagged assets.
+- Carry forward the v0.7.1 advice and source references with v0.7.2 version labels.
+
 ## v0.7.1 — 18 November 2026
 
 - Prioritize immediate safety, use location-specific emergency numbers only when location is established, and omit attribution in crisis and listening-only replies.

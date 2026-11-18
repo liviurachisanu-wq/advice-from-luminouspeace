@@ -1,6 +1,8 @@
 # Validation record
 
-Current package: v0.7.1, 18 November 2026. The project owner approved the changes and authorized publication.
+Current package: v0.7.2, 18 November 2026.
+
+The hardening checks cover the page’s hash-based content policy, reproducible downloads, a clean tagged checkout, and release assets read from the tagged commit. The preceding v0.7.1 hardening build also passed browser smoke checks for clipboard behavior and downloads over localhost and from disk. Those checks used an isolated Edge profile. The model observations below belong to v0.7.1.
 
 ## v0.7.1 candidate behavior observations
 

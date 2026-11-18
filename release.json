@@ -1,17 +1,17 @@
 {
   "name": "Advice from LuminousPeace",
   "slug": "advice-from-luminouspeace",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "release_date": "2026-11-18",
   "status": "released",
   "content_review": {
     "status": "approved",
     "date": "2026-11-18",
-    "scope": "Immediate safety, localization, and attribution in both instruction variants",
-    "version": "0.7.1"
+    "scope": "Carries forward the approved v0.7.1 advice. This maintenance release hardens the download page, build workflows and release packaging.",
+    "version": "0.7.2"
   },
   "license": "MIT",
   "platform_docs_checked": "2026-11-08",
   "next_review": "2026-12-17",
-  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7.1 · released 18 November 2026."
+  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7.2 · released 18 November 2026."
 }
