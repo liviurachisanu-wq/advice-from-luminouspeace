@@ -166,7 +166,7 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--surface)
 .spine.desc { background: var(--spine-desc); }
 .spine.unres { background: var(--spine-unres); color: var(--spine-unres-ink); }
 .spine span { writing-mode: vertical-rl; text-orientation: sideways; transform: rotate(180deg); font: 600 13px/1.1 var(--serif); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-height: 240px; }
-.spine small { font: 700 10px var(--sans); opacity: .85; }
+.spine small { font: 700 10px var(--sans); }
 .spine[aria-current="true"] { transform: translateY(-14px); box-shadow: inset -4px 0 0 rgb(0 0 0 / .12), 0 0 0 3px var(--paper), 0 0 0 5px var(--accent); }
 .books { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
 .js .books { display: block; }
@@ -685,6 +685,7 @@ const PAGE = {"platforms": [{"id": "chatgpt", "name": "ChatGPT", "how": "Project
 
   /* ---- Views: the guide, or the reading ledger at #ledger -------------- */
   let view = null;
+  let guideScroll = 0;  /* where the reader was in the guide before the ledger */
 
   function viewFor(hash) {
     if (!hash) return 'home';
@@ -719,6 +720,7 @@ const PAGE = {"platforms": [{"id": "chatgpt", "name": "ChatGPT", "how": "Project
       return;
     }
     const first = view === null;
+    if (view === 'home') guideScroll = window.scrollY;
     view = next;
     $$('[data-view]').forEach((v) => { v.hidden = v.dataset.view !== view; });
     if (view === 'ledger') pickBook();
@@ -734,7 +736,7 @@ const PAGE = {"platforms": [{"id": "chatgpt", "name": "ChatGPT", "how": "Project
     } else if (target) {
       target.scrollIntoView();
     } else {
-      window.scrollTo(0, 0);
+      window.scrollTo(0, guideScroll);  /* e.g. Back from the ledger */
     }
   }
 
@@ -781,6 +783,7 @@ const PAGE = {"platforms": [{"id": "chatgpt", "name": "ChatGPT", "how": "Project
     document.addEventListener('click', onClick);
     window.addEventListener('hashchange', route);
     route();
+    document.documentElement.setAttribute('data-enhanced', '');
   } catch (error) {
     /* Fall back to the static page rather than leave parts hidden. */
     document.documentElement.classList.remove('js');
@@ -789,6 +792,10 @@ const PAGE = {"platforms": [{"id": "chatgpt", "name": "ChatGPT", "how": "Project
     throw error;
   }
 })();
+</script>
+<script>
+/* If the script above failed to run at all, show the static page. */
+if (!document.documentElement.hasAttribute('data-enhanced')) document.documentElement.classList.remove('js');
 </script>
 </body>
 </html>

@@ -14,6 +14,11 @@ class Links(HTMLParser):
     def __init__(self):super().__init__();self.links=[]
     def handle_starttag(self,tag,attrs):
         if tag=='a':self.links.extend(v for k,v in attrs if k=='href')
+class Hidden(HTMLParser):
+    def __init__(self):super().__init__();self.found=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if 'hidden' in attrs:self.found.append(attrs.get('id') or attrs.get('data-mode'))
 
 class PackageTests(unittest.TestCase):
     @classmethod
@@ -96,6 +101,8 @@ class PackageTests(unittest.TestCase):
         for n in re.findall(r'^## (S\d\d) ',ledger,re.M):self.assertIn(f'id="book-{n}"',static)
         partial,desc,unres=re.search(r'(\d+) partial primary texts; (\d+) descriptions only; (\d+) unresolved',ledger).groups()
         for text in (f'Partial text read · {partial}',f'Description only · {desc}',f'Unresolved · {unres}',self.meta['footnote'],'written replies, not live output'):self.assertIn(text,static)
+        hidden=Hidden();hidden.feed(static)
+        self.assertEqual(sorted(hidden.found),['ask','wizard'])  # only script-driven controls start hidden
     def test_checksums_and_reproducibility(self):
         for line in self.out['downloads/SHA256SUMS.txt'].decode().splitlines():
             digest,name=line.split('  ',1);self.assertEqual(digest,hashlib.sha256(self.out['downloads/'+name]).hexdigest())
