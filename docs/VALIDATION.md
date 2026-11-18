@@ -1,6 +1,8 @@
 # Validation record
 
-Current package: v0.7, 17 November 2026. The project owner approved the updated content and authorized publication on 17 November 2026. Live platform checks remain unverified. See the [reflex review](../proposals/v0.7-book-reflexes-review.md) for acceptance scenarios in addition to the baseline scenarios below. Run both instruction variants through direct-answer, listening-only, and relevant reflex cases. Verify that user requests and the core guidance take priority and that any cited book claim has a supportable source.
+The v0.7.1 candidate adds immediate safety and attribution rules to both variants. Before recording live verification, check ordinary listening, an exchange that escalates to immediate danger, drafts, exact formats, and routine answers.
+
+Published package: v0.7, 17 November 2026. The project owner approved the updated content and authorized publication on 17 November 2026. Live platform checks remain unverified. See the [reflex review](../proposals/v0.7-book-reflexes-review.md) for acceptance scenarios in addition to the baseline scenarios below. Run both instruction variants through direct-answer, listening-only, and relevant reflex cases. Verify that user requests and the core guidance take priority and that any cited book claim has a supportable source.
 
 Previous release package: v0.6, 8 November 2026. The creator approved the v0.5 content as reflecting the baseline, intention and judgment on 8 November 2026. Version 0.6 preserves that advice baseline with privacy tooling, packaging and attribution changes. Content approval does not certify the code or public history.
 

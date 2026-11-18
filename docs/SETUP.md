@@ -15,7 +15,7 @@ Official reference: [Projects in ChatGPT](https://help.openai.com/en/articles/10
 
 ## Claude
 
-1. Download `downloads/advice-from-luminouspeace-claude-v0.5.zip` as a file; do not upload the full repository ZIP as a skill.
+1. Download the Claude skill ZIP from the [latest published release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest) as a file; do not upload the full repository ZIP as a skill.
 2. In Customize → Skills, choose the create/upload option and upload the skill ZIP.
 3. Enable it and explicitly ask to use Advice from LuminousPeace in a fresh chat.
 4. Confirm the response matches the requested mode and carries the correct version footnote.

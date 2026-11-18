@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.7.1 — release candidate
+
+- Add immediate safety guidance and clarify when to omit attribution.
+- Correct Claude setup and require the release checkout to match its tag.
+- Reject stale generated files and publish version-specific notes.
+
 ## v0.7 — 17 November 2026
 
 - Add seven conditional book-inspired reflexes to the full and compact instructions.

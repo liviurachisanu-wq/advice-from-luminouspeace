@@ -1,7 +1,8 @@
 from pathlib import Path
 from io import BytesIO
 from html.parser import HTMLParser
-import hashlib,importlib.util,json,re,unittest,zipfile,sys,tempfile
+import hashlib,importlib.util,json,re,subprocess,unittest,zipfile,sys,tempfile
+from urllib.parse import unquote, urlsplit
 from unittest import mock
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -19,7 +20,7 @@ class PackageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):cls.out=builder.outputs();cls.meta=json.loads((ROOT/'release.json').read_text())
     def test_generated_files_are_current(self):
-        for name,payload in self.out.items():self.assertEqual((ROOT/name).read_bytes(),payload,name)
+        builder.check_generated(ROOT, self.out)
     def test_platform_parity_and_limit(self):
         self.assertEqual(self.out['downloads/portable-instructions.txt'],self.out['downloads/chatgpt-project-instructions.txt'])
         self.assertEqual(self.out['downloads/portable-instructions.txt'],self.out['downloads/gemini-gem-instructions.txt'])
@@ -37,7 +38,7 @@ class PackageTests(unittest.TestCase):
             for ref in re.findall(r'references/[a-z-]+\.md',skill):self.assertIn('advice-from-luminouspeace/'+ref,z.namelist())
     def test_release_metadata_and_attribution(self):
         for key in ['downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt']:
-            text=self.out[key].decode();self.assertIn(self.meta['footnote'],text);self.assertIn('listening or space',text)
+            text=self.out[key].decode();self.assertIn(self.meta['footnote'],text.splitlines());self.assertIn('listening or space',text)
             for n in range(1,20):self.assertRegex(text,rf'\bS{n:02d}\b')
         review = self.meta['content_review']
         self.assertEqual(review['version'], self.meta['version'])
@@ -71,12 +72,77 @@ class PackageTests(unittest.TestCase):
         for name,payload in samples:
             with self.subTest(name=name):
                 with self.assertRaises(ValueError):guard.scan_payload(name,payload)
-    def test_release_rejects_unexpected_downloads(self):
+    def test_stale_zip_is_rejected_by_release_and_build_check(self):
+        name = 'downloads/old.zip'
         with tempfile.TemporaryDirectory() as tmp:
-            root=Path(tmp);(root/'downloads').mkdir()
-            (root/'downloads'/'unexpected.txt').write_text('synthetic')
-            with mock.patch.object(releaser,'outputs',return_value={'downloads/expected.txt':b'synthetic'}):
-                with self.assertRaisesRegex(ValueError,'only the generated'):releaser.release_assets(root)
+            root = Path(tmp)
+            (root / 'downloads').mkdir()
+            (root / name).write_bytes(b'stale')
+            expected = {}
+            with self.assertRaisesRegex(ValueError, r'Unexpected generated files: downloads/old[.]zip'):
+                builder.check_generated(root, expected)
+            with mock.patch.object(releaser, 'outputs', return_value=expected):
+                with self.assertRaisesRegex(ValueError, r'Unexpected generated files: downloads/old[.]zip'):
+                    releaser.release_assets(root)
+
+    def test_unexpected_native_skill_file_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'skills/advice-from-luminouspeace/references').mkdir(parents=True)
+            (root / 'skills/advice-from-luminouspeace/references/stale.md').touch()
+            with self.assertRaisesRegex(ValueError, 'Unexpected generated files'):
+                builder.check_generated(root, {})
+
+    def test_release_requires_checkout_of_tagged_commit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+
+            def git(*args):
+                subprocess.run(
+                    ['git', '-c', 'user.name=Release Test',
+                     '-c', 'user.email=release-test' + chr(64) + 'example.invalid', *args],
+                    cwd=root, capture_output=True, check=True,
+                )
+
+            git('init', '-q')
+            git('commit', '-q', '--allow-empty', '-m', 'tagged')
+            git('tag', '-a', 'v0.7.1', '-m', 'release')
+            releaser.require_tag_checkout(root, 'v0.7.1')
+            with self.assertRaisesRegex(ValueError, 'Cannot resolve release commit'):
+                releaser.require_tag_checkout(root, 'v0.7.2')
+            git('commit', '-q', '--allow-empty', '-m', 'different checkout')
+            with self.assertRaisesRegex(ValueError, 'HEAD must match'):
+                releaser.require_tag_checkout(root, 'v0.7.1')
+
+    def test_release_notes_include_only_matching_version(self):
+        changelog = '# Changelog\n\n## v0.7.10 — Later\n\nLater.\n\n## v0.7.1 — Patch\n\nPatch.\n\n## v0.7 — Earlier\n\nEarlier.\n'
+        self.assertEqual(releaser.release_notes(changelog, 'v0.7.1'), 'Patch.\n')
+        with self.assertRaisesRegex(ValueError, 'Expected one changelog section'):
+            releaser.release_notes(changelog, 'v0.7.2')
+
+    def test_both_variants_include_safety_and_attribution_exceptions(self):
+        safety_rules = []
+        for name in ('portable-instructions.txt', 'copilot-agent-instructions.txt'):
+            text = self.out[f'downloads/{name}'].decode()
+            rule = re.search(r'(?m)^IMMEDIATE SAFETY\n(.+)$', text)[1]
+            safety_rules.append(rule)
+            self.assertIn('credible immediate danger', rule)
+            self.assertIn('Skip the support menu, persona, book reflexes, and attribution', rule)
+            self.assertIn('Omit it for crisis responses, listening-only replies, and routine answers.', text)
+            self.assertIn('Keep it outside drafts, code, and other requested artifacts.', text)
+        self.assertEqual(*safety_rules)
+
+    def test_readme_and_setup_local_links(self):
+        for name in ('README.md', 'docs/SETUP.md'):
+            path = ROOT / name
+            text = path.read_text(encoding='utf-8')
+            for target in re.findall(r'\]\(([^()\s]+)\)', text):
+                link = urlsplit(target)
+                if not link.scheme and not link.netloc and link.path:
+                    self.assertTrue((path.parent / unquote(link.path)).exists(), (name, target))
+        setup = (ROOT / 'docs/SETUP.md').read_text(encoding='utf-8')
+        self.assertIn('/releases/latest)', setup)
+        self.assertNotRegex(setup, r'advice-from-luminouspeace-claude-v[\d.]+[.]zip')
     def test_source_coverage(self):
         ledger=(ROOT/'sources/book-source-ledger.md').read_text(encoding='utf-8')
         self.assertEqual(len(re.findall(r'^## S\d\d ',ledger,re.M)),19)

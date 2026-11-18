@@ -1,26 +1,63 @@
-"""Create a GitHub draft only; requires a reviewed, existing version tag."""
+"""Create a GitHub draft from the checkout of its existing version tag."""
 from pathlib import Path
-import json,subprocess
-from build import outputs
+import json
+import re
+import subprocess
+
+from build import check_generated, outputs
 from privacy_guard import scan_repository
 
+
 def release_assets(root):
-    expected = {name for name in outputs(root) if name.startswith('downloads/')}
-    actual = {'downloads/' + path.name for path in (root/'downloads').iterdir()}
-    if actual != expected or any(not (root/name).is_file() for name in expected):
-        raise ValueError('Download directory must contain only the generated release assets')
     generated = outputs(root)
-    for name in expected:
-        if (root/name).read_bytes() != generated[name]:
-            raise ValueError('Release asset differs from generated output: ' + name)
+    check_generated(root, generated)
     scan_repository(root)
-    return [root/name for name in sorted(expected)]
+    return [root / name for name in sorted(generated) if name.startswith('downloads/')]
+
+
+def require_tag_checkout(root, tag):
+    def resolve(ref):
+        result = subprocess.run(
+            ['git', 'rev-parse', '--verify', ref + '^{commit}'],
+            cwd=root, capture_output=True, text=True,
+        )
+        if result.returncode:
+            raise ValueError(f'Cannot resolve release commit: {ref}')
+        return result.stdout.strip()
+
+    if resolve('HEAD') != resolve(f'refs/tags/{tag}'):
+        raise ValueError(f'HEAD must match the commit tagged {tag}')
+
+
+def release_notes(changelog, tag):
+    headings = list(re.finditer(r'^## (.+)$', changelog, re.MULTILINE))
+    matches = [
+        index for index, heading in enumerate(headings)
+        if re.match(re.escape(tag) + r'(?:\s|$)', heading[1])
+    ]
+    if len(matches) != 1:
+        raise ValueError(f'Expected one changelog section for {tag}')
+    index = matches[0]
+    end = headings[index + 1].start() if index + 1 < len(headings) else len(changelog)
+    notes = changelog[headings[index].end():end].strip()
+    if not notes:
+        raise ValueError(f'Empty changelog section for {tag}')
+    return notes + '\n'
+
+
 def main():
-    root=Path(__file__).resolve().parents[1]
-    meta=json.loads((root/'release.json').read_text())
-    assets=release_assets(root)
-    tag='v'+meta['version']
-    subprocess.run(['gh','release','create',tag,'--verify-tag','--draft','--title',meta['name']+' '+tag,'--notes-file','CHANGELOG.md',*map(str,assets)],cwd=root,check=True)
+    root = Path(__file__).resolve().parents[1]
+    meta = json.loads((root / 'release.json').read_text(encoding='utf-8'))
+    tag = 'v' + meta['version']
+    require_tag_checkout(root, tag)
+    notes = release_notes((root / 'CHANGELOG.md').read_text(encoding='utf-8'), tag)
+    assets = release_assets(root)
+    subprocess.run(
+        ['gh', 'release', 'create', tag, '--verify-tag', '--draft',
+         '--title', meta['name'] + ' ' + tag, '--notes-file', '-', *map(str, assets)],
+        input=notes.encode('utf-8'), cwd=root, check=True,
+    )
+
 
 if __name__ == '__main__':
     main()
