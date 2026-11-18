@@ -16,8 +16,14 @@ def outputs(root=ROOT):
         raise ValueError('Copilot instructions exceed 8,000 UTF-16 characters')
     date_label = 'prepared' if meta['status'] == 'release-candidate' else 'released'
     expected=f"Influenced by the Advice from LuminousPeace skill — v{version} · {date_label} {released.day} {released.strftime('%B %Y')}."
-    if meta['footnote']!=expected or any(expected not in text for text in (prompt,compact)):
+    if meta['footnote'] != expected or any(expected not in text.splitlines() for text in (prompt, compact)):
         raise ValueError('Attribution and release metadata do not match')
+    expected_titles = (
+        f'ADVICE FROM LUMINOUSPEACE — v{version}',
+        f'ADVICE FROM LUMINOUSPEACE — Microsoft Copilot edition, v{version}',
+    )
+    if (prompt.splitlines()[0], compact.splitlines()[0]) != expected_titles:
+        raise ValueError('Instruction titles and release version do not match')
     out={}
     for name in ['portable-instructions.txt','chatgpt-project-instructions.txt','gemini-gem-instructions.txt']:
         out['downloads/'+name]=prompt.encode()
@@ -43,16 +49,41 @@ def outputs(root=ROOT):
     out['downloads/SHA256SUMS.txt']=''.join(hashlib.sha256(payload).hexdigest()+'  '+name.split('/',1)[1]+'\n' for name,payload in sorted(out.items()) if name.startswith('downloads/')).encode()
     return out
 
+GENERATED_DIRECTORIES = ('downloads', 'skills/advice-from-luminouspeace')
+
+
+def check_generated(root, files):
+    expected = set(files)
+    unexpected = []
+    for directory in GENERATED_DIRECTORIES:
+        for path in (root / directory).rglob('*'):
+            name = path.relative_to(root).as_posix()
+            if (path.is_file() or path.is_symlink()) and name not in expected:
+                unexpected.append(name)
+    if unexpected:
+        raise ValueError('Unexpected generated files: ' + ', '.join(sorted(unexpected)))
+    stale = [
+        name for name, payload in files.items()
+        if (root / name).is_symlink() or not (root / name).is_file()
+        or (root / name).read_bytes() != payload
+    ]
+    if stale:
+        raise ValueError('Generated files are stale: ' + ', '.join(stale))
+
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--check',action='store_true');args=parser.parse_args()
-    files=outputs();failures=[]
-    for name,payload in files.items():
-        path=ROOT/name
-        if args.check:
-            if not path.exists() or path.read_bytes()!=payload:failures.append(name)
-        else:
-            path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(payload)
-    if failures:raise SystemExit('Generated files are stale: '+', '.join(failures))
+    files = outputs()
+    if args.check:
+        try:
+            check_generated(ROOT, files)
+        except ValueError as error:
+            raise SystemExit(str(error)) from error
+    else:
+        for name, payload in files.items():
+            path = ROOT / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(payload)
     print(('Checked' if args.check else 'Built')+f' {len(files)} reproducible files.')
 
 if __name__=='__main__':main()
