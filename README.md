@@ -12,14 +12,14 @@ Install the ZIP in a skill-capable host that permits outbound HTTPS. After you h
 
 The lookup sends a fixed command, the assistant’s judgment that the conversation qualifies, and short choice labels. Your transcript stays in the chat. The service trusts the assistant’s judgment and returns one choice. If the host cannot make the request, the skill continues with the available evidence.
 
-## Offline core downloads · v0.7.2
+## Offline core candidate · v0.7.3 (not published)
 
-The original text packages and core ZIP work without the preference service. For the online lookup, install the Ask Him ZIP above.
+The development core files below are a v0.7.3 candidate pending review, not a published release. They work without the preference service. The Ask Him ZIP above remains the separately published v0.7.2-based edition and is not automatically updated by these candidate changes.
 
 | Platform | Download | Setup |
 | --- | --- | --- |
 | ChatGPT | [Project instructions](downloads/chatgpt-project-instructions.txt) | Paste into a new Project's instructions; add the source ledger as a reference file. |
-| Claude | [Offline core skill ZIP](downloads/advice-from-luminouspeace-claude-v0.7.2.zip) | Upload under Customize → Skills, if your account permits it. |
+| Claude | [Offline core skill ZIP](downloads/advice-from-luminouspeace-claude-v0.7.3.zip) | Upload under Customize → Skills, if your account permits it. |
 | Gemini | [Gem instructions](downloads/gemini-gem-instructions.txt) | Create a Gem, paste the instructions, and add the ledger as optional knowledge. |
 | Microsoft 365 Copilot | [Agent instructions](downloads/copilot-agent-instructions.txt) | Paste into Agent Builder's Instructions field; permissions and availability depend on your organization. |
 | Any supported chat | [Portable instructions](downloads/portable-instructions.txt) | Paste into a fresh conversation, then explain your situation. |
@@ -45,11 +45,11 @@ On GitHub, open a file and select **Download raw file**, or use the ZIP under **
 
 Substantive advice materially influenced by the skill uses this plain-text attribution line. It is omitted for crisis responses, listening-only replies, and routine answers.
 
-Influenced by the Advice from LuminousPeace skill — v0.7.2 · released 18 November 2026.
+Influenced by the Advice from LuminousPeace skill — v0.7.3 · prepared 20 November 2026.
 
 For exact machine-readable formats, attribution uses an allowed field or surrounding message when available. Required formats take precedence. Attribution depends on the host following the instructions; it is not a tracking system or technical guarantee.
 
-Seven optional book-inspired reflexes supplement the core when it leaves a relevant decision uncovered. See the [reflex review criteria](proposals/v0.7-book-reflexes-review.md).
+Seven optional book-inspired reflexes supplement the core when it leaves a relevant decision uncovered. The v0.7.3 candidate extends R2 with the environment/friction perspective from Atomic Habits (S09), while keeping books S08 and S10 as domain references only. See the [reflex review criteria](proposals/v0.7-book-reflexes-review.md).
 
 ## Sources and privacy
 
@@ -60,6 +60,8 @@ Books are supplementary references. They are not personality evidence, diagnosti
 Private coaching records, assessments, relationship details and correspondence are not included. Use hypothetical or redacted examples in public issues. Read [privacy and safety](docs/PRIVACY.md).
 
 ## Status and maintenance
+
+**Candidate status:** v0.7.3 is pending human review and a production release. The existing v0.7.2 release and v0.7.2 Ask Him edition remain the last published packages. Main-branch core downloads are development snapshots until a new release is approved.
 
 The Ask Him edition adds an optional online lookup to the v0.7.2 advice and retains the core attribution line above. The release tag identifies this edition. The live service and the installed helper were tested together. Native installation across the four platform products in the table remains unverified. [Validation record](docs/VALIDATION.md)
 
