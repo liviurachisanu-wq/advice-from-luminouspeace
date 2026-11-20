@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.7.3 — 20 November 2026 — release candidate
+
+- Record the conversation-study coverage of S08 (chess), S09 (Atomic Habits), and S10 (wine atlas), without claiming new original-book page access.
+- Refine existing R2 with an environment/friction check inspired by S09; do not create new reflexes from S08 or S10.
+- Rebuild offline core candidate files; preserve the independently published v0.7.2 Ask Him edition unchanged.
+- Pending human review and platform verification; v0.7.3 has not been published.
+
 ## v0.7.2-ask-him.1 — 19 November 2026
 
 - Publish the Ask Him edition of the v0.7.2 skill, including the six-file native package and a matching ZIP.

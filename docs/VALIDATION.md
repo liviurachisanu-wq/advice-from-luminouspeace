@@ -1,5 +1,9 @@
 # Validation record
 
+## Core v0.7.3 candidate · 20 November 2026
+
+This candidate adds conversation-study notes for S08–S10 and refines R2 using the author-described environment/friction perspective from Atomic Habits (S09). S08 and S10 remain domain references, not additional leadership reflexes. No original book pages, chess positions or atlas maps were examined in the three conversational studies. The v0.7.2 Ask Him edition remains a frozen published snapshot. This candidate still needs human content review and model behavior verification; CI can verify packaging consistency but not advice quality.
+
 ## Ask Him edition · 19 November 2026
 
 The release tag is `v0.7.2-ask-him.1`. The native ZIP contains the v0.7.2 Ask Him skill, two references, a license, the HTTPS helper and the encrypted preference file.
