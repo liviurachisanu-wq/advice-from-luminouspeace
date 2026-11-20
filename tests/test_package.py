@@ -74,6 +74,17 @@ class PackageTests(unittest.TestCase):
             text = self.out[f'downloads/{name}'].decode()
             self.assertRegex(text, r'(?m)^OPTIONAL BOOK-INSPIRED REFLEXES$')
             self.assertEqual(re.findall(r'(?m)^R([1-7])\s', text), list('1234567'))
+    def test_recent_books_do_not_create_extra_reflexes(self):
+        full = self.out['downloads/portable-instructions.txt'].decode()
+        compact = self.out['downloads/copilot-agent-instructions.txt'].decode()
+        ledger = (ROOT / 'sources/book-source-ledger.md').read_text(encoding='utf-8')
+        for source in (full, compact):
+            for needle in ('S08', 'S09', 'S10', 'friction'):
+                self.assertIn(needle, source)
+            self.assertNotRegex(source, r'(?m)^R(?:8|9|10)(?:\\s|\\b)')
+        for source_id in ('S08', 'S09', 'S10'):
+            self.assertIn('Conversation-study addendum', ledger.split('## ' + source_id, 1)[1].split('\\n## ', 1)[0])
+
     def test_release_assets_match_generated_downloads(self):
         assets = releaser.release_assets(ROOT)
         self.assertEqual({path.name for path in assets}, {
