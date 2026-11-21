@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — 21 November 2026 — architecture and GitHub Copilot
+
+- Add a compact, conditional GitHub Copilot skill and separate code-maintenance instructions; distinguish it from Microsoft 365 Copilot.
+- Retain GitHub as the sole Markdown reference store. S11 editorial study reinforces the existing evidence challenge rather than introducing R8; S08–S10 remain as already integrated.
+- Leave v0.7.3 candidate generated downloads and the separately published v0.7.2 Ask Him archive unchanged. Human and runtime review still required.
+
 ## v0.7.3 — 20 November 2026 — release candidate
 
 - Record the conversation-study coverage of S08 (chess), S09 (Atomic Habits), and S10 (wine atlas), without claiming new original-book page access.

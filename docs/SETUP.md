@@ -55,6 +55,18 @@ The compact export is an intentional adaptation. Compare it against the portable
 
 Official reference: [Agent Builder configuration](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/agent-builder-build-agents).
 
+## GitHub Copilot
+
+This is a separate integration from **Microsoft 365 Copilot**. GitHub Copilot supports project skills in `.github/skills/<name>/SKILL.md`.
+
+1. In the LuminousPeace repository, use GitHub Copilot CLI, a supported Copilot IDE in agent mode, or a supported GitHub Copilot cloud agent.
+2. Ask explicitly to use `advice-from-luminouspeace` for a leadership, career, delivery or other decision. In Copilot CLI, `/skills list` and `/skills info advice-from-luminouspeace` help confirm discovery.
+3. Only retrieve the relevant title from the canonical `sources/book-source-ledger.md` or a dated study file if it improves the response. The skill remains useful without network access and must disclose any reference it could not inspect.
+4. Project skills are repository-scoped. To use the skill in a different repository, install/copy the skill there; GitHub does not enable it globally just because this source repository exists.
+5. Validate direct decisions, listening-only mode, budget ceilings and source limitations. **Live installation and behavior are unverified.**
+
+Official guide: [GitHub Copilot agent skills](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills).
+
 ## Updates
 
 Replace the installed skill or pasted instructions with a new release; downloads are snapshots. Start a fresh conversation when testing an update to reduce influence from earlier instructions. Do not claim the creator approved a release unless its release record explicitly says so.
