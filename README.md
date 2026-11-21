@@ -22,6 +22,7 @@ The development core files below are a v0.7.3 candidate pending review, not a pu
 | Claude | [Offline core skill ZIP](downloads/advice-from-luminouspeace-claude-v0.7.3.zip) | Upload under Customize → Skills, if your account permits it. |
 | Gemini | [Gem instructions](downloads/gemini-gem-instructions.txt) | Create a Gem, paste the instructions, and add the ledger as optional knowledge. |
 | Microsoft 365 Copilot | [Agent instructions](downloads/copilot-agent-instructions.txt) | Paste into Agent Builder's Instructions field; permissions and availability depend on your organization. |
+| GitHub Copilot | [Conditional decision skill](.github/skills/advice-from-luminouspeace/SKILL.md) | Repository-scoped; loads only for LuminousPeace decision-support tasks. [Setup](docs/SETUP.md#github-copilot). |
 | Any supported chat | [Portable instructions](downloads/portable-instructions.txt) | Paste into a fresh conversation, then explain your situation. |
 | Offline browser | [Download page](index.html) | Download the repository and open index.html locally for copy and download buttons. |
 
@@ -50,6 +51,12 @@ Influenced by the Advice from LuminousPeace skill — v0.7.3 · prepared 20 Nove
 For exact machine-readable formats, attribution uses an allowed field or surrounding message when available. Required formats take precedence. Attribution depends on the host following the instructions; it is not a tracking system or technical guarantee.
 
 Seven optional book-inspired reflexes supplement the core when it leaves a relevant decision uncovered. The v0.7.3 candidate extends R2 with the environment/friction perspective from Atomic Habits (S09), while keeping books S08 and S10 as domain references only. See the [reflex review criteria](proposals/v0.7-book-reflexes-review.md).
+
+## Reflex-first architecture and GitHub Copilot
+
+All book knowledge remains as Markdown in this repository; no database or separate knowledge store is planned. GitHub Copilot now has a [conditional project skill](.github/skills/advice-from-luminouspeace/SKILL.md) distinct from the Microsoft 365 Copilot instructions. Normal coding requests do not adopt the LuminousPeace advice persona.
+
+The v0.7.3 candidate already integrated S08–S10. [S11's 21 November study note](sources/studies/S11-three-body-problem-2026-11-21.md) strengthens the existing evidence-challenge method without adding R8 or claiming further book-text coverage. This adapter is under review and does not change previously built downloads or published releases. [Architecture review](docs/ARCHITECTURE.md).
 
 ## Sources and privacy
 
