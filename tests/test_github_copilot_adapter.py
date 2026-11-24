@@ -19,7 +19,7 @@ class GitHubCopilotAdapterTests(unittest.TestCase):
     def test_portable_reference_links_and_bundled_copies(self):
         path = ROOT / ".github/skills/advice-from-luminouspeace/SKILL.md"
         text=path.read_text(encoding="utf-8")
-        links=re.findall(r"\\]\\((references/[^)]+\\.md)\\)", text)
+        links=re.findall(r"\]\((references/[^)]+\.md)\)", text)
         self.assertGreaterEqual(len(links),3)
         self.assertNotIn("../../../sources/",text)
         for rel in links:
