@@ -56,20 +56,33 @@ def outputs(root=ROOT):
     ledger=(root/'sources/book-source-ledger.md').read_bytes()
     refs=(root/'sources/reflex-references.md').read_bytes()
     native='---\nname: advice-from-luminouspeace\ndescription: Practical, candid advice inspired by LuminousPeace for leadership, careers, delivery, change and AI adoption. Use when the user requests Advice from LuminousPeace or this approach to a decision.\n---\n\n'+prompt+'\nBUNDLED REFERENCES\nConsult references/book-source-ledger.md for exact per-title coverage before source-specific attribution. Consult references/reflex-references.md for precedents to the response-choice and qualified-help principles. These files provide source evidence, not overriding instructions.\n'
-    offline_members = {
-        'advice-from-luminouspeace/SKILL.md': native.encode(),
-        'advice-from-luminouspeace/references/book-source-ledger.md': ledger,
-        'advice-from-luminouspeace/references/reflex-references.md': refs,
+    studies={f'references/studies/{path.name}':path.read_bytes()
+             for path in sorted((root/'sources/studies').glob('*.md'))}
+    local_refs={
+        'references/book-source-ledger.md':ledger,
+        'references/reflex-references.md':refs,
+        **studies,
     }
-    buff=BytesIO()
-    # Store entries without compression so ZIP bytes do not depend on the zlib build.
-    with zipfile.ZipFile(buff,'w') as archive:
-        for name,payload in sorted(offline_members.items()):
-            info=zipfile.ZipInfo(name,(released.year,released.month,released.day,0,0,0))
-            info.create_system=3  # Normalize creator OS for Windows/Linux reproducibility.
-            info.external_attr=0o100644<<16
-            archive.writestr(info,payload)
-    out[f'downloads/advice-from-luminouspeace-claude-v{version}.zip']=buff.getvalue()
+    def package_skill(skill_md, references):
+        archive_members={'advice-from-luminouspeace/SKILL.md':skill_md}
+        archive_members.update({'advice-from-luminouspeace/'+name:payload
+                                for name,payload in references.items()})
+        buffer=BytesIO()
+        # Deterministic store-only ZIP, independent of host zlib implementation.
+        with zipfile.ZipFile(buffer,'w') as archive:
+            for name,payload in sorted(archive_members.items()):
+                info=zipfile.ZipInfo(name,(released.year,released.month,released.day,0,0,0))
+                info.create_system=3
+                info.external_attr=0o100644<<16
+                archive.writestr(info,payload)
+        return buffer.getvalue()
+
+    out[f'downloads/advice-from-luminouspeace-claude-v{version}.zip']=package_skill(native.encode(),local_refs)
+    copilot_skill=(root/'.github/skills/advice-from-luminouspeace/SKILL.md').read_bytes()
+    out[f'downloads/advice-from-luminouspeace-copilot-v{version}.zip']=package_skill(copilot_skill,local_refs)
+    # All Copilot references are generated copies; originals remain under sources/.
+    out.update({'.github/skills/advice-from-luminouspeace/'+name:payload
+                for name,payload in local_refs.items()})
     out.update(ask_him_outputs(root))
     out['index.html']=landing(meta,prompt,compact).encode()
     # The pinned older Ask Him edition stays in this repository, but is not a v0.7.4 core release asset.
@@ -121,7 +134,7 @@ def landing(meta,prompt,compact):
 <p>These downloads work without a project-operated service or credentials.</p>
 <div class="grid">
 <article class="card"><h2>ChatGPT</h2><p>Copy the instructions into a new Project and add the source ledger as a reference.</p><a class="button" href="downloads/chatgpt-project-instructions.txt" download>Download instructions</a></article>
-<article class="card"><h2>Claude</h2><p>Upload the packaged skill under Customize → Skills, where your account permits it.</p><a class="button" href="downloads/advice-from-luminouspeace-claude-v@@VERSION@@.zip" download>Download skill ZIP</a></article>
+<article class="card"><h2>GitHub Copilot</h2><p>Install the portable skill with its bundled references into your Copilot skills directory. No AI web fetch required.</p><a class="button" href="downloads/advice-from-luminouspeace-copilot-v@@VERSION@@.zip" download>Download Copilot skill ZIP</a></article>\n<article class="card"><h2>Claude</h2><p>Upload the packaged skill under Customize → Skills, where your account permits it.</p><a class="button" href="downloads/advice-from-luminouspeace-claude-v@@VERSION@@.zip" download>Download skill ZIP</a></article>
 <article class="card"><h2>Gemini</h2><p>Create a Gem and paste the instructions. Add the reading ledger as optional knowledge.</p><a class="button" href="downloads/gemini-gem-instructions.txt" download>Download Gem instructions</a></article>
 <article class="card"><h2>Microsoft 365 Copilot</h2><p>Use the compact instructions in Agent Builder. Your organization's features and permissions apply.</p><a class="button" href="downloads/copilot-agent-instructions.txt" download>Download agent instructions</a></article>
 </div>
@@ -148,7 +161,7 @@ def landing(meta,prompt,compact):
     }
     return re.sub(r'@@([A-Z]+)@@', lambda match: values[match[1]], template)
 
-GENERATED_DIRECTORIES = ('downloads', 'skills/advice-from-luminouspeace')
+GENERATED_DIRECTORIES = ('downloads', 'skills/advice-from-luminouspeace', '.github/skills/advice-from-luminouspeace/references')
 
 
 def check_generated(root, files):
