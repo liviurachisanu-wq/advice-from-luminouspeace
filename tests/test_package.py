@@ -177,7 +177,7 @@ class PackageTests(unittest.TestCase):
                 if not link.scheme and not link.netloc and link.path:
                     self.assertTrue((path.parent / unquote(link.path)).exists(), (name, target))
         setup = (ROOT / 'docs/SETUP.md').read_text(encoding='utf-8')
-        self.assertNotRegex(setup, r'advice-from-luminouspeace-claude-v[\d.]+[.]zip')
+        self.assertIn(f'advice-from-luminouspeace-claude-v{self.meta["version"]}.zip', setup)
     def test_source_coverage(self):
         ledger=(ROOT/'sources/book-source-ledger.md').read_text(encoding='utf-8')
         self.assertEqual(len(re.findall(r'^## S\d\d ',ledger,re.M)),18)
