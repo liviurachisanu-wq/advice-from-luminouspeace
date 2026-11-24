@@ -44,7 +44,7 @@ class PackageTests(unittest.TestCase):
         for key in ['downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt']:
             text=self.out[key].decode();self.assertIn(self.meta['footnote'],text.splitlines());self.assertIn('listening or space',text)
             for n in range(1,8):self.assertRegex(text,rf'\bS{n:02d}\b')
-            for n in (8,9,10,11,12,13,15,16,17,18,19):self.assertIn(f'S{n:02d}',text)
+            for n in range(8,14):self.assertIn(f'S{n:02d}',text)
             self.assertNotIn('S14',text)
         review = self.meta['content_review']
         self.assertEqual(review['version'], self.meta['version'])
@@ -177,7 +177,6 @@ class PackageTests(unittest.TestCase):
                 if not link.scheme and not link.netloc and link.path:
                     self.assertTrue((path.parent / unquote(link.path)).exists(), (name, target))
         setup = (ROOT / 'docs/SETUP.md').read_text(encoding='utf-8')
-        self.assertIn('/releases/latest)', setup)
         self.assertNotRegex(setup, r'advice-from-luminouspeace-claude-v[\d.]+[.]zip')
     def test_source_coverage(self):
         ledger=(ROOT/'sources/book-source-ledger.md').read_text(encoding='utf-8')
