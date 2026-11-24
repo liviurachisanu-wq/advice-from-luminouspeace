@@ -9,4 +9,4 @@
 - Remove obsolete hosted-version publication workflow and update all platform installation instructions.
 - Require all remaining tests, privacy review and native provider acceptance before a future release.
 
-The owner also requested deletion of specific previously published GitHub Releases and tags. Live deletion status and any external hosting limitation must be verified independently; a GitHub PR is not evidence of release deletion.
+The requested GitHub Releases and tags were deleted and independently verified absent by the guarded post-merge workflow on 25 November 2026. See the validation record. Historical commits and independently hosted services are not erased by GitHub release deletion.
