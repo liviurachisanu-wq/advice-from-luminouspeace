@@ -4,6 +4,10 @@
 
 **Not a release. Native Claude and GitHub Copilot behavior remains Not verified.** Candidate scope fixes Copilot's reference links after skill installation into another repository, packages local references with both downloadable native skill ZIPs, and adds deterministic distribution contract tests. Exact manual scenarios and required activation evidence are in [INSTALLATION-AND-BEHAVIOR.md](INSTALLATION-AND-BEHAVIOR.md). Browser/network access success does not prove agent sandbox fetch or model compliance. Preserve the published v0.7.4 core and Ask Him v0.7.2 editions unchanged until separate approval.
 
+**Measured on a GitHub Actions runner, no credentials:** raw instructions **HTTP 200** (7,199 bytes), published v0.7.4 Claude ZIP **HTTP 200** (26,401 bytes), and tagged codeload source archive **HTTP 200** (196,663 bytes). [Network run](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/actions/runs/45511631694). This confirms public GitHub service for that runner, not access from Copilot or Claude's sandboxes.
+
+**Candidate package checks:** the v0.7.5 build generated **22 reproducible files**, with **42 Python tests** and **8 Node.js tests** passing. [Candidate build](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/actions/runs/45511605390). Checks include self-contained skill ZIPs and exact copy parity with canonical book/source files. Native model behavior is **Not verified**; eight manual acceptance scenarios remain to be run in installed hosts.
+
 
 ## v0.7.4 approved core release · 25 November 2026
 
