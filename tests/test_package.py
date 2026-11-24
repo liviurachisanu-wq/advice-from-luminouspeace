@@ -44,7 +44,8 @@ class PackageTests(unittest.TestCase):
         for key in ['downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt']:
             text=self.out[key].decode();self.assertIn(self.meta['footnote'],text.splitlines());self.assertIn('listening or space',text)
             for n in range(1,8):self.assertRegex(text,rf'\bS{n:02d}\b')
-            for n in range(8,15):self.assertIn(f'S{n:02d}',text)
+            for n in (8,9,10,11,12,13,15,16,17,18,19):self.assertIn(f'S{n:02d}',text)
+            self.assertNotIn('S14',text)
         review = self.meta['content_review']
         self.assertEqual(review['version'], self.meta['version'])
         if self.meta['status'] == 'release-candidate':
@@ -77,6 +78,12 @@ class PackageTests(unittest.TestCase):
             self.assertNotRegex(source, r'(?m)^R(?:8|9|10)(?:\\s|\\b)')
         for source_id in ('S08', 'S09', 'S10'):
             self.assertIn('Conversation-study addendum', ledger.split('## ' + source_id, 1)[1].split('\\n## ', 1)[0])
+
+    def test_obsolete_service_and_source_removed(self):
+        core=self.out['downloads/portable-instructions.txt'].decode()
+        self.assertNotIn('S14',core)
+        self.assertFalse(any('ask-him' in name for name in self.out))
+        self.assertNotIn('edition', self.meta)
 
     def test_release_assets_match_generated_downloads(self):
         assets = releaser.release_assets(ROOT)
