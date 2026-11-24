@@ -72,7 +72,8 @@ def outputs(root=ROOT):
     out[f'downloads/advice-from-luminouspeace-claude-v{version}.zip']=buff.getvalue()
     out.update(ask_him_outputs(root))
     out['index.html']=landing(meta,prompt,compact).encode()
-    out['downloads/SHA256SUMS.txt']=''.join(hashlib.sha256(payload).hexdigest()+'  '+name.split('/',1)[1]+'\n' for name,payload in sorted(out.items()) if name.startswith('downloads/')).encode()
+    # The pinned older Ask Him edition stays in this repository, but is not a v0.7.4 core release asset.
+    out['downloads/SHA256SUMS.txt']=''.join(hashlib.sha256(payload).hexdigest()+'  '+name.split('/',1)[1]+'\n' for name,payload in sorted(out.items()) if name.startswith('downloads/') and name!='downloads/'+ASK_HIM_ZIP).encode()
     return out
 
 LANDING_STYLE = '''
