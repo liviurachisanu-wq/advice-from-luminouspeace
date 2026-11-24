@@ -60,7 +60,8 @@ class PackageTests(unittest.TestCase):
     def test_release_metadata_and_attribution(self):
         for key in ['downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt']:
             text=self.out[key].decode();self.assertIn(self.meta['footnote'],text.splitlines());self.assertIn('listening or space',text)
-            for n in range(1,20):self.assertRegex(text,rf'\bS{n:02d}\b')
+            for n in range(1,8):self.assertRegex(text,rf'\bS{n:02d}\b')
+            for n in range(8,15):self.assertIn(f'S{n:02d}',text)
         review = self.meta['content_review']
         self.assertEqual(review['version'], self.meta['version'])
         if self.meta['status'] == 'release-candidate':
@@ -69,6 +70,15 @@ class PackageTests(unittest.TestCase):
         else:
             self.assertEqual(review['status'], 'approved')
             self.assertTrue(review['date'])
+    def test_single_behavioral_source_and_compact_adapter(self):
+        core=(ROOT/'content/instructions.txt').read_text(encoding='utf-8').rstrip()+'\n'
+        portable=self.out['downloads/portable-instructions.txt'].decode()
+        ms=self.out['downloads/copilot-agent-instructions.txt'].decode()
+        self.assertEqual(portable,core)
+        self.assertEqual(ms.split('\n',1)[1].split('\n\nMICROSOFT 365 COPILOT ADAPTER',1)[0].strip(),
+                         core.split('\n',1)[1].strip())
+        self.assertLessEqual(len(ms.encode('utf-16-le'))//2,7600)
+
     def test_both_instruction_variants_include_all_reflexes(self):
         for name in ('portable-instructions.txt', 'copilot-agent-instructions.txt'):
             text = self.out[f'downloads/{name}'].decode()
