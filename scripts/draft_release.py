@@ -13,7 +13,10 @@ def release_assets(root):
     generated = outputs(root)
     check_generated(root, generated)
     scan_repository(root)
-    return [root / name for name in sorted(generated) if name.startswith('downloads/')]
+    # Older separately released Ask Him archive is not part of a newer core version.
+    _, edition = release_target(json.loads((root / 'release.json').read_text(encoding='utf-8')))
+    return [root / name for name in sorted(generated) if name.startswith('downloads/')
+            and (edition is not None or Path(name).name != 'advice-from-luminouspeace-ask-him.zip')]
 
 
 def require_tag_checkout(root, tag):
