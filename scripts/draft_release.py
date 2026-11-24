@@ -58,13 +58,22 @@ def release_notes(changelog, tag):
     return notes + '\n'
 
 
+def release_target(meta):
+    """The older pinned Ask Him edition must not hijack a newer core release."""
+    core_tag = 'v' + meta['version']
+    edition = meta.get('edition')
+    active = edition if edition and edition.get('tag', '').startswith(core_tag + '-') else None
+    return (active['tag'], active) if active else (core_tag, None)
+
+
 def main(root=Path(__file__).resolve().parents[1]):
     meta = json.loads((root / 'release.json').read_text(encoding='utf-8'))
-    edition = meta.get('edition')
-    tag = edition['tag'] if edition else 'v' + meta['version']
+    tag, edition = release_target(meta)
     commit = require_tag_checkout(root, tag)
     meta = json.loads(tagged_blob(root, commit, 'release.json'))
-    edition = meta.get('edition')
+    tagged_target, edition = release_target(meta)
+    if tagged_target != tag:
+        raise ValueError('Release tag disagrees with tagged metadata')
     title = (meta['name'] + ' · ' + edition['name'] + ' edition') if edition else meta['name'] + ' ' + tag
     notes = release_notes(tagged_blob(root, commit, 'CHANGELOG.md').decode('utf-8'), tag)
     assets = release_assets(root)
