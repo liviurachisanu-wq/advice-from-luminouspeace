@@ -11,7 +11,7 @@ Review the project at least monthly. A review may conclude that no substantive c
 7. Create a reviewed version tag such as `v0.6`. The optional **Draft release** workflow requires an existing matching tag and creates a draft with downloadable assets; review it before publishing.
 8. Publish the release when authorized. Users must replace their installed copies; this repository does not silently update them.
 
-The named Ask Him edition of the v0.7.2 core uses the release tag `v0.7.2-ask-him.1`. The `edition` entry in `release.json` records the edition name, tag and release date. The core version, approval scope and attribution retain their original meaning.
+The named Ask Him edition of the v0.7.2 core uses the release tag `v0.7.2-ask-him.1`. The `edition` entry in `release.json` records the edition name, tag and release date. The core version, approval scope and attribution retain their original meaning. When the pinned edition tag begins with an **older** core version, the release tool correctly selects the new core version tag; it does not re-release the frozen Ask Him ZIP as a new online edition.
 
 For this edition, run `node --test tests/service.test.mjs` and build the Worker with `python scripts/build_service.py OUTPUT.mjs`. Packaging and validation need no secret. Check that the GitHub ZIP matches the separately deployed download, the repository’s native skill files match the ZIP members, and the hosted lookup accepts the current command after both activation conditions are met. Keep the key and the owner’s private maintenance files outside GitHub.
 
