@@ -7,16 +7,11 @@
   "content_review": {
     "status": "pending",
     "date": null,
-    "scope": "Distribution reliability: self-contained GitHub Copilot and Claude skills, documented human-install routes, anonymous-access diagnostics and live behavioral acceptance plan. No changes to seven decision reflexes. Native host testing and human release approval pending.",
+    "scope": "v0.7.5 offline distribution candidate. Removed retired online service and packages and one unverified source entry; 18 surviving entries retain stable IDs. Live native platform behavior and release approval remain pending.",
     "version": "0.7.5"
   },
   "license": "MIT",
   "platform_docs_checked": "2026-11-08",
   "next_review": "2026-12-25",
-  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7.5 · prepared 25 November 2026.",
-  "edition": {
-    "name": "Ask Him",
-    "tag": "v0.7.2-ask-him.1",
-    "release_date": "2026-11-19"
-  }
+  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7.5 · prepared 25 November 2026."
 }
