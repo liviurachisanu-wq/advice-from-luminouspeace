@@ -13,4 +13,14 @@ The retirement cleanup removes legacy online service code and old package depend
 6. Test skill discovery and responses in native Claude and GitHub Copilot following [the acceptance protocol](INSTALLATION-AND-BEHAVIOR.md); CI is not a substitute.
 7. Verify removal of targeted published GitHub Releases and tags via GitHub API after deletion. Historical Git objects, caches and independently deployed services are a separate concern.
 
-**Native behavioral acceptance: Not verified.** GitHub CI runs and outcomes should be recorded in the associated PR. Never describe source deletion as erasure of old copies or as the shutdown of an external host.
+## Verified cleanup — 25 November 2026
+
+- Clean source was merged through [PR #8](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/pull/8), main commit `151c4d128b2f8b25ee0777222f5d7f4d2a79228a`.
+- [Deterministic rebuild](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/actions/runs/45513862520) succeeded: **34 Python tests passed**, **14 reproducible generated files** built and checked.
+- [Deletion and post-merge preflight](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/actions/runs/45514068356) succeeded: same **34 Python tests**, **14 checked files**, 18 surviving source entries and absence of hosted edition source. All three explicitly requested legacy GitHub Releases and Git tags were verified absent individually.
+- The daily book-study automation was updated to omit the retired entry while preserving all future historical date-to-source IDs.
+- Older published versions `v0.7` and `v0.7.1` were **not** deleted because they were not requested. Current v0.7.5 is a **candidate on main**, not a new published GitHub Release.
+- This does not rewrite GitHub commit history, recall previously downloaded copies, or shut down a separately deployed app.
+
+**Native behavioral acceptance: Not verified.** The offline core and references passed static tests only. Hosted external-service shutdown requires separate credentials/actions outside GitHub.
+
