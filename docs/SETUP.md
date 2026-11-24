@@ -1,80 +1,39 @@
-# Platform setup
+# Platform setup — offline v0.7.5 candidate
 
-Documentation checked 8 November 2026. Product menus, limits and account permissions can change. These are documented setup routes, not claims that the package was installed or tested in your account.
-
-## Ask Him edition
-
-Download the **Ask Him skill ZIP** from the GitHub release assets and import it into a skill-capable host. Replace an older copy and start a fresh chat. The online lookup needs outbound HTTPS and a host that can use the bundled Python helper or make the documented request itself. A ZIP download alone does not install a skill. [Pinned Ask Him v0.7.2 release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/tag/v0.7.2-ask-him.1)
-
-Work through a real topic together. When you want a supported pick, say **“ask him”** with LuminousPeace as the clear referent. The assistant judges familiarity from that same chat and asks for clarification if the person is unclear. Without a usable online client, it answers from the available experience and reading.
-
-The main-branch text instructions and offline core ZIP are the **released v0.7.4 core**. Find them at the [latest core release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest). The previously published Ask Him v0.7.2 remains available **only via its own tagged release**, not as a new v0.7.4 asset.
-
-## ChatGPT
-
-1. Download `downloads/chatgpt-project-instructions.txt` and `sources/book-source-ledger.md`.
-2. Create a new Project called Advice from LuminousPeace.
-3. Paste the instruction text into the Project instructions. Add the ledger as a reference file; uploading a file alone is not the same as setting instructions.
-4. Start a fresh chat inside the Project and try a scenario from `docs/VALIDATION.md`.
-
-If the interface rejects the full text, use the portable text in a fresh conversation rather than silently truncating the instructions. This repository does not install a native ChatGPT personal skill.
-
-Official reference: [Projects in ChatGPT](https://help.openai.com/en/articles/10169521-projects-in-chatgpt).
+The package is a Markdown instruction skill, not a runnable server. Native installation should use the platform's own skill or agent configuration interface. Candidate files are in [PR #8](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/pull/8). Live provider behavior remains unverified; do not confuse a successful file download with native skill activation.
 
 ## Claude
+1. Download `downloads/advice-from-luminouspeace-claude-v0.7.5.zip` to your computer from the candidate branch (or a future approved release).
+2. In Claude, open Customize → Skills and upload/create a skill where your account permits it.
+3. Enable the skill and begin a fresh conversation. The ZIP contains one `advice-from-luminouspeace/` folder with `SKILL.md` and local `references/`.
+4. Run the [native acceptance scenarios](INSTALLATION-AND-BEHAVIOR.md).
 
-1. Choose the [pinned Ask Him v0.7.2 ZIP](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/tag/v0.7.2-ask-him.1) only for the older online edition, or choose the v0.7.4 core Claude ZIP from the [latest core release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest) for offline advice.
-2. In Customize → Skills, choose the create/upload option and upload the skill ZIP.
-3. Enable it and explicitly ask to use Advice from LuminousPeace in a fresh chat.
-4. Confirm the response matches the requested mode and carries the correct version footnote.
-
-Both ZIPs have one root folder, `advice-from-luminouspeace/`, containing `SKILL.md` and `references/`. The Ask Him ZIP also contains the helper, encrypted preference file and license. Skill availability and outbound network access depend on account and organization settings. If skill import is unavailable, the portable text can be used in a fresh conversation.
-
-Official references: [Use skills](https://support.claude.com/en/articles/12512180-use-skills-in-claude), [Create custom skills](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills).
-
-## Gemini
-
-1. Open Gemini on the web, select Gems, then New Gem.
-2. Name it Advice from LuminousPeace and paste `downloads/gemini-gem-instructions.txt` into Instructions.
-3. Optionally attach `sources/book-source-ledger.md` in Knowledge.
-4. Preview and save. Check behavior and attribution in a fresh conversation.
-
-This is a Gem configuration, not a native skill ZIP import. Avoid automatic rewriting of the instructions unless you compare and approve the resulting changes.
-
-Official reference: [Use Gems](https://support.google.com/gemini/answer/15146780?hl=en).
-
-## Microsoft 365 Copilot
-
-1. Use Microsoft 365 Copilot → New agent → Configure, where available.
-2. Set the agent name to **LuminousPeace Advice** (under the documented 30-character limit).
-3. Paste `downloads/copilot-agent-instructions.txt` into Instructions. The build checks its UTF-16 length against 8,000 characters.
-4. Test in the preview. Add the reading ledger as knowledge only if the tenant and file support permit it; do not move behavior instructions into knowledge to evade the limit.
-5. Save according to your organization's policies. No Microsoft 365 connector or access to work data is required by this package.
-
-Both exports derive from one core source; the Microsoft overlay contains only host-specific constraints. The builder checks 8,000 UTF-16 characters, and the candidate test targets at most 7,600. Upload the ledger as permitted knowledge rather than moving behavior rules into knowledge. Consumer Copilot and Microsoft 365 Agent Builder have different features; the portable paste-in-chat route may be used where supported, but no consumer custom-agent import is claimed.
-
-Official reference: [Agent Builder configuration](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/agent-builder-build-agents).
+[Claude skills reference](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills).
 
 ## GitHub Copilot
+1. Download `downloads/advice-from-luminouspeace-copilot-v0.7.5.zip` to your computer.
+2. Extract its single `advice-from-luminouspeace/` folder under `.github/skills/` in the target repository, or a supported personal skill location.
+3. In a supported Copilot CLI, use `/skills reload`, `/skills list` and `/skills info advice-from-luminouspeace` to verify discovery.
+4. Request the skill explicitly for a decision; ordinary coding should not adopt its advice persona.
 
-This is a separate integration from **Microsoft 365 Copilot**. The repository skill matches the released v0.7.4 source; live GitHub Copilot runtime discovery and behavior have not been verified. GitHub Copilot supports project skills in `.github/skills/<name>/SKILL.md`.
+[GitHub Copilot agent skills](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills).
 
-1. In the LuminousPeace repository, use GitHub Copilot CLI, a supported Copilot IDE in agent mode, or a supported GitHub Copilot cloud agent.
-2. Ask explicitly to use `advice-from-luminouspeace` for a leadership, career, delivery or other decision. In Copilot CLI, `/skills list` and `/skills info advice-from-luminouspeace` help confirm discovery.
-3. Only retrieve the relevant title from the canonical `sources/book-source-ledger.md` or a dated study file if it improves the response. The skill remains useful without network access and must disclose any reference it could not inspect.
-4. Project skills are repository-scoped. To use the skill in a different repository, install/copy the skill there; GitHub does not enable it globally just because this source repository exists.
-5. Validate direct decisions, listening-only mode, budget ceilings and source limitations. **Live installation and behavior are unverified.**
+## ChatGPT
+Paste `downloads/chatgpt-project-instructions.txt` into a new Project's Instructions; attach `sources/book-source-ledger.md` if relevant. Uploading a file alone does not activate instructions.
 
-Official guide: [GitHub Copilot agent skills](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills).
+[ChatGPT Projects](https://help.openai.com/en/articles/10169521-projects-in-chatgpt).
 
-## When AI browsing of GitHub fails (v0.7.5 candidate)
+## Gemini
+Create a Gem, paste `downloads/gemini-gem-instructions.txt` and optionally attach the ledger.
 
-Use the platform's **native installation route** instead of asking the assistant to fetch a GitHub URL. Copilot's project skill is not a server to start: extract the self-contained `advice-from-luminouspeace-copilot-vVERSION.zip` under `.github/skills/` or `~/.copilot/skills/` and check `/skills list`. GitHub CLI 2.90+ also supports `gh skill preview` and `gh skill install`; use a published tag to pin a release.
+[Gemini Gems](https://support.google.com/gemini/answer/15146780?hl=en).
 
-For Claude, **download the versioned Claude ZIP in a browser and upload it through Customize > Skills**. A `/blob/main/` URL is a GitHub viewing page, not a native install, and an AI fetch failure does not invalidate the bundled ZIP. If Skills upload is unavailable, the portable instruction text is a fallback, **not** a native installation.
+## Microsoft 365 Copilot
+Paste `downloads/copilot-agent-instructions.txt` into Agent Builder. The builder enforces an 8,000 UTF-16-character bound; tenant access policies still apply.
 
-The candidate bundles all `references/` within the skill folder so installation into another repository or account does not depend on relative links escaping the source repository. **Native behavioral verification is still required.** See [the exact troubleshooting and acceptance protocol](INSTALLATION-AND-BEHAVIOR.md).
+[Microsoft Agent Builder](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/agent-builder-build-agents).
 
-## Updates
+## If the AI sandbox gets HTTP 403
+Download the artifact in your own browser, then import it through the supported native host UI. A GitHub `/blob/` page is an HTML viewer, not a skills installer. As a fallback, paste `downloads/portable-instructions.txt` into a fresh conversation and label it a *manual instruction test*, not verified native installation.
 
-Replace the installed skill or pasted instructions with a new release; downloads are snapshots. Start a fresh conversation when testing an update to reduce influence from earlier instructions. Do not claim the creator approved a release unless its release record explicitly says so.
+No service endpoint, secret, database or dependency installation is required.
