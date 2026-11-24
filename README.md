@@ -6,7 +6,7 @@ An offline-first AI decision-support skill for leadership, career choices, IT de
 
 ## Distribution candidate — v0.7.5
 
-The current build is under [PR #8](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/pull/8), pending explicit release approval and real Claude/GitHub Copilot runtime checks. Candidate files should be downloaded from the review branch; they are not published release assets.
+The cleaned candidate was merged to `main` in [PR #8](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/pull/8). It still needs explicit v0.7.5 release approval and real Claude/GitHub Copilot runtime checks. Download the current candidate files from this repository; they are **not** published GitHub Release assets.
 
 | Platform | File | Installation |
 | --- | --- | --- |
