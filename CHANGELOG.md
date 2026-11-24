@@ -1,11 +1,12 @@
 # Changelog
 
-## v0.7.4 — 25 November 2026 — release candidate
+## v0.7.4 — 25 November 2026 — released
 
 - Consolidate the documented decision method into a concise single behavioral source shared by ChatGPT, Claude, Gemini and Microsoft 365 Copilot; the Microsoft adapter is a small host-specific overlay.
 - Retain R1–R7, with S09 already supporting R2 and S11's evidence challenge integrated; record S12 storytelling, S13 Delta geography and S14 provisional book identification as secondary references only. No R8.
 - Align GitHub Copilot's conditional skill version; preserve the published v0.7.2 Ask Him ZIP and hosted service as separately pinned.
-- Rebuild candidate downloads/checksums and validate provenance, privacy and platform packaging. Human approval and live host behavior checks remain pending.
+- Rebuild reproducible v0.7.4 core downloads/checksums and validate provenance, privacy and platform packaging. User explicitly approved release on 25 November 2026; live native platform behavior remains unverified.
+- Keep pinned v0.7.2 Ask Him archive available in the repository but exclude it from new v0.7.4 release assets and checksums.
 
 
 ## Unreleased — 21 November 2026 — architecture and GitHub Copilot
