@@ -28,6 +28,14 @@ The v0.7.4 core has been approved for publication and distributed in the [GitHub
 
 On GitHub, open a file and select **Download raw file**, or use the ZIP under **Assets** on the release page. The full source ledger is also downloadable. [Reading ledger](sources/book-source-ledger.md) · [Platform setup](docs/SETUP.md)
 
+## Installation reliability improvements · v0.7.5 candidate (not released)
+
+A separately reviewed distribution patch is being prepared. It changes **how** the same LuminousPeace decision skill is installed, not its seven behavioral reflexes. The GitHub Copilot package becomes portable across repositories and includes its own generated references. The offline Claude skill ZIP also contains the dated study notes. **No database, server or startup command is required.**
+
+When v0.7.5 is approved and released, use the corresponding [Copilot self-contained skill ZIP](downloads/advice-from-luminouspeace-copilot-v0.7.5.zip) or the [Claude native skill ZIP](downloads/advice-from-luminouspeace-claude-v0.7.5.zip). These links currently point to **candidate branch assets**, not published GitHub Release assets. The previously published v0.7.4 core and pinned v0.7.2 Ask Him release are unchanged.
+
+See [installation troubleshooting and native behavior acceptance](docs/INSTALLATION-AND-BEHAVIOR.md). A Copilot or Claude chat failing to fetch GitHub URLs is not proof that a local skill was installed or executed.
+
 ## Try it
 
 > My managers ask me to approve everything. What should I change this week?
