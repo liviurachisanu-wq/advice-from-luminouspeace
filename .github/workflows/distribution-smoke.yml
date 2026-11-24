@@ -1,0 +1,46 @@
+name: Public distribution HTTP smoke
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  anonymous-downloads:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test public GET routes without GitHub credentials
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p /tmp/luminous-public-downloads
+          BASE='liviurachisanu-wq/advice-from-luminouspeace'
+          failed=0
+          while IFS='|' read -r label url required; do
+            [ -n "$label" ] || continue
+            target="/tmp/luminous-public-downloads/$label"
+            code="$(curl --location --silent --show-error --max-time 25 --retry 1 -H 'Accept: application/octet-stream' --output "$target" --write-out '%{http_code}' "$url" || true)"
+            bytes="$(wc -c < "$target" 2>/dev/null || echo 0)"
+            echo "$label: HTTP $code / $bytes bytes / required=$required"
+            if [ "$required" = yes ] && [ "$code" != 200 ]; then
+              failed=1
+            fi
+          done <<EOF
+          raw|https://raw.githubusercontent.com/$BASE/main/downloads/portable-instructions.txt|yes
+          release_asset|https://github.com/$BASE/releases/download/v0.7.4/advice-from-luminouspeace-claude-v0.7.4.zip|yes
+          source_archive|https://codeload.github.com/$BASE/zip/refs/tags/v0.7.4|no
+          EOF
+          python - <<'PY'
+          from pathlib import Path
+          folder=Path('/tmp/luminous-public-downloads')
+          raw=folder/'raw'
+          zipfile=folder/'release_asset'
+          if raw.exists() and raw.read_bytes().startswith(b'ADVICE FROM LUMINOUSPEACE'):
+              print('raw: content prefix matches expected instruction text')
+          else:
+              print('raw: expected instruction prefix NOT confirmed')
+          if zipfile.exists() and zipfile.read_bytes().startswith(b'PK'):
+              print('release_asset: ZIP magic confirmed')
+          else:
+              print('release_asset: ZIP magic NOT confirmed')
+          PY
+          exit "$failed"
