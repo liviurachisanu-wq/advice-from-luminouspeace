@@ -19,7 +19,7 @@ The v0.7.4 core has been approved for publication and distributed in the [GitHub
 | Platform | Download | Setup |
 | --- | --- | --- |
 | ChatGPT | [Project instructions](downloads/chatgpt-project-instructions.txt) | Paste into a new Project's instructions; add the source ledger as a reference file. |
-| Claude | [Offline core skill ZIP](downloads/advice-from-luminouspeace-claude-v0.7.4.zip) | Upload under Customize → Skills, if your account permits it. |
+| Claude | [Offline core skill ZIP](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/download/v0.7.4/advice-from-luminouspeace-claude-v0.7.4.zip) | Upload under Customize → Skills, if your account permits it. |
 | Gemini | [Gem instructions](downloads/gemini-gem-instructions.txt) | Create a Gem, paste the instructions, and add the ledger as optional knowledge. |
 | Microsoft 365 Copilot | [Agent instructions](downloads/copilot-agent-instructions.txt) | Paste into Agent Builder's Instructions field; permissions and availability depend on your organization. |
 | GitHub Copilot | [Conditional decision skill](.github/skills/advice-from-luminouspeace/SKILL.md) | Repository-scoped; loads only for LuminousPeace decision-support tasks. [Setup](docs/SETUP.md#github-copilot). |
