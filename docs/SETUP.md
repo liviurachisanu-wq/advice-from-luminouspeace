@@ -8,7 +8,7 @@ Download the **Ask Him skill ZIP** from the GitHub release assets and import it 
 
 Work through a real topic together. When you want a supported pick, say **“ask him”** with LuminousPeace as the clear referent. The assistant judges familiarity from that same chat and asks for clarification if the person is unclear. Without a usable online client, it answers from the available experience and reading.
 
-The text-only platform instructions below and the separate core ZIP provide the offline v0.7.2 advice.
+The main-branch text-only instructions and offline core ZIP are a **v0.7.4 candidate**, not a published release. The previously published v0.7.2 assets and Ask Him edition remain available via their tagged GitHub releases.
 
 ## ChatGPT
 
@@ -51,13 +51,13 @@ Official reference: [Use Gems](https://support.google.com/gemini/answer/15146780
 4. Test in the preview. Add the reading ledger as knowledge only if the tenant and file support permit it; do not move behavior instructions into knowledge to evade the limit.
 5. Save according to your organization's policies. No Microsoft 365 connector or access to work data is required by this package.
 
-The compact export is an intentional adaptation. Compare it against the portable variant when changing behavior. Consumer Copilot and Microsoft 365 Agent Builder have different features; the portable paste-in-chat route may be used where supported, but no consumer custom-agent import is claimed.
+Both exports derive from one core source; the Microsoft overlay contains only host-specific constraints. The builder checks 8,000 UTF-16 characters, and the candidate test targets at most 7,600. Upload the ledger as permitted knowledge rather than moving behavior rules into knowledge. Consumer Copilot and Microsoft 365 Agent Builder have different features; the portable paste-in-chat route may be used where supported, but no consumer custom-agent import is claimed.
 
 Official reference: [Agent Builder configuration](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/agent-builder-build-agents).
 
 ## GitHub Copilot
 
-This is a separate integration from **Microsoft 365 Copilot**. GitHub Copilot supports project skills in `.github/skills/<name>/SKILL.md`.
+This is a separate integration from **Microsoft 365 Copilot**. The repository skill's version is aligned to the v0.7.4 candidate; runtime discovery and behavior have not been verified. GitHub Copilot supports project skills in `.github/skills/<name>/SKILL.md`.
 
 1. In the LuminousPeace repository, use GitHub Copilot CLI, a supported Copilot IDE in agent mode, or a supported GitHub Copilot cloud agent.
 2. Ask explicitly to use `advice-from-luminouspeace` for a leadership, career, delivery or other decision. In Copilot CLI, `/skills list` and `/skills info advice-from-luminouspeace` help confirm discovery.
