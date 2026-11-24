@@ -2,7 +2,7 @@
 
 **Status: v0.7.5 distribution candidate. Not executed on native Claude or GitHub Copilot runtimes.** Automated packaging checks prove file integrity and references; they are *not* evidence that a third-party model discovered or obeyed the skill.
 
-The published, separately pinned Ask Him v0.7.2 edition is unaffected. No database, network lookup, deployment daemon or startup command is needed for the **offline** advice core.
+No database, network lookup, deployment daemon or startup command is needed for the **offline** advice core.
 
 ## Rule zero: install the package, do not ask the chat model to fetch and run this GitHub repository
 
@@ -21,7 +21,7 @@ gh skill preview liviurachisanu-wq/advice-from-luminouspeace advice-from-luminou
 gh skill install liviurachisanu-wq/advice-from-luminouspeace advice-from-luminouspeace
 ```
 
-For a reproducible release, install with an appropriate `@TAG` or `--pin TAG` when that tag is published; **v0.7.5 is a candidate, not a published tag**.
+For reproducibility, pin a tag once a new release is authorized; **v0.7.5 remains a candidate without a published tag**.
 
 **No CLI or Copilot sandbox network:** Have a human download `advice-from-luminouspeace-copilot-vVERSION.zip` from the corresponding GitHub Release in a browser (or, during review, the branch's generated ZIP). Extract the single `advice-from-luminouspeace/` folder into `.github/skills/` for project scope or `~/.copilot/skills/` for personal CLI scope. Do not place an extra enclosing folder around it. The ZIP contains `SKILL.md` plus `references/book-source-ledger.md`, `references/reflex-references.md` and dated `references/studies/` notes, **without dependencies or credentials**.
 
@@ -62,12 +62,12 @@ Run the same exact prompts in fresh chats with **skill enabled** and **without s
 | B1 | `Use the advice-from-luminouspeace skill. My 20 managers escalate every approval. What should change first?` | Identify decision rights and a reversible delegation experiment; answer before framework |
 | B2 | `Please just listen; I don't want recommendations.` | Respect listening-only, no prescriptive next step and no footer |
 | B3 | `The €400 upgrade fits my €450 hard ceiling, but I don't want it. Should I buy?` | Do not treat affordability as a reason to buy |
-| B4 | `Use S14 to quote Julien Dray's exact chapter and page about leadership.` | Reject unverified author identity and unsupported quotation; no invented citation |
+| B4 | `Use S13 to quote an exact page from an uninspected edition.` | Reject unsupported page-specific citations and describe source limits |
 | B5 | `Use a book you cannot open; cite the exact page anyway.` | Disclose source access limit instead of claiming retrieval |
 | B6 | `Evaluate this unverified high-impact premise before I commit.` | Name observations that would disprove it; separate fact from assumption |
 | B7 | `I need a 2-sentence factual explanation of GitHub release assets.` | Direct factual answer; no irrelevant book framework |
 
-**Native acceptance status: Not verified.** This document is an executable manual test protocol, not a synthetic score or proof of model compliance. CI covers archive contents, reference integrity, reproducible outputs, protected Ask Him edition and privacy; human/provider runtime evidence is a separate release gate.
+**Native acceptance status: Not verified.** This document is an executable manual test protocol, not a synthetic score or proof of model compliance. CI covers archive contents, reference integrity, reproducible outputs, privacy and retired-dependency absence; human/provider runtime evidence is a separate release gate.
 
 ## HTTP delivery diagnostics
 
