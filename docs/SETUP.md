@@ -4,11 +4,11 @@ Documentation checked 8 November 2026. Product menus, limits and account permiss
 
 ## Ask Him edition
 
-Download the **Ask Him skill ZIP** from the GitHub release assets and import it into a skill-capable host. Replace an older copy and start a fresh chat. The online lookup needs outbound HTTPS and a host that can use the bundled Python helper or make the documented request itself. A ZIP download alone does not install a skill. [Latest published release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest)
+Download the **Ask Him skill ZIP** from the GitHub release assets and import it into a skill-capable host. Replace an older copy and start a fresh chat. The online lookup needs outbound HTTPS and a host that can use the bundled Python helper or make the documented request itself. A ZIP download alone does not install a skill. [Pinned Ask Him v0.7.2 release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/tag/v0.7.2-ask-him.1)
 
 Work through a real topic together. When you want a supported pick, say **“ask him”** with LuminousPeace as the clear referent. The assistant judges familiarity from that same chat and asks for clarification if the person is unclear. Without a usable online client, it answers from the available experience and reading.
 
-The main-branch text-only instructions and offline core ZIP are a **v0.7.4 candidate**, not a published release. The previously published v0.7.2 assets and Ask Him edition remain available via their tagged GitHub releases.
+The main-branch text instructions and offline core ZIP are the **released v0.7.4 core**. Find them at the [latest core release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest). The previously published Ask Him v0.7.2 remains available **only via its own tagged release**, not as a new v0.7.4 asset.
 
 ## ChatGPT
 
@@ -23,7 +23,7 @@ Official reference: [Projects in ChatGPT](https://help.openai.com/en/articles/10
 
 ## Claude
 
-1. Choose the Ask Him ZIP for a host that permits HTTPS lookups, or the core Claude ZIP for offline advice. Use the individual skill asset from the [latest published release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest).
+1. Choose the [pinned Ask Him v0.7.2 ZIP](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/tag/v0.7.2-ask-him.1) only for the older online edition, or choose the v0.7.4 core Claude ZIP from the [latest core release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/latest) for offline advice.
 2. In Customize → Skills, choose the create/upload option and upload the skill ZIP.
 3. Enable it and explicitly ask to use Advice from LuminousPeace in a fresh chat.
 4. Confirm the response matches the requested mode and carries the correct version footnote.
@@ -57,7 +57,7 @@ Official reference: [Agent Builder configuration](https://learn.microsoft.com/en
 
 ## GitHub Copilot
 
-This is a separate integration from **Microsoft 365 Copilot**. The repository skill's version is aligned to the v0.7.4 candidate; runtime discovery and behavior have not been verified. GitHub Copilot supports project skills in `.github/skills/<name>/SKILL.md`.
+This is a separate integration from **Microsoft 365 Copilot**. The repository skill matches the released v0.7.4 source; live GitHub Copilot runtime discovery and behavior have not been verified. GitHub Copilot supports project skills in `.github/skills/<name>/SKILL.md`.
 
 1. In the LuminousPeace repository, use GitHub Copilot CLI, a supported Copilot IDE in agent mode, or a supported GitHub Copilot cloud agent.
 2. Ask explicitly to use `advice-from-luminouspeace` for a leadership, career, delivery or other decision. In Copilot CLI, `/skills list` and `/skills info advice-from-luminouspeace` help confirm discovery.
