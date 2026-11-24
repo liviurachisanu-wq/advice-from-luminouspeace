@@ -28,7 +28,8 @@ class PackageTests(unittest.TestCase):
     def test_offline_native_zip_layout_and_references(self):
         name=f"downloads/advice-from-luminouspeace-claude-v{self.meta['version']}.zip"
         with zipfile.ZipFile(BytesIO(self.out[name])) as z:
-            self.assertEqual(len(z.namelist()),3)
+            study_count = len(list((ROOT/'sources/studies').glob('*.md')))
+            self.assertEqual(len(z.namelist()),3 + study_count)
             self.assertTrue(all(info.create_system == 3 for info in z.infolist()))
             self.assertTrue(all(info.compress_type == zipfile.ZIP_STORED for info in z.infolist()))
             for n in z.namelist():self.assertTrue(n.startswith('advice-from-luminouspeace/'));self.assertNotIn('..',n)
@@ -36,6 +37,9 @@ class PackageTests(unittest.TestCase):
             self.assertTrue(skill.startswith('---\nname: advice-from-luminouspeace\n'))
             self.assertIn(self.out['downloads/portable-instructions.txt'].decode().strip(),skill)
             for ref in re.findall(r'references/[a-z-]+\.md',skill):self.assertIn('advice-from-luminouspeace/'+ref,z.namelist())
+            for original in sorted((ROOT/'sources/studies').glob('*.md')):
+                self.assertEqual(z.read('advice-from-luminouspeace/references/studies/'+original.name),
+                                 original.read_bytes())
     def test_ask_him_download_matches_deployed_snapshot_and_installable_tree(self):
         filename = 'advice-from-luminouspeace-ask-him.zip'
         download = self.out['downloads/' + filename]
