@@ -1,5 +1,10 @@
 # Validation record
 
+## v0.7.5 distribution candidate · 25 November 2026
+
+**Not a release. Native Claude and GitHub Copilot behavior remains Not verified.** Candidate scope fixes Copilot's reference links after skill installation into another repository, packages local references with both downloadable native skill ZIPs, and adds deterministic distribution contract tests. Exact manual scenarios and required activation evidence are in [INSTALLATION-AND-BEHAVIOR.md](INSTALLATION-AND-BEHAVIOR.md). Browser/network access success does not prove agent sandbox fetch or model compliance. Preserve the published v0.7.4 core and Ask Him v0.7.2 editions unchanged until separate approval.
+
+
 ## v0.7.4 approved core release · 25 November 2026
 
 Single-source behavioral core and a host-only Microsoft 365 overlay; GitHub Copilot adapter version aligned. S12–S14 get dated editorial records, with no additional original book-page coverage or R8. The v0.7.2 Ask Him edition is pinned and deliberately not republished. Build/test outcomes are reported by CI separately and do **not** establish live ChatGPT, Claude, Gemini, Microsoft 365 Copilot or GitHub Copilot behavior. The user explicitly approved the consolidated v0.7.4 scope and authorized publishing on 25 November 2026. Automated build and privacy/static checks verify package integrity; they do **not** establish live ChatGPT, Claude, Gemini, Microsoft 365 Copilot or GitHub Copilot behavior. The older Ask Him edition was not re-released.
