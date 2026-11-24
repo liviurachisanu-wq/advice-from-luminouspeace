@@ -16,10 +16,18 @@ class GitHubCopilotAdapterTests(unittest.TestCase):
         self.assertNotRegex(text, r"(?m)^R8\b")
         self.assertLess(len(text), 6000)
 
-    def test_local_reference_paths_exist(self):
+    def test_portable_reference_links_and_bundled_copies(self):
         path = ROOT / ".github/skills/advice-from-luminouspeace/SKILL.md"
-        for rel in re.findall(r"\]\((\.\./[^)]+\.md)\)", path.read_text("utf-8")):
-            self.assertTrue((path.parent / rel).resolve().is_file(), rel)
+        text=path.read_text(encoding="utf-8")
+        links=re.findall(r"\]\((references/[^)]+\.md)\)", text)
+        self.assertGreaterEqual(len(links),3)
+        self.assertNotIn("../../../sources/",text)
+        for rel in links:
+            self.assertNotIn("..",rel.split("/"))
+            self.assertTrue((path.parent/rel).is_file(),rel)
+        self.assertEqual(
+            (path.parent/"references/book-source-ledger.md").read_bytes(),
+            (ROOT/"sources/book-source-ledger.md").read_bytes())
 
     def test_study_does_not_claim_new_book_coverage(self):
         text = (ROOT / "sources/studies/S11-three-body-problem-2026-11-21.md").read_text("utf-8")

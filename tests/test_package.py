@@ -28,7 +28,8 @@ class PackageTests(unittest.TestCase):
     def test_offline_native_zip_layout_and_references(self):
         name=f"downloads/advice-from-luminouspeace-claude-v{self.meta['version']}.zip"
         with zipfile.ZipFile(BytesIO(self.out[name])) as z:
-            self.assertEqual(len(z.namelist()),3)
+            study_count = len(list((ROOT/'sources/studies').glob('*.md')))
+            self.assertEqual(len(z.namelist()),3 + study_count)
             self.assertTrue(all(info.create_system == 3 for info in z.infolist()))
             self.assertTrue(all(info.compress_type == zipfile.ZIP_STORED for info in z.infolist()))
             for n in z.namelist():self.assertTrue(n.startswith('advice-from-luminouspeace/'));self.assertNotIn('..',n)
@@ -36,32 +37,15 @@ class PackageTests(unittest.TestCase):
             self.assertTrue(skill.startswith('---\nname: advice-from-luminouspeace\n'))
             self.assertIn(self.out['downloads/portable-instructions.txt'].decode().strip(),skill)
             for ref in re.findall(r'references/[a-z-]+\.md',skill):self.assertIn('advice-from-luminouspeace/'+ref,z.namelist())
-    def test_ask_him_download_matches_deployed_snapshot_and_installable_tree(self):
-        filename = 'advice-from-luminouspeace-ask-him.zip'
-        download = self.out['downloads/' + filename]
-        self.assertEqual(download, (ROOT / 'editions' / 'ask-him' / filename).read_bytes())
-        with zipfile.ZipFile(BytesIO(download)) as archive:
-            members = archive.namelist()
-            self.assertEqual(len(members), 6)
-            self.assertIn('advice-from-luminouspeace/scripts/ask_him.py', members)
-            self.assertIn('advice-from-luminouspeace/.reflex-preferences.enc', members)
-            self.assertEqual({'skills/' + name for name in members},
-                             {name for name in self.out if name.startswith('skills/')})
-            for member in members:
-                self.assertEqual(self.out['skills/' + member], archive.read(member))
-    def test_ask_him_build_rejects_unverified_archive(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            edition = root / 'editions' / 'ask-him'
-            edition.mkdir(parents=True)
-            (edition / builder.ASK_HIM_ZIP).write_bytes(b'unverified')
-            with self.assertRaisesRegex(ValueError, 'verified hosted edition'):
-                builder.ask_him_outputs(root)
+            for original in sorted((ROOT/'sources/studies').glob('*.md')):
+                self.assertEqual(z.read('advice-from-luminouspeace/references/studies/'+original.name),
+                                 original.read_bytes())
     def test_release_metadata_and_attribution(self):
         for key in ['downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt']:
             text=self.out[key].decode();self.assertIn(self.meta['footnote'],text.splitlines());self.assertIn('listening or space',text)
             for n in range(1,8):self.assertRegex(text,rf'\bS{n:02d}\b')
-            for n in range(8,15):self.assertIn(f'S{n:02d}',text)
+            for n in range(8,14):self.assertIn(f'S{n:02d}',text)
+            self.assertNotIn('S14',text)
         review = self.meta['content_review']
         self.assertEqual(review['version'], self.meta['version'])
         if self.meta['status'] == 'release-candidate':
@@ -95,13 +79,17 @@ class PackageTests(unittest.TestCase):
         for source_id in ('S08', 'S09', 'S10'):
             self.assertIn('Conversation-study addendum', ledger.split('## ' + source_id, 1)[1].split('\\n## ', 1)[0])
 
+    def test_obsolete_service_and_source_removed(self):
+        core=self.out['downloads/portable-instructions.txt'].decode()
+        self.assertNotIn('S14',core)
+        self.assertFalse(any('ask-him' in name for name in self.out))
+        self.assertNotIn('edition', self.meta)
+
     def test_release_assets_match_generated_downloads(self):
         assets = releaser.release_assets(ROOT)
         self.assertEqual({path.name for path in assets}, {
             Path(name).name for name in self.out if name.startswith('downloads/')
-            and not name.endswith('/advice-from-luminouspeace-ask-him.zip')
         })
-        self.assertNotIn('advice-from-luminouspeace-ask-him.zip', {path.name for path in assets})
     def test_public_identity_and_no_private_artifacts(self):
         guard.scan_repository(ROOT)
     def test_privacy_guard_rejects_contacts_in_nested_archives(self):
@@ -150,19 +138,19 @@ class PackageTests(unittest.TestCase):
 
             git('init', '-q')
             git('commit', '-q', '--allow-empty', '-m', 'tagged')
-            git('tag', '-a', 'v0.7.1', '-m', 'release')
-            releaser.require_tag_checkout(root, 'v0.7.1')
+            git('tag', '-a', 'v1.0', '-m', 'release')
+            releaser.require_tag_checkout(root, 'v1.0')
             with self.assertRaisesRegex(ValueError, 'Cannot resolve release commit'):
-                releaser.require_tag_checkout(root, 'v0.7.2')
+                releaser.require_tag_checkout(root, 'v1.1')
             git('commit', '-q', '--allow-empty', '-m', 'different checkout')
             with self.assertRaisesRegex(ValueError, 'HEAD must match'):
-                releaser.require_tag_checkout(root, 'v0.7.1')
+                releaser.require_tag_checkout(root, 'v1.0')
 
     def test_release_notes_include_only_matching_version(self):
-        changelog = '# Changelog\n\n## v0.7.10 — Later\n\nLater.\n\n## v0.7.1 — Patch\n\nPatch.\n\n## v0.7 — Earlier\n\nEarlier.\n'
-        self.assertEqual(releaser.release_notes(changelog, 'v0.7.1'), 'Patch.\n')
+        changelog = '# Changelog\n\n## v1.00 — Later\n\nLater.\n\n## v1.0 — Patch\n\nPatch.\n\n## v0.7 — Earlier\n\nEarlier.\n'
+        self.assertEqual(releaser.release_notes(changelog, 'v1.0'), 'Patch.\n')
         with self.assertRaisesRegex(ValueError, 'Expected one changelog section'):
-            releaser.release_notes(changelog, 'v0.7.2')
+            releaser.release_notes(changelog, 'v1.1')
 
     def test_both_variants_include_safety_and_attribution_exceptions(self):
         safety_rules = []
@@ -189,21 +177,21 @@ class PackageTests(unittest.TestCase):
                 if not link.scheme and not link.netloc and link.path:
                     self.assertTrue((path.parent / unquote(link.path)).exists(), (name, target))
         setup = (ROOT / 'docs/SETUP.md').read_text(encoding='utf-8')
-        self.assertIn('/releases/latest)', setup)
-        self.assertNotRegex(setup, r'advice-from-luminouspeace-claude-v[\d.]+[.]zip')
+        self.assertIn(f'advice-from-luminouspeace-claude-v{self.meta["version"]}.zip', setup)
     def test_source_coverage(self):
         ledger=(ROOT/'sources/book-source-ledger.md').read_text(encoding='utf-8')
-        self.assertEqual(len(re.findall(r'^## S\d\d ',ledger,re.M)),19)
+        self.assertEqual(len(re.findall(r'^## S\d\d ',ledger,re.M)),18)
+        self.assertNotRegex(ledger,r'(?m)^## S14\b')
         self.assertIn('0 complete books',ledger)
     def test_landing_links(self):
         page=self.out['index.html'].decode();parser=Links();parser.feed(page)
-        self.assertEqual(parser.links[0], 'downloads/advice-from-luminouspeace-ask-him.zip')
+        self.assertEqual(parser.links[0], 'downloads/chatgpt-project-instructions.txt')
         for link in parser.links:
             if not link.startswith(('https:','#')):self.assertTrue((ROOT/link).exists(),link)
         self.assertNotRegex(page,r'<script[^>]+src=|fetch\(|XMLHttpRequest')
     def test_checksums_and_reproducibility(self):
         checksum_names = {row.split('  ', 1)[1] for row in self.out['downloads/SHA256SUMS.txt'].decode().splitlines()}
-        self.assertEqual(checksum_names, {Path(name).name for name in self.out if name.startswith('downloads/') and not name.endswith(('SHA256SUMS.txt', 'advice-from-luminouspeace-ask-him.zip'))})
+        self.assertEqual(checksum_names, {Path(name).name for name in self.out if name.startswith('downloads/') and not name.endswith(('SHA256SUMS.txt',))})
         for line in self.out['downloads/SHA256SUMS.txt'].decode().splitlines():
             digest,name=line.split('  ',1);self.assertEqual(digest,hashlib.sha256(self.out['downloads/'+name]).hexdigest())
         self.assertEqual(self.out,builder.outputs())

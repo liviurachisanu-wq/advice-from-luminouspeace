@@ -1,8 +1,8 @@
 # Advice from LuminousPeace — source ledger
 
-1 November 2026. Research for v0.3, carried forward to v0.5. Human review pending. Research coverage dated 1 November 2026.
+1 November 2026. Research for v0.3, carried forward to v0.5. Human review pending. Research coverage dated 1 November 2026, with limited conversation-study addenda for books S08–S10 dated 18–20 November 2026. These addenda do not change original-text coverage counts.
 
-0 complete books; 9 partial primary texts; 7 descriptions only; 3 unresolved/provisional entries. LuminousPeace self-reports reading at least 80% by page count; this is not AI coverage or endorsement.
+0 complete books; 9 partial primary texts; 7 descriptions only; 2 unresolved/provisional entries. LuminousPeace self-reports reading at least 80% by page count; this is not AI coverage or endorsement.
 
 ## S01 — Biblia / The Bible
 
@@ -116,6 +116,8 @@ Caveat: Do not conflate current distributor metadata with the printing on Lumino
 
 Implication: Use only for relevant chess requests after consulting a position; organizational analogies must be explicitly labeled.
 
+Conversation-study addendum (18 November 2026): A report discussed positional prerequisites, tactical motifs and defence using contents/distributor descriptions, not inspected chess positions. No book pages were read in that report. Decision: no new cross-domain LuminousPeace reflex; preserve S08 as a chess-specific reference. Do not treat the report's examples as independently verified passages.
+
 ## S09 — Atomic Habits — James Clear
 
 Edition: Author’s book webpage; shelf edition unconfirmed.
@@ -130,6 +132,8 @@ Caveat: Marketing claims, including compounding improvement language, are not pe
 
 Implication: Prefer a small observable system change over a demand for willpower; attribute only the limited webpage framing.
 
+Conversation-study addendum (19 November 2026): The report outlined identity-based habits, four laws, and environment design based on established descriptions and links to author material; no original book pages were fetched for that run. Candidate integration: extend existing R2 (Duhigg) with a modest environment/friction check, not a new reflex. Author description is not direct original-text verification.
+
 ## S10 — The World Atlas of Wine — Hugh Johnson and Jancis Robinson
 
 Edition: Consulted author listing: 8th edition, October 2019, 416 pages and 230 maps. Shelf Romanian edition unknown.
@@ -143,6 +147,8 @@ Synthesis: The listing establishes geographical coverage and revisions involving
 Caveat: A description of maps is not inspection of the maps; edition-dependent facts remain unchecked.
 
 Implication: Retain as a wine-reference route only. Do not manufacture leadership lessons from its presence.
+
+Conversation-study addendum (20 November 2026): The report discussed geography, appellations and environmental change using edition descriptions and general knowledge, without retrieving any original atlas maps or pages. Decision: no new reflex; preserve S10 for wine geography, and verify claims against the relevant edition before using them.
 
 ## S11 — The Three-Body Problem — Cixin Liu
 
@@ -185,20 +191,6 @@ Synthesis: No content synthesis justified. The earlier “Florin Angescu” memo
 Caveat: Candidate author correction is not a verified identification of the photographed copy.
 
 Implication: Hold book-specific claims until cover/title/copyright page confirms identity.
-
-## S14 — HN — Ça ne s’est pas passé comme prévu
-
-Edition: Unresolved author, publisher, edition and even the role of “HN”.
-
-Url: 
-
-Coverage: UNAVAILABLE / UNIDENTIFIED — title searches did not establish a reliable shelf match; 0 pages.
-
-Synthesis: No content synthesis.
-
-Caveat: Same-title results include unrelated material; do not choose one by plausibility.
-
-Implication: Needs a clear cover and title/copyright page before use.
 
 ## S15 — Ghidul de programare neurolingvistică, vol. I
 

@@ -13,10 +13,7 @@ def release_assets(root):
     generated = outputs(root)
     check_generated(root, generated)
     scan_repository(root)
-    # Older separately released Ask Him archive is not part of a newer core version.
-    _, edition = release_target(json.loads((root / 'release.json').read_text(encoding='utf-8')))
-    return [root / name for name in sorted(generated) if name.startswith('downloads/')
-            and (edition is not None or Path(name).name != 'advice-from-luminouspeace-ask-him.zip')]
+    return [root / name for name in sorted(generated) if name.startswith('downloads')]
 
 
 def require_tag_checkout(root, tag):
@@ -61,23 +58,14 @@ def release_notes(changelog, tag):
     return notes + '\n'
 
 
-def release_target(meta):
-    """The older pinned Ask Him edition must not hijack a newer core release."""
-    core_tag = 'v' + meta['version']
-    edition = meta.get('edition')
-    active = edition if edition and edition.get('tag', '').startswith(core_tag + '-') else None
-    return (active['tag'], active) if active else (core_tag, None)
-
-
 def main(root=Path(__file__).resolve().parents[1]):
     meta = json.loads((root / 'release.json').read_text(encoding='utf-8'))
-    tag, edition = release_target(meta)
+    tag = 'v' + meta['version']
     commit = require_tag_checkout(root, tag)
     meta = json.loads(tagged_blob(root, commit, 'release.json'))
-    tagged_target, edition = release_target(meta)
-    if tagged_target != tag:
+    if 'v' + meta['version'] != tag:
         raise ValueError('Release tag disagrees with tagged metadata')
-    title = (meta['name'] + ' · ' + edition['name'] + ' edition') if edition else meta['name'] + ' ' + tag
+    title = meta['name'] + ' ' + tag
     notes = release_notes(tagged_blob(root, commit, 'CHANGELOG.md').decode('utf-8'), tag)
     assets = release_assets(root)
     with tempfile.TemporaryDirectory() as tmp:

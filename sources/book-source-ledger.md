@@ -2,7 +2,7 @@
 
 1 November 2026. Research for v0.3, carried forward to v0.5. Human review pending. Research coverage dated 1 November 2026, with limited conversation-study addenda for books S08–S10 dated 18–20 November 2026. These addenda do not change original-text coverage counts.
 
-0 complete books; 9 partial primary texts; 7 descriptions only; 3 unresolved/provisional entries. LuminousPeace self-reports reading at least 80% by page count; this is not AI coverage or endorsement.
+0 complete books; 9 partial primary texts; 7 descriptions only; 2 unresolved/provisional entries. LuminousPeace self-reports reading at least 80% by page count; this is not AI coverage or endorsement.
 
 ## S01 — Biblia / The Bible
 
@@ -191,20 +191,6 @@ Synthesis: No content synthesis justified. The earlier “Florin Angescu” memo
 Caveat: Candidate author correction is not a verified identification of the photographed copy.
 
 Implication: Hold book-specific claims until cover/title/copyright page confirms identity.
-
-## S14 — HN — Ça ne s’est pas passé comme prévu
-
-Edition: Unresolved author, publisher, edition and even the role of “HN”.
-
-Url: 
-
-Coverage: UNAVAILABLE / UNIDENTIFIED — title searches did not establish a reliable shelf match; 0 pages.
-
-Synthesis: No content synthesis.
-
-Caveat: Same-title results include unrelated material; do not choose one by plausibility.
-
-Implication: Needs a clear cover and title/copyright page before use.
 
 ## S15 — Ghidul de programare neurolingvistică, vol. I
 

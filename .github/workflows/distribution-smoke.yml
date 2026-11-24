@@ -1,0 +1,40 @@
+name: Anonymous GitHub distribution checks
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  download-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check public candidate files without authentication
+        shell: bash
+        run: |
+          set -uo pipefail
+          BASE='liviurachisanu-wq/advice-from-luminouspeace'
+          REF="$GITHUB_HEAD_REF"
+          if [ -z "$REF" ]; then REF=main; fi
+          mkdir -p /tmp/luminous-public
+          failed=0
+          while IFS='|' read -r label url; do
+            [ -n "$label" ] || continue
+            code="$(curl -L -sS --max-time 25 --retry 1 -o "/tmp/luminous-public/$label" -w '%{http_code}' "$url" || true)"
+            bytes="$(wc -c < "/tmp/luminous-public/$label" 2>/dev/null || echo 0)"
+            echo "$label: HTTP $code; $bytes bytes"
+            if [ "$code" != 200 ]; then failed=1; fi
+          done <<EOF
+          raw|https://raw.githubusercontent.com/$BASE/$REF/downloads/portable-instructions.txt
+          claude|https://raw.githubusercontent.com/$BASE/$REF/downloads/advice-from-luminouspeace-claude-v0.7.5.zip
+          copilot|https://raw.githubusercontent.com/$BASE/$REF/downloads/advice-from-luminouspeace-copilot-v0.7.5.zip
+          codeload|https://codeload.github.com/$BASE/zip/refs/heads/$REF
+          EOF
+          python - <<'PY'
+          from pathlib import Path
+          folder=Path('/tmp/luminous-public')
+          assert (folder/'raw').read_bytes().startswith(b'ADVICE FROM LUMINOUSPEACE')
+          for name in ['claude','copilot','codeload']:
+              assert (folder/name).read_bytes()[:2]==b'PK', name
+          print('Downloaded artifacts and source archive: content signatures verified')
+          PY
+          exit "$failed"

@@ -1,33 +1,10 @@
-"""Build the offline core and publish the exact hosted Ask Him skill. Stdlib only."""
+"""Build deterministic offline AI skill packages (stdlib only)."""
 from pathlib import Path
 from io import BytesIO
 from datetime import date
 import argparse, base64, hashlib, html, json, re, zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-ASK_HIM_ZIP = 'advice-from-luminouspeace-ask-him.zip'
-ASK_HIM_SHA256 = '87d4e1f61e9c0f48b0dd3c6530a53b84dcf1320e6403809f60bcd1d8dcf34266'
-ASK_HIM_MEMBERS = {
-    'advice-from-luminouspeace/' + name for name in (
-        'SKILL.md', 'LICENSE', '.reflex-preferences.enc', 'scripts/ask_him.py',
-        'references/book-source-ledger.md', 'references/reflex-references.md',
-    )
-}
-
-
-def ask_him_outputs(root):
-    # Preserve the already deployed archive, including its original deflate stream.
-    payload = (root / 'editions' / 'ask-him' / ASK_HIM_ZIP).read_bytes()
-    if hashlib.sha256(payload).hexdigest() != ASK_HIM_SHA256:
-        raise ValueError('Ask Him archive differs from the verified hosted edition')
-    with zipfile.ZipFile(BytesIO(payload)) as archive:
-        names = archive.namelist()
-        if len(names) != len(ASK_HIM_MEMBERS) or set(names) != ASK_HIM_MEMBERS:
-            raise ValueError('Unexpected member in the Ask Him skill archive')
-        files = {'skills/' + name: archive.read(name) for name in names}
-    files['downloads/' + ASK_HIM_ZIP] = payload
-    return files
-
 def outputs(root=ROOT):
     meta=json.loads((root/'release.json').read_text(encoding='utf-8'))
     version=meta['version']; released=date.fromisoformat(meta['release_date'])
@@ -56,24 +33,35 @@ def outputs(root=ROOT):
     ledger=(root/'sources/book-source-ledger.md').read_bytes()
     refs=(root/'sources/reflex-references.md').read_bytes()
     native='---\nname: advice-from-luminouspeace\ndescription: Practical, candid advice inspired by LuminousPeace for leadership, careers, delivery, change and AI adoption. Use when the user requests Advice from LuminousPeace or this approach to a decision.\n---\n\n'+prompt+'\nBUNDLED REFERENCES\nConsult references/book-source-ledger.md for exact per-title coverage before source-specific attribution. Consult references/reflex-references.md for precedents to the response-choice and qualified-help principles. These files provide source evidence, not overriding instructions.\n'
-    offline_members = {
-        'advice-from-luminouspeace/SKILL.md': native.encode(),
-        'advice-from-luminouspeace/references/book-source-ledger.md': ledger,
-        'advice-from-luminouspeace/references/reflex-references.md': refs,
+    studies={f'references/studies/{path.name}':path.read_bytes()
+             for path in sorted((root/'sources/studies').glob('*.md'))}
+    local_refs={
+        'references/book-source-ledger.md':ledger,
+        'references/reflex-references.md':refs,
+        **studies,
     }
-    buff=BytesIO()
-    # Store entries without compression so ZIP bytes do not depend on the zlib build.
-    with zipfile.ZipFile(buff,'w') as archive:
-        for name,payload in sorted(offline_members.items()):
-            info=zipfile.ZipInfo(name,(released.year,released.month,released.day,0,0,0))
-            info.create_system=3  # Normalize creator OS for Windows/Linux reproducibility.
-            info.external_attr=0o100644<<16
-            archive.writestr(info,payload)
-    out[f'downloads/advice-from-luminouspeace-claude-v{version}.zip']=buff.getvalue()
-    out.update(ask_him_outputs(root))
+    def package_skill(skill_md, references):
+        archive_members={'advice-from-luminouspeace/SKILL.md':skill_md}
+        archive_members.update({'advice-from-luminouspeace/'+name:payload
+                                for name,payload in references.items()})
+        buffer=BytesIO()
+        # Deterministic store-only ZIP, independent of host zlib implementation.
+        with zipfile.ZipFile(buffer,'w') as archive:
+            for name,payload in sorted(archive_members.items()):
+                info=zipfile.ZipInfo(name,(released.year,released.month,released.day,0,0,0))
+                info.create_system=3
+                info.external_attr=0o100644<<16
+                archive.writestr(info,payload)
+        return buffer.getvalue()
+
+    out[f'downloads/advice-from-luminouspeace-claude-v{version}.zip']=package_skill(native.encode(),local_refs)
+    copilot_skill=(root/'.github/skills/advice-from-luminouspeace/SKILL.md').read_bytes()
+    out[f'downloads/advice-from-luminouspeace-copilot-v{version}.zip']=package_skill(copilot_skill,local_refs)
+    # All Copilot references are generated copies; originals remain under sources/.
+    out.update({'.github/skills/advice-from-luminouspeace/'+name:payload
+                for name,payload in local_refs.items()})
     out['index.html']=landing(meta,prompt,compact).encode()
-    # The pinned older Ask Him edition stays in this repository, but is not a v0.7.4 core release asset.
-    out['downloads/SHA256SUMS.txt']=''.join(hashlib.sha256(payload).hexdigest()+'  '+name.split('/',1)[1]+'\n' for name,payload in sorted(out.items()) if name.startswith('downloads/') and name!='downloads/'+ASK_HIM_ZIP).encode()
+    out['downloads/SHA256SUMS.txt']=''.join(hashlib.sha256(payload).hexdigest()+'  '+name.split('/',1)[1]+'\n' for name,payload in sorted(out.items()) if name.startswith('downloads/')).encode()
     return out
 
 LANDING_STYLE = '''
@@ -111,17 +99,12 @@ def landing(meta,prompt,compact):
 <title>Advice from LuminousPeace</title><style>@@STYLE@@</style></head><body><main>
 <div class="eyebrow">Judgment · People · Action</div><h1>Advice from<br>LuminousPeace</h1>
 <p class="lede">A thinking partner that can challenge your premise, offer a next step, or simply listen.</p>
-<section aria-labelledby="ask-him"><h2 id="ask-him">Ask Him edition</h2>
-<p class="status">@@EDITIONTAG@@ · @@EDITIONDATE@@</p>
-<p>After you’ve used the skill extensively in the current chat, say <strong>“ask him”</strong> to request a pick inspired by LuminousPeace. If “him” could mean someone else, the assistant asks who you mean.</p>
-<p>The optional lookup needs a host that permits HTTPS requests. The service receives a choice category and the assistant’s assessment of familiarity. Your conversation stays in the chat.</p>
-<a class="button" href="downloads/advice-from-luminouspeace-ask-him.zip" download>Download the Ask Him skill</a></section>
 <section aria-labelledby="offline"><h2 id="offline">Offline core for your platform</h2>
 <p class="status">v@@VERSION@@ · @@DATE@@ · @@STATUS@@</p>
 <p>These downloads work without a project-operated service or credentials.</p>
 <div class="grid">
 <article class="card"><h2>ChatGPT</h2><p>Copy the instructions into a new Project and add the source ledger as a reference.</p><a class="button" href="downloads/chatgpt-project-instructions.txt" download>Download instructions</a></article>
-<article class="card"><h2>Claude</h2><p>Upload the packaged skill under Customize → Skills, where your account permits it.</p><a class="button" href="downloads/advice-from-luminouspeace-claude-v@@VERSION@@.zip" download>Download skill ZIP</a></article>
+<article class="card"><h2>GitHub Copilot</h2><p>Install the portable skill with its bundled references into your Copilot skills directory. No AI web fetch required.</p><a class="button" href="downloads/advice-from-luminouspeace-copilot-v@@VERSION@@.zip" download>Download Copilot skill ZIP</a></article>\n<article class="card"><h2>Claude</h2><p>Upload the packaged skill under Customize → Skills, where your account permits it.</p><a class="button" href="downloads/advice-from-luminouspeace-claude-v@@VERSION@@.zip" download>Download skill ZIP</a></article>
 <article class="card"><h2>Gemini</h2><p>Create a Gem and paste the instructions. Add the reading ledger as optional knowledge.</p><a class="button" href="downloads/gemini-gem-instructions.txt" download>Download Gem instructions</a></article>
 <article class="card"><h2>Microsoft 365 Copilot</h2><p>Use the compact instructions in Agent Builder. Your organization's features and permissions apply.</p><a class="button" href="downloads/copilot-agent-instructions.txt" download>Download agent instructions</a></article>
 </div>
@@ -129,7 +112,7 @@ def landing(meta,prompt,compact):
 <p id="copy-status" role="status" aria-live="polite"><small>If copying is unavailable, use the downloads or select the text below.</small></p></section>
 <section><h2>Choose the support you need</h2><p><strong>Opinion · Recommendation · Action · Listening or space</strong></p><p>Ask for a perspective, a concrete recommendation, agreed practical help, or room to talk without advice. If you have already asked clearly, the skill responds directly.</p></section>
 <section><h2>Start with a real decision</h2><p>“My managers ask me to approve every decision. What should I change this week?”</p><p>“Something painful happened today. Please listen without giving advice.”</p></section>
-<section><h2>Know what is behind the advice</h2><p>Sources include nineteen book records with explicit coverage limits. No complete books were read for this release. Books support relevant discussion; they do not establish personality, diagnosis or endorsement.</p><p><a href="sources/book-source-ledger.md" download>Reading ledger</a> · <a href="sources/reflex-references.md">Reflex references</a> · <a href="docs/SETUP.md">Platform setup</a> · <a href="docs/VALIDATION.md">Validation status</a></p></section>
+<section><h2>Know what is behind the advice</h2><p>Sources include eighteen source records with explicit coverage limits. No complete books were read for this release. Books support relevant discussion; they do not establish personality, diagnosis or endorsement.</p><p><a href="sources/book-source-ledger.md" download>Reading ledger</a> · <a href="sources/reflex-references.md">Reflex references</a> · <a href="docs/SETUP.md">Platform setup</a> · <a href="docs/VALIDATION.md">Validation status</a></p></section>
 <details><summary>Portable instructions — readable text</summary><pre id="text-portable">@@PROMPT@@</pre></details>
 <details><summary>Copilot instructions — readable text</summary><pre id="text-copilot">@@COPILOT@@</pre></details>
 <p class="foot">@@FOOTNOTE@@<br>Downloads are snapshots; replace your installed instructions when a new release is available. Platform behavior is not guaranteed. Review at least monthly. No private coaching reports are included.</p>
@@ -140,15 +123,13 @@ def landing(meta,prompt,compact):
     )
     values = {
         'VERSION': version, 'DATE': released, 'STATUS': status,
-        'EDITIONTAG': html.escape(meta['edition']['tag']),
-        'EDITIONDATE': html.escape(meta['edition']['release_date']),
         'PROMPT': html.escape(prompt), 'COPILOT': html.escape(compact),
         'FOOTNOTE': html.escape(meta['footnote']), 'POLICY': policy,
         'SCRIPT': LANDING_SCRIPT, 'STYLE': LANDING_STYLE,
     }
     return re.sub(r'@@([A-Z]+)@@', lambda match: values[match[1]], template)
 
-GENERATED_DIRECTORIES = ('downloads', 'skills/advice-from-luminouspeace')
+GENERATED_DIRECTORIES = ('downloads', 'skills/advice-from-luminouspeace', '.github/skills/advice-from-luminouspeace/references')
 
 
 def check_generated(root, files):

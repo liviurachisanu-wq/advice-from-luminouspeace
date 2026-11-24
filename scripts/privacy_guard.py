@@ -29,13 +29,6 @@ RULES['literal preference decryption key'] = re.compile(
 )
 TEXT_EXTENSIONS = {'.md', '.txt', '.py', '.json', '.yml', '.yaml', '.html'}
 TEXT_NAMES = {'LICENSE', '.gitignore', '.gitattributes', 'SHA256SUMS.txt'}
-REVIEWED_MODULES = {'service/worker.mjs', 'tests/service.test.mjs'}
-ENVELOPE_MEMBER = 'advice-from-luminouspeace/.reflex-preferences.enc'
-EDITION_ARCHIVES = {
-    'downloads/advice-from-luminouspeace-ask-him.zip',
-    'editions/ask-him/advice-from-luminouspeace-ask-him.zip',
-}
-ENVELOPE_DIGEST = 'e536e6b16f726b9c209d6d6373a6bd6b00c2d350926b620bf48c7f1746a822ec'
 
 
 def scan_payload(name, payload, depth=0, budget=None, container=None):
@@ -61,17 +54,7 @@ def scan_payload(name, payload, depth=0, budget=None, container=None):
                 if not info.is_dir():
                     scan_payload(info.filename, archive.read(info), depth + 1, budget, name)
         return
-    if path.suffix.lower() == '.enc':
-        reviewed_location = (
-            (depth == 0 and name == 'skills/' + ENVELOPE_MEMBER) or
-            (depth == 1 and container in EDITION_ARCHIVES and name == ENVELOPE_MEMBER)
-        )
-        if (not reviewed_location or not payload.startswith(b'LPRF\x01\x01\x00\x00')
-                or hashlib.sha256(payload).hexdigest() != ENVELOPE_DIGEST):
-            raise ValueError('Unreviewed encrypted payload: ' + name)
-        return
-    reviewed_module = depth == 0 and name in REVIEWED_MODULES
-    if path.suffix.lower() not in TEXT_EXTENSIONS and path.name not in TEXT_NAMES and not reviewed_module:
+    if path.suffix.lower() not in TEXT_EXTENSIONS and path.name not in TEXT_NAMES:
         raise ValueError('Unreviewed export file type: ' + name)
     text = payload.decode('utf-8')
     for rule, pattern in RULES.items():
