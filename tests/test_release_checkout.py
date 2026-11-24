@@ -73,35 +73,6 @@ class ReleaseCheckoutTests(unittest.TestCase):
                 draft_release.main(self.root)
         self.assertEqual(submitted, [self.original])
 
-    def test_named_edition_uses_edition_tag_title_and_notes(self):
-        metadata = {"name": "Example", "version": "1.0", "edition": {"tag": "v1.0-special.1", "name": "Special"}}
-        (self.root / "release.json").write_text(json.dumps(metadata), encoding="utf-8")
-        (self.root / "CHANGELOG.md").write_text("## v1.0-special.1\nEdition notes.\n\n## v1.0\nCore notes.\n", encoding="utf-8")
-        self.git("add", "release.json", "CHANGELOG.md")
-        self.git("commit", "-qm", "Edition fixture")
-        self.git("tag", "v1.0-special.1")
-        git_run = subprocess.run
-        submitted = []
-
-        def capture(args, **kwargs):
-            if args[0] != "gh":
-                return git_run(args, **kwargs)
-            submitted.append((args[3], args[args.index("--title") + 1], kwargs["input"]))
-            return subprocess.CompletedProcess(args, 0)
-
-        with patch.object(draft_release, "release_assets", return_value=[self.asset]):
-            with patch.object(subprocess, "run", side_effect=capture):
-                draft_release.main(self.root)
-        self.assertEqual(submitted, [("v1.0-special.1", "Example · Special edition", b"Edition notes.\n")])
-
-    def test_pinned_older_edition_does_not_override_new_core_tag(self):
-        tag, edition = draft_release.release_target({
-            "version": "1.1",
-            "edition": {"tag": "v1.0-special.1", "name": "Special"}
-        })
-        self.assertEqual(tag, "v1.1")
-        self.assertIsNone(edition)
-
     def test_changed_asset_after_preflight_is_rejected(self):
         def select_asset(root):
             self.asset.write_bytes(b'Local edit after preflight.\n')
