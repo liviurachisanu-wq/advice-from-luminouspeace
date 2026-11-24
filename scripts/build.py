@@ -32,7 +32,7 @@ def outputs(root=ROOT):
     meta=json.loads((root/'release.json').read_text(encoding='utf-8'))
     version=meta['version']; released=date.fromisoformat(meta['release_date'])
     prompt=(root/'content/instructions.txt').read_text(encoding='utf-8').rstrip()+'\n'
-    compact=(root/'content/copilot.txt').read_text(encoding='utf-8').rstrip()+'\n'
+    # Single behavioral source. Microsoft's file is a small host-specific overlay.\n    overlay=(root/'content/copilot.txt').read_text(encoding='utf-8').strip()\n    compact=prompt.replace(f'ADVICE FROM LUMINOUSPEACE — v{version}',\n        f'ADVICE FROM LUMINOUSPEACE — Microsoft Copilot edition, v{version}', 1)\n    compact=compact.rstrip()+'\n\n'+overlay+'\n'
     if len(compact.encode('utf-16-le'))//2>8000:
         raise ValueError('Copilot instructions exceed 8,000 UTF-16 characters')
     date_label = 'prepared' if meta['status'] == 'release-candidate' else 'released'
