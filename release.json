@@ -1,19 +1,19 @@
 {
   "name": "Advice from LuminousPeace",
   "slug": "advice-from-luminouspeace",
-  "version": "0.7.3",
-  "release_date": "2026-11-20",
-  "status": "release-candidate",
+  "version": "0.7.4",
+  "release_date": "2026-11-25",
+  "status": "released",
   "content_review": {
-    "status": "pending",
-    "date": null,
-    "scope": "Candidate integrating November book studies S08–S10; R2 updated with environment/friction, no new reflexes from S08/S10. Pending human review and tests.",
-    "version": "0.7.3"
+    "status": "approved",
+    "date": "2026-11-25",
+    "scope": "User explicitly approved v0.7.4 consolidated reflex-first core and adapters on 25 November 2026; R1–R7 retained, S11–S14 source limits preserved, GitHub Copilot included; static/CI validation passed. Live native platform behavior remains unverified. Ask Him v0.7.2 is separately pinned.",
+    "version": "0.7.4"
   },
   "license": "MIT",
   "platform_docs_checked": "2026-11-08",
-  "next_review": "2026-12-17",
-  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7.3 · prepared 20 November 2026.",
+  "next_review": "2026-12-25",
+  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7.4 · released 25 November 2026.",
   "edition": {
     "name": "Ask Him",
     "tag": "v0.7.2-ask-him.1",

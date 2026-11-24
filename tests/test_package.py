@@ -60,7 +60,8 @@ class PackageTests(unittest.TestCase):
     def test_release_metadata_and_attribution(self):
         for key in ['downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt']:
             text=self.out[key].decode();self.assertIn(self.meta['footnote'],text.splitlines());self.assertIn('listening or space',text)
-            for n in range(1,20):self.assertRegex(text,rf'\bS{n:02d}\b')
+            for n in range(1,8):self.assertRegex(text,rf'\bS{n:02d}\b')
+            for n in range(8,15):self.assertIn(f'S{n:02d}',text)
         review = self.meta['content_review']
         self.assertEqual(review['version'], self.meta['version'])
         if self.meta['status'] == 'release-candidate':
@@ -69,6 +70,15 @@ class PackageTests(unittest.TestCase):
         else:
             self.assertEqual(review['status'], 'approved')
             self.assertTrue(review['date'])
+    def test_single_behavioral_source_and_compact_adapter(self):
+        core=(ROOT/'content/instructions.txt').read_text(encoding='utf-8').rstrip()+'\n'
+        portable=self.out['downloads/portable-instructions.txt'].decode()
+        ms=self.out['downloads/copilot-agent-instructions.txt'].decode()
+        self.assertEqual(portable,core)
+        self.assertEqual(ms.split('\n',1)[1].split('\n\nMICROSOFT 365 COPILOT ADAPTER',1)[0].strip(),
+                         core.split('\n',1)[1].strip())
+        self.assertLessEqual(len(ms.encode('utf-16-le'))//2,7600)
+
     def test_both_instruction_variants_include_all_reflexes(self):
         for name in ('portable-instructions.txt', 'copilot-agent-instructions.txt'):
             text = self.out[f'downloads/{name}'].decode()
@@ -89,7 +99,9 @@ class PackageTests(unittest.TestCase):
         assets = releaser.release_assets(ROOT)
         self.assertEqual({path.name for path in assets}, {
             Path(name).name for name in self.out if name.startswith('downloads/')
+            and not name.endswith('/advice-from-luminouspeace-ask-him.zip')
         })
+        self.assertNotIn('advice-from-luminouspeace-ask-him.zip', {path.name for path in assets})
     def test_public_identity_and_no_private_artifacts(self):
         guard.scan_repository(ROOT)
     def test_privacy_guard_rejects_contacts_in_nested_archives(self):
@@ -190,6 +202,8 @@ class PackageTests(unittest.TestCase):
             if not link.startswith(('https:','#')):self.assertTrue((ROOT/link).exists(),link)
         self.assertNotRegex(page,r'<script[^>]+src=|fetch\(|XMLHttpRequest')
     def test_checksums_and_reproducibility(self):
+        checksum_names = {row.split('  ', 1)[1] for row in self.out['downloads/SHA256SUMS.txt'].decode().splitlines()}
+        self.assertEqual(checksum_names, {Path(name).name for name in self.out if name.startswith('downloads/') and not name.endswith(('SHA256SUMS.txt', 'advice-from-luminouspeace-ask-him.zip'))})
         for line in self.out['downloads/SHA256SUMS.txt'].decode().splitlines():
             digest,name=line.split('  ',1);self.assertEqual(digest,hashlib.sha256(self.out['downloads/'+name]).hexdigest())
         self.assertEqual(self.out,builder.outputs())

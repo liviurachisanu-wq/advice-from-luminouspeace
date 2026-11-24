@@ -32,7 +32,11 @@ def outputs(root=ROOT):
     meta=json.loads((root/'release.json').read_text(encoding='utf-8'))
     version=meta['version']; released=date.fromisoformat(meta['release_date'])
     prompt=(root/'content/instructions.txt').read_text(encoding='utf-8').rstrip()+'\n'
-    compact=(root/'content/copilot.txt').read_text(encoding='utf-8').rstrip()+'\n'
+    # Single behavioral source. Microsoft's file is a small host-specific overlay.
+    overlay=(root/'content/copilot.txt').read_text(encoding='utf-8').strip()
+    compact=prompt.replace(f'ADVICE FROM LUMINOUSPEACE — v{version}',
+        f'ADVICE FROM LUMINOUSPEACE — Microsoft Copilot edition, v{version}', 1)
+    compact=compact.rstrip()+'\n\n'+overlay+'\n'
     if len(compact.encode('utf-16-le'))//2>8000:
         raise ValueError('Copilot instructions exceed 8,000 UTF-16 characters')
     date_label = 'prepared' if meta['status'] == 'release-candidate' else 'released'
@@ -68,7 +72,8 @@ def outputs(root=ROOT):
     out[f'downloads/advice-from-luminouspeace-claude-v{version}.zip']=buff.getvalue()
     out.update(ask_him_outputs(root))
     out['index.html']=landing(meta,prompt,compact).encode()
-    out['downloads/SHA256SUMS.txt']=''.join(hashlib.sha256(payload).hexdigest()+'  '+name.split('/',1)[1]+'\n' for name,payload in sorted(out.items()) if name.startswith('downloads/')).encode()
+    # The pinned older Ask Him edition stays in this repository, but is not a v0.7.4 core release asset.
+    out['downloads/SHA256SUMS.txt']=''.join(hashlib.sha256(payload).hexdigest()+'  '+name.split('/',1)[1]+'\n' for name,payload in sorted(out.items()) if name.startswith('downloads/') and name!='downloads/'+ASK_HIM_ZIP).encode()
     return out
 
 LANDING_STYLE = '''
