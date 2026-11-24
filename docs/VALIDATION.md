@@ -1,8 +1,8 @@
 # Validation record
 
-## v0.7.4 consolidation candidate · 25 November 2026
+## v0.7.4 approved core release · 25 November 2026
 
-Single-source behavioral core and a host-only Microsoft 365 overlay; GitHub Copilot adapter version aligned. S12–S14 get dated editorial records, with no additional original book-page coverage or R8. The v0.7.2 Ask Him edition is pinned and deliberately not republished. Build/test outcomes are reported by CI separately and do **not** establish live ChatGPT, Claude, Gemini, Microsoft 365 Copilot or GitHub Copilot behavior. Human content review and explicit release approval are pending.
+Single-source behavioral core and a host-only Microsoft 365 overlay; GitHub Copilot adapter version aligned. S12–S14 get dated editorial records, with no additional original book-page coverage or R8. The v0.7.2 Ask Him edition is pinned and deliberately not republished. Build/test outcomes are reported by CI separately and do **not** establish live ChatGPT, Claude, Gemini, Microsoft 365 Copilot or GitHub Copilot behavior. The user explicitly approved the consolidated v0.7.4 scope and authorized publishing on 25 November 2026. Automated build and privacy/static checks verify package integrity; they do **not** establish live ChatGPT, Claude, Gemini, Microsoft 365 Copilot or GitHub Copilot behavior. The older Ask Him edition was not re-released.
 
 
 ## GitHub Copilot and S11 editorial addendum — 21 November 2026
