@@ -61,15 +61,9 @@ class DistributionTests(unittest.TestCase):
             self.assertEqual(self.artifacts[root+rel],src.read_bytes())
             self.assertEqual((ROOT/root/rel).read_bytes(),src.read_bytes())
 
-    def test_legacy_ask_him_remains_pinned_and_unmodified(self):
-        frozen=self.artifacts["downloads/advice-from-luminouspeace-ask-him.zip"]
-        self.assertEqual(frozen,(ROOT/"editions/ask-him/advice-from-luminouspeace-ask-him.zip").read_bytes())
-        self.assertEqual(
-            __import__("hashlib").sha256(frozen).hexdigest(),
-            builder.ASK_HIM_SHA256
-        )
-        sums=self.artifacts["downloads/SHA256SUMS.txt"].decode()
-        self.assertNotIn("advice-from-luminouspeace-ask-him.zip",sums)
+    def test_retired_material_absent(self):
+        self.assertFalse(any('ask-him' in path for path in self.artifacts))
+        self.assertNotIn('references/studies/S14-unresolved-title-2026-11-24.md',self.references)
 
     def test_live_acceptance_is_not_misrepresented_as_ci(self):
         runbook=(ROOT/"docs/INSTALLATION-AND-BEHAVIOR.md").read_text(encoding="utf-8")
