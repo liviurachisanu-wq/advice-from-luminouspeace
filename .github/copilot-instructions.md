@@ -9,3 +9,6 @@ This repository distributes an AI advice skill. For routine engineering, follow 
 - Avoid pirated copies, sensitive coaching information, fabricated tool runs and unverified deployment claims. Respect host policies and human approval.
 - For package edits: build, run Python and Node tests, check deterministic rebuild, review privacy, then obtain human approval and verify platform behavior before release.
 - All public references remain in this GitHub repository. **No database, vector store or external knowledge store.**
+
+
+Distribution note: `.github/skills/advice-from-luminouspeace/references/` is **generated** from `sources/` by `scripts/build.py`, as are the versioned downloadable native ZIPs. Do not edit generated skill reference copies directly. Use `docs/INSTALLATION-AND-BEHAVIOR.md` to distinguish package tests from actual GitHub Copilot runtime checks.
