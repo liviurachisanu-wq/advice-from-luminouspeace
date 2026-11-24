@@ -4,9 +4,7 @@ The creator uses the public pseudonym LuminousPeace. The public distribution mus
 
 Downloading these files sends no conversation content to a project-operated service. Pasting them into an AI product is subject to that provider's data handling, account settings and organization rules. This project does not control those systems and cannot promise anonymity or confidential treatment by them.
 
-The Ask Him edition can make one HTTPS preference lookup when the user directly says “ask him” about LuminousPeace after sustained use in the same chat. The host sends the fixed command, its own yes/no assessment of familiarity, a choice category and selector, and an optional ordering limit. It keeps the transcript, names, account identifiers and chat IDs out of the request. The service returns one label. It accepts the host’s declaration of familiarity and keeps no application-level usage counts or chat history. Ordinary network and hosting infrastructure can still process connection data.
-
-The ZIP contains an encrypted copy of the preferences. The running service receives its key through a hosting secret. The core ZIP and text downloads work offline.
+The distributed advice core is offline. It does not send user content to a project-operated preference service or include an encrypted preference file, service secret, or database. Third-party AI products follow their own privacy policies. Deletion of older repository assets cannot retract installed copies or independent external deployments.
 
 Do not submit identifiable personal situations in GitHub issues. Redact names, employers, client details and sensitive facts. A public pseudonym does not guarantee anonymity: distinctive language and public references may be recognizable.
 
