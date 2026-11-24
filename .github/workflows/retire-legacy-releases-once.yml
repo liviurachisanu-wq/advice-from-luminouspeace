@@ -1,0 +1,74 @@
+name: Retire specified legacy GitHub releases
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - release.json
+permissions:
+  contents: write
+concurrency:
+  group: retire-specified-luminouspeace-releases
+  cancel-in-progress: false
+jobs:
+  retire:
+    if: github.repository == 'liviurachisanu-wq/advice-from-luminouspeace' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.11'
+      - name: Prove offline replacement and source cleanup before deletion
+        run: |
+          python scripts/build.py --check
+          python -m unittest discover -s tests -v
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          m=json.loads(Path('release.json').read_text(encoding='utf-8'))
+          assert m['version']=='0.7.5' and m['status']=='release-candidate'
+          assert 'edition' not in m
+          ledger=Path('sources/book-source-ledger.md').read_text(encoding='utf-8')
+          assert len(re.findall(r'^## S\d\d ',ledger,re.M))==18
+          assert not re.search(r'^## S14\b',ledger,re.M)
+          for path in ['service/worker.mjs','scripts/build_service.py',
+                       'downloads/advice-from-luminouspeace-ask-him.zip',
+                       'editions/ask-him/advice-from-luminouspeace-ask-him.zip']:
+              assert not Path(path).exists(), path
+          assert Path('downloads/advice-from-luminouspeace-claude-v0.7.5.zip').is_file()
+          assert Path('downloads/advice-from-luminouspeace-copilot-v0.7.5.zip').is_file()
+          print('Preflight passed: 18 surviving source entries; offline replacement complete.')
+          PY
+      - name: Delete only requested obsolete GitHub Releases and tags
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for tag in v0.7.2 v0.7.2-ask-him.1 v0.7.4; do
+            echo "Deleting requested obsolete release/tag $tag"
+            if gh release view "$tag" >/dev/null 2>&1; then
+              gh release delete "$tag" --cleanup-tag --yes
+            fi
+            if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" >/dev/null 2>&1; then
+              gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/tags/$tag" >/dev/null
+            fi
+          done
+      - name: Verify all three Release and tag removals
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for tag in v0.7.2 v0.7.2-ask-him.1 v0.7.4; do
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "Release still present: $tag"; exit 1
+            fi
+            if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" >/dev/null 2>&1; then
+              echo "Tag still present: $tag"; exit 1
+            fi
+            echo "Verified absent release and tag: $tag"
+          done
