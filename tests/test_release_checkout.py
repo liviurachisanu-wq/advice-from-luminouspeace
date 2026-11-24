@@ -94,6 +94,14 @@ class ReleaseCheckoutTests(unittest.TestCase):
                 draft_release.main(self.root)
         self.assertEqual(submitted, [("v1.0-special.1", "Example · Special edition", b"Edition notes.\n")])
 
+    def test_pinned_older_edition_does_not_override_new_core_tag(self):
+        tag, edition = draft_release.release_target({
+            "version": "1.1",
+            "edition": {"tag": "v1.0-special.1", "name": "Special"}
+        })
+        self.assertEqual(tag, "v1.1")
+        self.assertIsNone(edition)
+
     def test_changed_asset_after_preflight_is_rejected(self):
         def select_asset(root):
             self.asset.write_bytes(b'Local edit after preflight.\n')
