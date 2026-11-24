@@ -1,4 +1,5 @@
 name: Validate cleaned offline v0.7.5 candidate
+# Re-run after removing final old setup assertion
 # Re-run after removing obsolete release assumptions from tests
 on:
   push:
