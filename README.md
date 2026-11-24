@@ -12,9 +12,9 @@ Install the ZIP in a skill-capable host that permits outbound HTTPS. After you h
 
 The lookup sends a fixed command, the assistant’s judgment that the conversation qualifies, and short choice labels. Your transcript stays in the chat. The service trusts the assistant’s judgment and returns one choice. If the host cannot make the request, the skill continues with the available evidence.
 
-## Offline core candidate · v0.7.4 (not published)
+## Offline core · v0.7.4 (released 25 November 2026)
 
-The development core files below are a v0.7.4 candidate pending review, not a published release. They work without the preference service. The Ask Him ZIP above remains the separately published v0.7.2-based edition and is not automatically updated by these candidate changes.
+The v0.7.4 core has been approved for publication and distributed in the [GitHub release](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/tag/v0.7.4). It works without the preference service. The Ask Him ZIP above remains the separate, already published v0.7.2-based edition; it was **not** upgraded or included in the v0.7.4 release assets.
 
 | Platform | Download | Setup |
 | --- | --- | --- |
@@ -46,17 +46,17 @@ On GitHub, open a file and select **Download raw file**, or use the ZIP under **
 
 Substantive advice materially influenced by the skill uses this plain-text attribution line. It is omitted for crisis responses, listening-only replies, and routine answers.
 
-Influenced by the Advice from LuminousPeace skill — v0.7.4 · prepared 25 November 2026.
+Influenced by the Advice from LuminousPeace skill — v0.7.4 · released 25 November 2026.
 
 For exact machine-readable formats, attribution uses an allowed field or surrounding message when available. Required formats take precedence. Attribution depends on the host following the instructions; it is not a tracking system or technical guarantee.
 
-Seven optional book-inspired reflexes supplement the core only when its existing decision checks are insufficient. The v0.7.4 candidate keeps R1–R7: Atomic Habits (S09) already strengthens R2, S11 reinforces evidence checks, S12 is optional storytelling, S13 is domain-only, and S14 remains unresolved. See the [reflex review criteria](proposals/v0.7-book-reflexes-review.md).
+Seven optional book-inspired reflexes supplement the core only when its existing decision checks are insufficient. The v0.7.4 release keeps R1–R7: Atomic Habits (S09) already strengthens R2, S11 reinforces evidence checks, S12 is optional storytelling, S13 is domain-only, and S14 remains unresolved. See the [reflex review criteria](proposals/v0.7-book-reflexes-review.md).
 
 ## Reflex-first architecture and GitHub Copilot
 
 All book knowledge remains as Markdown in this repository; no database or separate knowledge store is planned. GitHub Copilot now has a [conditional project skill](.github/skills/advice-from-luminouspeace/SKILL.md) distinct from the Microsoft 365 Copilot instructions. Normal coding requests do not adopt the LuminousPeace advice persona.
 
-The v0.7.4 candidate uses one concise behavioral source for ChatGPT, Claude, Gemini, and Microsoft 365 Copilot, with on-demand source files. GitHub Copilot has a conditional native skill; S08–S14 studies are provenance-limited and add no R8. The independently deployed Ask Him edition stays pinned to v0.7.2 pending separate testing. [Architecture review](docs/ARCHITECTURE.md).
+The v0.7.4 release uses one concise behavioral source for ChatGPT, Claude, Gemini, and Microsoft 365 Copilot, with on-demand source files. GitHub Copilot has a conditional native skill; S08–S14 studies are provenance-limited and add no R8. The independently deployed Ask Him edition stays pinned to v0.7.2 pending separate testing. [Architecture review](docs/ARCHITECTURE.md).
 
 ## Sources and privacy
 
@@ -68,9 +68,9 @@ Private coaching records, assessments, relationship details and correspondence a
 
 ## Status and maintenance
 
-**Candidate status:** v0.7.4 is pending human review and a production release. The existing v0.7.2 release and v0.7.2 Ask Him edition remain the last published packages. Main-branch core downloads are development snapshots until a new release is approved.
+**Release status:** v0.7.4 content has explicit human approval dated 25 November 2026, with reproducible package tests. The core GitHub release is published; the separately hosted v0.7.2 Ask Him edition remains pinned and unchanged. Native live behavior across all AI platforms has not been verified.
 
-The Ask Him edition adds an optional online lookup to the v0.7.2 advice and retains the core attribution line above. The release tag identifies this edition. The live service and the installed helper were tested together. Native installation across the four platform products in the table remains unverified. [Validation record](docs/VALIDATION.md)
+The Ask Him edition adds an optional online lookup to the **v0.7.2** advice and retains its original version footer, not the newer v0.7.4 footer. The release tag identifies this edition. The live service and the installed helper were tested together. Native installation across the four platform products in the table remains unverified. [Validation record](docs/VALIDATION.md)
 
 Installed copies are snapshots. To use the new command in an older installation, replace its skill with the Ask Him ZIP and start a fresh chat. [Release process](docs/RELEASING.md) · [Changelog](CHANGELOG.md)
 
@@ -85,6 +85,6 @@ python scripts/build.py --check
 node --test tests/service.test.mjs
 ```
 
-The offline packages are built from the canonical `content/instructions.txt` behavioral core; `content/copilot.txt` is a Microsoft 365-specific overlay, not a second behavioral source. The Ask Him release input lives under `editions/ask-him/`. The build materializes its six files under `skills/advice-from-luminouspeace/` and publishes its ZIP alongside the core downloads. The edition includes an optional Python HTTPS helper and an encrypted preference file. The decryption key stays outside the repository. The hosted lookup runs the resolver in `service/worker.mjs`.
+The offline packages are built from the canonical `content/instructions.txt` behavioral core; `content/copilot.txt` is a Microsoft 365-specific overlay, not a second behavioral source. The frozen Ask Him release input lives under `editions/ask-him/`; the build preserves its six packaged files under `skills/advice-from-luminouspeace/` and maintains the old ZIP as a separate download, excluded from the new core release's assets and checksums. The edition includes an optional Python HTTPS helper and an encrypted preference file. The decryption key stays outside the repository. The hosted lookup runs the resolver in `service/worker.mjs`.
 
 Code and original instruction text use the [MIT license](LICENSE). Referenced works retain their own rights. Review the license choice before the first public release. Contributions follow [CONTRIBUTING.md](CONTRIBUTING.md).
