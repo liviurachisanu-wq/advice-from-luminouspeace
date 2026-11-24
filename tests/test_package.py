@@ -99,7 +99,9 @@ class PackageTests(unittest.TestCase):
         assets = releaser.release_assets(ROOT)
         self.assertEqual({path.name for path in assets}, {
             Path(name).name for name in self.out if name.startswith('downloads/')
+            and not name.endswith('/advice-from-luminouspeace-ask-him.zip')
         })
+        self.assertNotIn('advice-from-luminouspeace-ask-him.zip', {path.name for path in assets})
     def test_public_identity_and_no_private_artifacts(self):
         guard.scan_repository(ROOT)
     def test_privacy_guard_rejects_contacts_in_nested_archives(self):
@@ -200,6 +202,8 @@ class PackageTests(unittest.TestCase):
             if not link.startswith(('https:','#')):self.assertTrue((ROOT/link).exists(),link)
         self.assertNotRegex(page,r'<script[^>]+src=|fetch\(|XMLHttpRequest')
     def test_checksums_and_reproducibility(self):
+        checksum_names = {row.split('  ', 1)[1] for row in self.out['downloads/SHA256SUMS.txt'].decode().splitlines()}
+        self.assertEqual(checksum_names, {Path(name).name for name in self.out if name.startswith('downloads/') and not name.endswith(('SHA256SUMS.txt', 'advice-from-luminouspeace-ask-him.zip'))})
         for line in self.out['downloads/SHA256SUMS.txt'].decode().splitlines():
             digest,name=line.split('  ',1);self.assertEqual(digest,hashlib.sha256(self.out['downloads/'+name]).hexdigest())
         self.assertEqual(self.out,builder.outputs())
