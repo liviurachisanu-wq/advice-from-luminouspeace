@@ -1,6 +1,6 @@
 # Platform setup — offline v0.7.5 candidate
 
-The package is a Markdown instruction skill, not a runnable server. Native installation should use the platform's own skill or agent configuration interface. Candidate files are in [PR #8](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/pull/8). Live provider behavior remains unverified; do not confuse a successful file download with native skill activation.
+The package is a Markdown instruction skill, not a runnable server. Native installation should use the platform's own skill or agent configuration interface. Candidate source files are on `main` following [PR #8](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/pull/8). Live provider behavior remains unverified; do not confuse a successful file download with native skill activation.
 
 ## Claude
 1. Download `downloads/advice-from-luminouspeace-claude-v0.7.5.zip` to your computer from the candidate branch (or a future approved release).
