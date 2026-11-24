@@ -67,6 +67,14 @@ This is a separate integration from **Microsoft 365 Copilot**. The repository sk
 
 Official guide: [GitHub Copilot agent skills](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills).
 
+## When AI browsing of GitHub fails (v0.7.5 candidate)
+
+Use the platform's **native installation route** instead of asking the assistant to fetch a GitHub URL. Copilot's project skill is not a server to start: extract the self-contained `advice-from-luminouspeace-copilot-vVERSION.zip` under `.github/skills/` or `~/.copilot/skills/` and check `/skills list`. GitHub CLI 2.90+ also supports `gh skill preview` and `gh skill install`; use a published tag to pin a release.
+
+For Claude, **download the versioned Claude ZIP in a browser and upload it through Customize > Skills**. A `/blob/main/` URL is a GitHub viewing page, not a native install, and an AI fetch failure does not invalidate the bundled ZIP. If Skills upload is unavailable, the portable instruction text is a fallback, **not** a native installation.
+
+The candidate bundles all `references/` within the skill folder so installation into another repository or account does not depend on relative links escaping the source repository. **Native behavioral verification is still required.** See [the exact troubleshooting and acceptance protocol](INSTALLATION-AND-BEHAVIOR.md).
+
 ## Updates
 
 Replace the installed skill or pasted instructions with a new release; downloads are snapshots. Start a fresh conversation when testing an update to reduce influence from earlier instructions. Do not claim the creator approved a release unless its release record explicitly says so.
