@@ -3,7 +3,7 @@
 Review the project at least monthly. A review may conclude that no substantive change is justified; do not fabricate updates. Provider changes or material errors can justify earlier releases.
 
 1. Review explicit user feedback and source accuracy; exclude private coaching and identifying details.
-2. Edit both instruction variants. Update version, release date, status, next review and exact footnote in `release.json` and the instructions. Keep human approval separate from draft release dates.
+2. Edit the single behavior source `content/instructions.txt`; edit `content/copilot.txt` only for host-specific Microsoft 365 constraints. Do not duplicate behavioral rules in the overlay. Update version, date, status, next review, and exact footnote in `release.json` and the core; derive Microsoft output in the builder. Keep human approval separate from draft release dates.
 3. Update README, setup downloads and CHANGELOG when version names change. Do not claim older behavior tests cover the new version.
 4. Run `python scripts/build.py`, `python -m unittest discover -s tests -v` and `python scripts/build.py --check`. Include tests and archives in privacy review; keep protected-identity fixtures outside the repository. Review author and committer metadata separately and use a no-reply identity. Do not assume a connector hides the account email.
 5. Human reviewer checks behavior, privacy, source limits, license and platform setup; record their explicit decision. Never infer approval from silence or passing tests.
