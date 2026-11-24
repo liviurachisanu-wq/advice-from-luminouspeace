@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.7.5 — 25 November 2026 — distribution candidate, not published
+
+- Fix the GitHub Copilot portability defect: generate in-skill local references instead of links that break outside this repository.
+- Build a self-contained versioned GitHub Copilot ZIP, and include dated study notes in the Claude native ZIP. Preserve the v0.7.4 reflex method unchanged.
+- Add deterministic ZIP content/reference tests and a native installation/behavior acceptance protocol with explicit **Not verified** results for third-party runtimes.
+- Preserve the previously published v0.7.4 release and separate v0.7.2 Ask Him archive. No automatic installation or provider runtime is claimed.
+
+
 ## v0.7.4 — 25 November 2026 — released
 
 - Consolidate the documented decision method into a concise single behavioral source shared by ChatGPT, Claude, Gemini and Microsoft 365 Copilot; the Microsoft adapter is a small host-specific overlay.
