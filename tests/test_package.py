@@ -147,7 +147,7 @@ class PackageTests(unittest.TestCase):
                 releaser.require_tag_checkout(root, 'v1.0')
 
     def test_release_notes_include_only_matching_version(self):
-        changelog = '# Changelog\n\n## v1.00 — Later\n\nLater.\n\n## v1.0 — Patch\n\nPatch.\n\n## v0.7 — Earlier\n\nEarlier.\n'
+        changelog = '# Changelog\n\n## v1.00 — Later\n\nLater.\n\n## v1.0 — Patch\n\nPatch.\n\n## v1.0-preview — Earlier\n\nEarlier.\n'
         self.assertEqual(releaser.release_notes(changelog, 'v1.0'), 'Patch.\n')
         with self.assertRaisesRegex(ValueError, 'Expected one changelog section'):
             releaser.release_notes(changelog, 'v1.1')
