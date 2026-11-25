@@ -1,6 +1,6 @@
 # Installation reliability and native behavior acceptance
 
-**Status: v0.7.5 released; not executed on native Claude or GitHub Copilot runtimes.** Automated packaging checks prove file integrity and references; they are *not* evidence that a third-party model discovered or obeyed the skill.
+**Status: v0.7.5 released. Not executed on native Claude or GitHub Copilot runtimes.** Automated packaging checks prove file integrity and references; they are *not* evidence that a third-party model discovered or obeyed the skill.
 
 No database, network lookup, deployment daemon or startup command is needed for the **offline** advice core.
 
@@ -23,7 +23,7 @@ gh skill install liviurachisanu-wq/advice-from-luminouspeace advice-from-luminou
 
 For reproducibility, pin the supported `v0.7.5` tag when installing with GitHub CLI; do not rely on a moving branch.
 
-**No CLI or Copilot sandbox network:** Have a human download `advice-from-luminouspeace-copilot-vVERSION.zip` from the corresponding GitHub Release in a browser . Extract the single `advice-from-luminouspeace/` folder into `.github/skills/` for project scope or `~/.copilot/skills/` for personal CLI scope. Do not place an extra enclosing folder around it. The ZIP contains `SKILL.md` plus `references/book-source-ledger.md`, `references/reflex-references.md` and dated `references/studies/` notes, **without dependencies or credentials**.
+**No CLI or Copilot sandbox network:** Have a human download `advice-from-luminouspeace-copilot-vVERSION.zip` from the corresponding GitHub Release in a browser. Extract the single `advice-from-luminouspeace/` folder into `.github/skills/` for project scope or `~/.copilot/skills/` for personal CLI scope. Do not place an extra enclosing folder around it. The ZIP contains `SKILL.md` plus `references/book-source-ledger.md`, `references/reflex-references.md` and dated `references/studies/` notes, **without dependencies or credentials**.
 
 From the Copilot CLI in the target project:
 
