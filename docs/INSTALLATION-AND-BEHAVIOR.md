@@ -1,6 +1,6 @@
 # Installation reliability and native behavior acceptance
 
-**Status: v0.7.5 distribution candidate. Not executed on native Claude or GitHub Copilot runtimes.** Automated packaging checks prove file integrity and references; they are *not* evidence that a third-party model discovered or obeyed the skill.
+**Status: v0.7.5 released; not executed on native Claude or GitHub Copilot runtimes.** Automated packaging checks prove file integrity and references; they are *not* evidence that a third-party model discovered or obeyed the skill.
 
 No database, network lookup, deployment daemon or startup command is needed for the **offline** advice core.
 
@@ -14,16 +14,16 @@ Prefer a human-accessible browser download, GitHub CLI skill installation, or a 
 
 **Repo-local:** Open the LuminousPeace repository in a supported Copilot agent environment; its native skill lives in `.github/skills/advice-from-luminouspeace/SKILL.md`, with **bundled** `references/`. A chat with no local repository context does not automatically inherit these project skills.
 
-**Another repository, current published version:** With GitHub CLI 2.90+ and access to GitHub, inspect and install the skill (the source should be reviewed before executing any installed skill):
+**Another repository, current supported release:** With GitHub CLI 2.90+ and access to GitHub, inspect and install the skill (the source should be reviewed before executing any installed skill):
 
 ```sh
 gh skill preview liviurachisanu-wq/advice-from-luminouspeace advice-from-luminouspeace
 gh skill install liviurachisanu-wq/advice-from-luminouspeace advice-from-luminouspeace
 ```
 
-For reproducibility, pin a tag once a new release is authorized; **v0.7.5 remains a candidate without a published tag**.
+For reproducibility, pin the supported `v0.7.5` tag when installing with GitHub CLI; do not rely on a moving branch.
 
-**No CLI or Copilot sandbox network:** Have a human download `advice-from-luminouspeace-copilot-vVERSION.zip` from the corresponding GitHub Release in a browser (or, during review, the branch's generated ZIP). Extract the single `advice-from-luminouspeace/` folder into `.github/skills/` for project scope or `~/.copilot/skills/` for personal CLI scope. Do not place an extra enclosing folder around it. The ZIP contains `SKILL.md` plus `references/book-source-ledger.md`, `references/reflex-references.md` and dated `references/studies/` notes, **without dependencies or credentials**.
+**No CLI or Copilot sandbox network:** Have a human download `advice-from-luminouspeace-copilot-vVERSION.zip` from the corresponding GitHub Release in a browser . Extract the single `advice-from-luminouspeace/` folder into `.github/skills/` for project scope or `~/.copilot/skills/` for personal CLI scope. Do not place an extra enclosing folder around it. The ZIP contains `SKILL.md` plus `references/book-source-ledger.md`, `references/reflex-references.md` and dated `references/studies/` notes, **without dependencies or credentials**.
 
 From the Copilot CLI in the target project:
 
