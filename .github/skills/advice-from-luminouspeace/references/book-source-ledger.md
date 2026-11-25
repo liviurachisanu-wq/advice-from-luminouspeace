@@ -1,6 +1,6 @@
 # Advice from LuminousPeace — source ledger
 
-1 November 2026. Research for v0.3, carried forward to v0.5. Human review pending. Research coverage dated 1 November 2026, with limited conversation-study addenda for books S08–S10 dated 18–20 November 2026. These addenda do not change original-text coverage counts.
+Research coverage initially recorded 1 November 2026, with limited conversation-study addenda for S08–S10 dated 18–20 November 2026. These addenda do not change original-text coverage counts. This catalogue is supplementary evidence for the currently supported v0.7.5 skill, not a personality profile.
 
 0 complete books; 9 partial primary texts; 7 descriptions only; 2 unresolved/provisional entries. LuminousPeace self-reports reading at least 80% by page count; this is not AI coverage or endorsement.
 
