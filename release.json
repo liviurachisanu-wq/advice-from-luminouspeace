@@ -3,15 +3,15 @@
   "slug": "advice-from-luminouspeace",
   "version": "0.7.5",
   "release_date": "2026-11-25",
-  "status": "release-candidate",
+  "status": "released",
   "content_review": {
-    "status": "pending",
-    "date": null,
-    "scope": "Offline v0.7.5 cleanup candidate: remove retired public-package dependencies and hosted preference implementation; remove a provisional source entry while preserving 18 remaining source IDs. Human release approval and native Claude/Copilot runtime validation pending.",
-    "version": "0.7.5"
+    "status": "approved",
+    "date": "2026-11-25",
+    "version": "0.7.5",
+    "scope": "Owner explicitly directed that v0.7.5 become the sole supported release. Retire obsolete GitHub versions/tags and reference links; keep offline-only skill with 18 verified surviving source entries and seven optional reflexes. Native Claude and GitHub Copilot runtime behavior remains unverified. Separately hosted legacy website shutdown requires site-admin access and must not be claimed until confirmed."
   },
   "license": "MIT",
   "platform_docs_checked": "2026-11-08",
   "next_review": "2026-12-25",
-  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7.5 · prepared 25 November 2026."
+  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7.5 · released 25 November 2026."
 }
