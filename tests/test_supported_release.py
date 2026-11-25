@@ -24,8 +24,8 @@ class SupportedReleaseTests(unittest.TestCase):
         for name in files:
             s=(ROOT/name).read_text(encoding='utf-8')
             with self.subTest(file=name):
-                self.assertNotRegex(s,r'v0\\.7\\.(?:1|2|3|4)(?![0-9])')
-                self.assertNotRegex(s,r'v0\\.7(?![.\\d])')
+                self.assertNotRegex(s,r'v0[.]7[.](?:1|2|3|4)(?![0-9])')
+                self.assertNotRegex(s,r'v0[.]7(?![.0-9])')
                 self.assertNotIn('ask-liviu.',s.lower())
                 self.assertNotIn('ask-him.zip',s.lower())
         self.assertNotIn('nineteen', (ROOT/'.github/skills/advice-from-luminouspeace/SKILL.md').read_text(encoding='utf-8').lower())
@@ -37,7 +37,7 @@ class SupportedReleaseTests(unittest.TestCase):
 
     def test_only_surviving_source_ids(self):
         s=(ROOT/'sources/book-source-ledger.md').read_text(encoding='utf-8')
-        ids=re.findall(r'(?m)^## (S\\d\\d) — ',s)
+        ids=re.findall(r'(?m)^## (S[0-9][0-9]) — ',s)
         self.assertEqual(ids,[f'S{i:02d}' for i in range(1,20) if i!=14])
         self.assertNotIn('S14',(ROOT/'sources/studies/README.md').read_text(encoding='utf-8'))
 
