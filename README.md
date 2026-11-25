@@ -4,9 +4,9 @@
 
 An offline-first AI decision-support skill for leadership, career choices, IT delivery, change and responsible AI adoption. This repository contains instructions and Markdown references, not an application server or database.
 
-## Distribution candidate — v0.7.5
+## Current release — v0.7.5
 
-The cleaned candidate was merged to `main` in [PR #8](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/pull/8). It still needs explicit v0.7.5 release approval and real Claude/GitHub Copilot runtime checks. Download the current candidate files from this repository; they are **not** published GitHub Release assets.
+**v0.7.5 is the sole supported GitHub Release.** Download the stable packages from [v0.7.5 release assets](https://github.com/liviurachisanu-wq/advice-from-luminouspeace/releases/tag/v0.7.5). Native Claude and GitHub Copilot behavior remains unverified, even though the packages pass automated checks.
 
 | Platform | File | Installation |
 | --- | --- | --- |
@@ -40,7 +40,7 @@ The [source ledger](sources/book-source-ledger.md) contains **18 surviving entri
 
 ## Offline and privacy boundaries
 
-No hosted preference lookup, encryption key, external database or custom service is needed or distributed. Users' AI providers still control their own storage and privacy settings. Removing a GitHub Release cannot erase old downloads, installed copies or historical commits; external hosted systems require separate shutdown.
+The supported v0.7.5 package contains no hosted preference lookup, encryption key, external database or custom service. The former separately hosted website is **not controlled by this GitHub release**; its shutdown must be confirmed using the hosting administrator's controls. Previously downloaded packages and historical Git objects may persist. Users' AI providers control their own data settings.
 
 For source limits, human approval and privacy practices, see [validation](docs/VALIDATION.md), [architecture](docs/ARCHITECTURE.md), [privacy](docs/PRIVACY.md) and [release process](docs/RELEASING.md).
 
