@@ -25,8 +25,8 @@ jobs:
             if [ "$code" != 200 ]; then failed=1; fi
           done <<EOF
           raw|https://raw.githubusercontent.com/$BASE/$REF/downloads/portable-instructions.txt
-          claude|https://raw.githubusercontent.com/$BASE/$REF/downloads/advice-from-luminouspeace-claude-v0.7.5.zip
-          copilot|https://raw.githubusercontent.com/$BASE/$REF/downloads/advice-from-luminouspeace-copilot-v0.7.5.zip
+          claude|https://raw.githubusercontent.com/$BASE/$REF/downloads/advice-from-luminouspeace-claude-v0.8.zip
+          copilot|https://raw.githubusercontent.com/$BASE/$REF/downloads/advice-from-luminouspeace-copilot-v0.8.zip
           codeload|https://codeload.github.com/$BASE/zip/refs/heads/$REF
           EOF
           python - <<'PY'

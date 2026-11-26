@@ -1,6 +1,8 @@
 name: Draft release
 on:
   workflow_dispatch:
+  push:
+    tags: [v0.8]
 permissions:
   contents: write
 jobs:
@@ -20,3 +22,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python scripts/draft_release.py
+      - name: Publish approved v0.8 draft
+        if: github.event_name == 'push' && github.ref == 'refs/tags/v0.8'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit v0.8 --draft=false --latest

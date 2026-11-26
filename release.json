@@ -1,17 +1,17 @@
 {
   "name": "Advice from LuminousPeace",
   "slug": "advice-from-luminouspeace",
-  "version": "0.7.5",
-  "release_date": "2026-11-25",
+  "version": "0.8",
+  "release_date": "2026-11-26",
   "status": "released",
   "content_review": {
     "status": "approved",
-    "date": "2026-11-25",
-    "version": "0.7.5",
-    "scope": "Owner explicitly directed that v0.7.5 become the sole supported release. Retire obsolete GitHub versions/tags and reference links; keep offline-only skill with 18 verified surviving source entries and seven optional reflexes. Native Claude and GitHub Copilot runtime behavior remains unverified. Separately hosted legacy website shutdown requires site-admin access and must not be claimed until confirmed."
+    "date": "2026-11-26",
+    "version": "0.8",
+    "scope": "Owner approved publishing the offline skill with verified public retirement of the legacy site and the v0.7.5 Claude smoke-test evidence. Native Copilot acceptance and v0.8 native reruns remain pending."
   },
   "license": "MIT",
   "platform_docs_checked": "2026-11-08",
   "next_review": "2026-12-25",
-  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.7.5 · released 25 November 2026."
+  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.8 · released 26 November 2026."
 }

@@ -67,8 +67,8 @@ class DistributionTests(unittest.TestCase):
 
     def test_live_acceptance_is_not_misrepresented_as_ci(self):
         runbook=(ROOT/"docs/INSTALLATION-AND-BEHAVIOR.md").read_text(encoding="utf-8")
-        self.assertIn("Not executed on native Claude or GitHub Copilot runtimes",runbook)
-        self.assertIn("Not verified",runbook)
+        self.assertIn("native Copilot acceptance and v0.8 native reruns are pending",runbook)
+        self.assertIn("The full protocol and v0.8 native reruns remain pending",runbook)
 
 
 if __name__ == "__main__":

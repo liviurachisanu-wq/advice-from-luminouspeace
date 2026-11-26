@@ -1,6 +1,6 @@
 # Installation reliability and native behavior acceptance
 
-**Status: v0.7.5 released. Not executed on native Claude or GitHub Copilot runtimes.** Automated packaging checks prove file integrity and references; they are *not* evidence that a third-party model discovered or obeyed the skill.
+**Status: v0.8 released. A native Claude smoke test passed on v0.7.5; native Copilot acceptance and v0.8 native reruns are pending.** Automated packaging checks prove file integrity and references; they are *not* evidence that a third-party model discovered or obeyed the skill.
 
 No database, network lookup, deployment daemon or startup command is needed for the **offline** advice core.
 
@@ -21,7 +21,7 @@ gh skill preview liviurachisanu-wq/advice-from-luminouspeace advice-from-luminou
 gh skill install liviurachisanu-wq/advice-from-luminouspeace advice-from-luminouspeace
 ```
 
-For reproducibility, pin the supported `v0.7.5` tag when installing with GitHub CLI; do not rely on a moving branch.
+For reproducibility, pin the supported `v0.8` tag when installing with GitHub CLI; do not rely on a moving branch.
 
 **No CLI or Copilot sandbox network:** Have a human download `advice-from-luminouspeace-copilot-vVERSION.zip` from the corresponding GitHub Release in a browser. Extract the single `advice-from-luminouspeace/` folder into `.github/skills/` for project scope or `~/.copilot/skills/` for personal CLI scope. Do not place an extra enclosing folder around it. The ZIP contains `SKILL.md` plus `references/book-source-ledger.md`, `references/reflex-references.md` and dated `references/studies/` notes, **without dependencies or credentials**.
 
@@ -67,7 +67,7 @@ Run the same exact prompts in fresh chats with **skill enabled** and **without s
 | B6 | `Evaluate this unverified high-impact premise before I commit.` | Name observations that would disprove it; separate fact from assumption |
 | B7 | `I need a 2-sentence factual explanation of GitHub release assets.` | Direct factual answer; no irrelevant book framework |
 
-**Native acceptance status: Not verified.** This document is an executable manual test protocol, not a synthetic score or proof of model compliance. CI covers archive contents, reference integrity, reproducible outputs, privacy and retired-dependency absence; human/provider runtime evidence is a separate release gate.
+**Native acceptance status:** The Claude v0.7.5 smoke test covered activation, a delegation prompt, and an unsupported preference request. The full protocol and v0.8 native reruns remain pending. This document is an executable manual test protocol, not a synthetic score or proof of model compliance. CI covers archive contents, reference integrity, reproducible outputs, privacy and retired-dependency absence; human/provider runtime evidence is a separate release gate.
 
 ## HTTP delivery diagnostics
 

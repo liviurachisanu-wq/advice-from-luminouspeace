@@ -9,10 +9,10 @@ ROOT=Path(__file__).resolve().parents[1]
 class SupportedReleaseTests(unittest.TestCase):
     def test_single_release_metadata(self):
         data=json.loads((ROOT/'release.json').read_text(encoding='utf-8'))
-        self.assertEqual(data['version'],'0.7.5')
+        self.assertEqual(data['version'],'0.8')
         self.assertEqual(data['status'],'released')
         self.assertEqual(data['content_review']['status'],'approved')
-        self.assertEqual(data['content_review']['version'],'0.7.5')
+        self.assertEqual(data['content_review']['version'],'0.8')
         self.assertNotIn('edition',data)
 
     def test_no_obsolete_release_links_or_old_host_dependencies(self):
@@ -31,7 +31,7 @@ class SupportedReleaseTests(unittest.TestCase):
         self.assertNotIn('nineteen', (ROOT/'.github/skills/advice-from-luminouspeace/SKILL.md').read_text(encoding='utf-8').lower())
 
     def test_supported_attribution(self):
-        expected='Influenced by the Advice from LuminousPeace skill — v0.7.5 · released 25 November 2026.'
+        expected='Influenced by the Advice from LuminousPeace skill — v0.8 · released 26 November 2026.'
         for name in ['content/instructions.txt','.github/skills/advice-from-luminouspeace/SKILL.md']:
             self.assertIn(expected,(ROOT/name).read_text(encoding='utf-8'))
 
