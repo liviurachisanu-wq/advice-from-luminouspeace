@@ -47,7 +47,8 @@ class DistributionTests(unittest.TestCase):
                             rel
                         )
                     skill=archive.read("advice-from-luminouspeace/SKILL.md").decode("utf-8")
-                    for rel in re.findall(r"\]\((references/[^)]+\.md)\)",skill):
+                    self.assertNotIn("sources/", skill)
+                    for rel in re.findall(r"\breferences/[\w./-]+\.md", skill):
                         self.assertIn("advice-from-luminouspeace/"+rel,contents)
                         self.assertNotIn("..",rel.split("/"))
 

@@ -1,5 +1,5 @@
-a38aca579d592a71bf405a7d17c8ae05c7264f6afebfc810844ebabd81940972  advice-from-luminouspeace-claude-v0.8.1.zip
-c90b491459ce76beda11318b3c3a76dc1ed14f471ad9a388145ec0beb78e2eba  advice-from-luminouspeace-copilot-v0.8.1.zip
+2919a53f3222ad070f35d31e9d92fb831fe39a834951339599b1e572afe99333  advice-from-luminouspeace-claude-v0.8.1.zip
+4561c40066dab7b5f1387eed824d5e1ed0242bb0987e3601197801d35c10dcea  advice-from-luminouspeace-copilot-v0.8.1.zip
 62da6ba1baa2b0406958f1d916d4cd83ed4e4b6dc50a2d2f59c1a6b43a654ecd  chatgpt-project-instructions.txt
 e16ceaf18e146be02bd63efa90f96072e27883e3eac2090da9d2499eea4547af  copilot-agent-instructions.txt
 62da6ba1baa2b0406958f1d916d4cd83ed4e4b6dc50a2d2f59c1a6b43a654ecd  gemini-gem-instructions.txt

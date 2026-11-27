@@ -54,6 +54,8 @@ Official guide: https://support.claude.com/en/articles/12512198-how-to-create-cu
 
 ## Native behavior acceptance: to be run *after* installation
 
+Record activation and answer quality separately. For a filesystem-based host, capture a successful read of the installed SKILL.md in a fresh session. If a read fails, record the host error and score activation as unverified even when the answer is good. Pasting the instructions exercises the manual fallback.
+
 Run the same exact prompts in fresh chats with **skill enabled** and **without skill**, ideally on the same provider/model. Save dates, model name, activation evidence, responses and pass/fail observations. Avoid sharing personal or organizational confidential data.
 
 | ID | Prompt to test | Expected with skill |

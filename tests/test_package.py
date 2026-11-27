@@ -35,7 +35,8 @@ class PackageTests(unittest.TestCase):
             for n in z.namelist():self.assertTrue(n.startswith('advice-from-luminouspeace/'));self.assertNotIn('..',n)
             skill=z.read('advice-from-luminouspeace/SKILL.md').decode()
             self.assertTrue(skill.startswith('---\nname: advice-from-luminouspeace\n'))
-            self.assertIn(self.out['downloads/portable-instructions.txt'].decode().strip(),skill)
+            portable = self.out['downloads/portable-instructions.txt'].decode().strip()
+            self.assertIn(portable.replace('sources/', 'references/'), skill)
             for ref in re.findall(r'references/[a-z-]+\.md',skill):self.assertIn('advice-from-luminouspeace/'+ref,z.namelist())
             for original in sorted((ROOT/'sources/studies').glob('*.md')):
                 self.assertEqual(z.read('advice-from-luminouspeace/references/studies/'+original.name),
