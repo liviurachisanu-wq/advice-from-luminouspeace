@@ -1,17 +1,17 @@
 {
   "name": "Advice from LuminousPeace",
   "slug": "advice-from-luminouspeace",
-  "version": "0.8",
-  "release_date": "2026-11-26",
-  "status": "released",
+  "version": "0.8.1",
+  "release_date": "2026-11-27",
+  "status": "release-candidate",
   "content_review": {
-    "status": "approved",
-    "date": "2026-11-26",
-    "version": "0.8",
-    "scope": "Owner approved publishing the offline skill with verified public retirement of the legacy site and the v0.7.5 Claude smoke-test evidence. Native Copilot acceptance and v0.8 native reruns remain pending."
+    "status": "pending",
+    "date": null,
+    "version": "0.8.1",
+    "scope": "Accountability reflex and source catalogue update. Native host acceptance and publication remain pending."
   },
   "license": "MIT",
   "platform_docs_checked": "2026-11-08",
   "next_review": "2026-12-25",
-  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.8 · released 26 November 2026."
+  "footnote": "Influenced by the Advice from LuminousPeace skill — v0.8.1 · prepared 27 November 2026."
 }

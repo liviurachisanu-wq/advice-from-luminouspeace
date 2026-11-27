@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.8.1 — 27 November 2026 — release candidate
+
+- Strengthen R1 accountability using a partial primary-text study of 1 Enoch (S17), distinguishing AI synthesis from theological claims.
+- Retire the unresolved source entry; preserve all 17 surviving historical source IDs.
+- Rebuild distribution files and extend regression coverage; native host and publication checks remain pending.
+
 ## v0.8 — 26 November 2026
 
 - Verify owner-only access to the former Ask Him site. Signed-out requests to the landing page and both legacy ZIP URLs returned HTTP 401.

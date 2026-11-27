@@ -79,6 +79,19 @@ class PackageTests(unittest.TestCase):
         for source_id in ('S08', 'S09', 'S10'):
             self.assertIn('Conversation-study addendum', ledger.split('## ' + source_id, 1)[1].split('\\n## ', 1)[0])
 
+    def test_enoch_reinforces_accountability_without_new_reflex(self):
+        for key in ('downloads/portable-instructions.txt','downloads/copilot-agent-instructions.txt'):
+            content=self.out[key].decode()
+            r1=re.search(r'(?m)^R1 .+$',content)[0]
+            for needle in ('S17 1 Enoch','ethical scrutiny','anticipate harm','allow correction','Assume no faith'):
+                self.assertIn(needle,r1)
+            self.assertNotIn('S16',content)
+        adapter=(ROOT/'.github/skills/advice-from-luminouspeace/SKILL.md').read_text(encoding='utf-8')
+        self.assertIn('R1 accountable power (S01/S17)',adapter)
+        note=(ROOT/'sources/studies/S17-book-of-enoch-2026-11-27.md').read_text(encoding='utf-8')
+        self.assertIn('Partial primary text',note)
+        self.assertIn('AI synthesis',note)
+
     def test_obsolete_service_and_source_removed(self):
         core=self.out['downloads/portable-instructions.txt'].decode()
         self.assertNotIn('S14',core)
@@ -180,8 +193,8 @@ class PackageTests(unittest.TestCase):
         self.assertIn(f'advice-from-luminouspeace-claude-v{self.meta["version"]}.zip', setup)
     def test_source_coverage(self):
         ledger=(ROOT/'sources/book-source-ledger.md').read_text(encoding='utf-8')
-        self.assertEqual(len(re.findall(r'^## S\d\d ',ledger,re.M)),18)
-        self.assertNotRegex(ledger,r'(?m)^## S14\b')
+        self.assertEqual(len(re.findall(r'^## S\d\d ',ledger,re.M)),17)
+        self.assertNotRegex(ledger,r'(?m)^## S(?:14|16)\b')
         self.assertIn('0 complete books',ledger)
     def test_landing_links(self):
         page=self.out['index.html'].decode();parser=Links();parser.feed(page)

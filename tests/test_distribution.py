@@ -64,6 +64,7 @@ class DistributionTests(unittest.TestCase):
     def test_retired_material_absent(self):
         self.assertFalse(any('ask-him' in path for path in self.artifacts))
         self.assertNotIn('references/studies/S14-unresolved-title-2026-11-24.md',self.references)
+        self.assertFalse(any('/S16-' in name for name in self.references))
 
     def test_live_acceptance_is_not_misrepresented_as_ci(self):
         runbook=(ROOT/"docs/INSTALLATION-AND-BEHAVIOR.md").read_text(encoding="utf-8")

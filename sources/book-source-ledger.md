@@ -1,8 +1,8 @@
 # Advice from LuminousPeace — source ledger
 
-Research coverage initially recorded 1 November 2026, with limited conversation-study addenda for S08–S10 dated 18–20 November 2026. These addenda do not change original-text coverage counts. This catalogue is supplementary evidence for the currently supported v0.7.5 skill, not a personality profile.
+Research coverage initially recorded 1 November 2026, with limited conversation-study addenda for S08–S10 dated 18–20 November 2026. These addenda do not change original-text coverage counts. This catalogue is supplementary evidence for the v0.8.1 release candidate, not a personality profile.
 
-0 complete books; 9 partial primary texts; 7 descriptions only; 2 unresolved/provisional entries. LuminousPeace self-reports reading at least 80% by page count; this is not AI coverage or endorsement.
+0 complete books; 9 partial primary texts; 7 descriptions only; 1 unresolved/provisional entry. LuminousPeace self-reports reading at least 80% by page count; this is not AI coverage or endorsement.
 
 ## S01 — Biblia / The Bible
 
@@ -206,20 +206,6 @@ Caveat: Title-page authorship is verified for this edition. Efficacy, eye-moveme
 
 Implication: Improve bibliography with all four authors, conditionally on edition match. Do not add diagnostic or therapeutic techniques to the skill from this evidence.
 
-## S16 — “Păstăița” — memory fragment
-
-Edition: Not established as a book title.
-
-Url: 
-
-Coverage: UNAVAILABLE / UNIDENTIFIED — no text or reliable bibliographic identity; 0 pages.
-
-Synthesis: No synthesis is possible.
-
-Caveat: Preserve the fragment without inventing an author, genre or lesson.
-
-Implication: Needs original untruncated message or a readable cover/title page.
-
 ## S17 — Cartea lui Enoh / 1 Enoch
 
 Edition: Accessible alternate text: R. H. Charles translation with W. O. E. Oesterley introduction; SPCK 1917, digitized tenth impression 1962; Gutenberg #77935. Reprints Charles’s 1912 translation. Romanian shelf edition unverified.
@@ -232,7 +218,9 @@ Synthesis: The selected text depicts judgment, moral order, angelic transgressio
 
 Caveat: An accessible English source is not the photographed Romanian edition. Early editorial scholarship is historically situated. Religious narrative is not empirical proof.
 
-Implication: Use for requested textual discussion only, with translation and chapter attribution; infer no beliefs about LuminousPeace.
+Implication: Reinforce existing R1 accountability through AI synthesis: increase ethical scrutiny with power and knowledge; anticipate foreseeable harm, exercise restraint, require accountability and allow correction. Infer no religious beliefs.
+
+Study addendum (27 November 2026): Re-examined Charles translation chapters VI–XI (Gutenberg lines 420–448) and L:1–5 (lines 994–1025). The Watchers narrative portrays harmful disclosure of knowledge, abuses of authority, appeals for justice and restoration; chapter L juxtaposes repentance, compassion and judgment. These are literary and theological themes, not empirical evidence or a mandate for punishment. The complete work and Romanian edition were not examined. See [S17 study](studies/S17-book-of-enoch-2026-11-27.md).
 
 ## S18 — Mindset — Carol S. Dweck
 

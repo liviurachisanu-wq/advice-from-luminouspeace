@@ -1,6 +1,6 @@
 # Installation reliability and native behavior acceptance
 
-**Status: v0.8 released. A native Claude smoke test passed on v0.7.5; native Copilot acceptance and v0.8 native reruns are pending.** Automated packaging checks prove file integrity and references; they are *not* evidence that a third-party model discovered or obeyed the skill.
+**Status: v0.8 released; v0.8.1 candidate not published. A native Claude smoke test passed on v0.7.5; native Copilot acceptance and v0.8 native reruns are pending.** Automated packaging checks prove file integrity and references; they are *not* evidence that a third-party model discovered or obeyed the skill.
 
 No database, network lookup, deployment daemon or startup command is needed for the **offline** advice core.
 
@@ -67,7 +67,7 @@ Run the same exact prompts in fresh chats with **skill enabled** and **without s
 | B6 | `Evaluate this unverified high-impact premise before I commit.` | Name observations that would disprove it; separate fact from assumption |
 | B7 | `I need a 2-sentence factual explanation of GitHub release assets.` | Direct factual answer; no irrelevant book framework |
 
-**Native acceptance status:** The Claude v0.7.5 smoke test covered activation, a delegation prompt, and an unsupported preference request. The full protocol and v0.8 native reruns remain pending. This document is an executable manual test protocol, not a synthetic score or proof of model compliance. CI covers archive contents, reference integrity, reproducible outputs, privacy and retired-dependency absence; human/provider runtime evidence is a separate release gate.
+**Native acceptance status:** The Claude v0.7.5 smoke test covered activation, a delegation prompt, and an unsupported preference request. The full protocol and v0.8 native reruns remain pending. Native v0.8.1 acceptance also remains pending. This document is an executable manual test protocol, not a synthetic score or proof of model compliance. CI covers archive contents, reference integrity, reproducible outputs, privacy and retired-dependency absence; human/provider runtime evidence is a separate release gate.
 
 ## HTTP delivery diagnostics
 

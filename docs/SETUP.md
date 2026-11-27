@@ -1,9 +1,9 @@
-# Platform setup — offline v0.8
+# Platform setup — offline v0.8.1 candidate
 
 The package is a Markdown instruction skill, not a runnable server. Native installation should use the platform's own skill or agent configuration interface. See the [validation record](VALIDATION.md) for native smoke-test coverage and pending checks.
 
 ## Claude
-1. Download `downloads/advice-from-luminouspeace-claude-v0.8.zip` to your computer from the tagged release.
+1. Download `downloads/advice-from-luminouspeace-claude-v0.8.1.zip` to your computer from this candidate checkout; for the published release use its exact tag and assets.
 2. In Claude, open Customize → Skills and upload/create a skill where your account permits it.
 3. Enable the skill and begin a fresh conversation. The ZIP contains one `advice-from-luminouspeace/` folder with `SKILL.md` and local `references/`.
 4. Run the [native acceptance scenarios](INSTALLATION-AND-BEHAVIOR.md).
@@ -11,7 +11,7 @@ The package is a Markdown instruction skill, not a runnable server. Native insta
 [Claude skills reference](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills).
 
 ## GitHub Copilot
-1. Download `downloads/advice-from-luminouspeace-copilot-v0.8.zip` to your computer.
+1. Download `downloads/advice-from-luminouspeace-copilot-v0.8.1.zip` to your computer.
 2. Extract its single `advice-from-luminouspeace/` folder under `.github/skills/` in the target repository, or a supported personal skill location.
 3. In a supported Copilot CLI, use `/skills reload`, `/skills list` and `/skills info advice-from-luminouspeace` to verify discovery.
 4. Request the skill explicitly for a decision; ordinary coding should not adopt its advice persona.
