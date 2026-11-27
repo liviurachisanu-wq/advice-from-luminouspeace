@@ -2,7 +2,7 @@ name: Draft release
 on:
   workflow_dispatch:
   push:
-    tags: [v0.8]
+    tags: [v0.8.1]
 permissions:
   contents: write
 jobs:
@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
-          fetch-tags: true
+          fetch-depth: ${{ github.event_name == 'workflow_dispatch' && '0' || '1' }}
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.11'
@@ -22,8 +22,3 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python scripts/draft_release.py
-      - name: Publish approved v0.8 draft
-        if: github.event_name == 'push' && github.ref == 'refs/tags/v0.8'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release edit v0.8 --draft=false --latest

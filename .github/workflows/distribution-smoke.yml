@@ -7,34 +7,53 @@ permissions:
 jobs:
   download-smoke:
     runs-on: ubuntu-latest
+    env:
+      CANDIDATE_REPO: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+      CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
-      - name: Check public candidate files without authentication
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          repository: ${{ env.CANDIDATE_REPO }}
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - name: Verify public downloads against the candidate commit
         shell: bash
         run: |
-          set -uo pipefail
-          BASE='liviurachisanu-wq/advice-from-luminouspeace'
-          REF="$GITHUB_HEAD_REF"
-          if [ -z "$REF" ]; then REF=main; fi
-          mkdir -p /tmp/luminous-public
-          failed=0
-          while IFS='|' read -r label url; do
-            [ -n "$label" ] || continue
-            code="$(curl -L -sS --max-time 25 --retry 1 -o "/tmp/luminous-public/$label" -w '%{http_code}' "$url" || true)"
-            bytes="$(wc -c < "/tmp/luminous-public/$label" 2>/dev/null || echo 0)"
-            echo "$label: HTTP $code; $bytes bytes"
-            if [ "$code" != 200 ]; then failed=1; fi
-          done <<EOF
-          raw|https://raw.githubusercontent.com/$BASE/$REF/downloads/portable-instructions.txt
-          claude|https://raw.githubusercontent.com/$BASE/$REF/downloads/advice-from-luminouspeace-claude-v0.8.1.zip
-          copilot|https://raw.githubusercontent.com/$BASE/$REF/downloads/advice-from-luminouspeace-copilot-v0.8.1.zip
-          codeload|https://codeload.github.com/$BASE/zip/refs/heads/$REF
-          EOF
-          python - <<'PY'
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          temp=$(mktemp -d)
+          fetch() { curl --fail --silent --show-error --location --retry 2 --max-time 45 "$1" -o "$2"; }
+          version=$(jq -er '.version' release.json)
+          for name in portable-instructions.txt "advice-from-luminouspeace-claude-v$version.zip" "advice-from-luminouspeace-copilot-v$version.zip"; do
+            fetch "https://raw.githubusercontent.com/$CANDIDATE_REPO/$CANDIDATE_SHA/downloads/$name" "$temp/download"
+            git cat-file blob "HEAD:downloads/$name" > "$temp/expected"
+            digest=$(sha256sum < "$temp/expected")
+            printf '%s  %s\n' "${digest%% *}" "$temp/download" | sha256sum --check --status
+            echo "Verified $name"
+          done
+          fetch "https://codeload.github.com/$CANDIDATE_REPO/zip/$CANDIDATE_SHA" "$temp/source.zip"
+          git archive --format=zip --prefix="source/" HEAD > "$temp/expected.zip"
+          python -I - "$temp" <<'PY'
+          from hashlib import sha256
           from pathlib import Path
-          folder=Path('/tmp/luminous-public')
-          assert (folder/'raw').read_bytes().startswith(b'ADVICE FROM LUMINOUSPEACE')
-          for name in ['claude','copilot','codeload']:
-              assert (folder/name).read_bytes()[:2]==b'PK', name
-          print('Downloaded artifacts and source archive: content signatures verified')
+          import os, sys, zipfile
+
+          def manifest(path):
+              with zipfile.ZipFile(path) as archive:
+                  if archive.comment.decode() != os.environ["CANDIDATE_SHA"]:
+                      sys.exit("Source archive commit mismatch")
+                  files = {}
+                  for item in archive.infolist():
+                      if item.is_dir():
+                          continue
+                      _, separator, name = item.filename.partition("/")
+                      if not separator or name in files:
+                          sys.exit("Unexpected source archive layout")
+                      files[name] = sha256(archive.read(item)).digest()
+                  return files
+
+          folder = Path(sys.argv[1])
+          if manifest(folder / "source.zip") != manifest(folder / "expected.zip"):
+              sys.exit("Source archive contents differ from the candidate commit")
+          print("Verified source archive")
           PY
-          exit "$failed"
